@@ -1,154 +1,144 @@
 # PintHop 🍻
 
-## Find your next pint. Find your next friends.
+## 次の一杯を見つけよう。隣に友達がいる。
 
-**PintHop** is an open-source, community-driven app that connects craft beer enthusiasts through shared experiences. Built on the principles of real-time sharing, themed beer exploration routes, and a simple photo-based check-in system, PintHop aims to foster genuine connections through the love of craft beer.
+**PintHop**は、「誰かと一緒にビールを飲む」体験を再発明するオープンソースアプリです。事前の計画や明示的な誘い合わせなしに、今友達がどこでビールを楽しんでいるかを知り、自然に合流できる体験を提供します。
 
-**[Join our growing community!](#contribute)**
+**[一緒に作りませんか？](#contribute)**
 
-## 🌟 Core Features
+## 🌟 コンセプト
 
-- **One-tap Check-ins**: Just select a location and you're done! No complex data entry required.
-- **Real-time Community**: See who's drinking what and where right now—then join them!
-- **Themed Beer Routes**: Follow curated journeys like "Tracing the Evolution of IPAs" with narrative-driven brewery tours.
-- **Visual Beer Logging**: Share tap lists, beer photos, and brewery snapshots with minimal effort.
-- **Community Circles**: Create and join beer circles, discover events, and connect with fellow enthusiasts.
-- **Beer Knowledge Exchange**: Learn from certified experts (BJCP, Cicerone) and share your own discoveries.
+PintHopは「今、ここにいる」という情報の共有に焦点を当て、ビール愛好家が自然につながる機会を創出します：
 
-## 🤝 Open Source Philosophy
+- **心理的障壁ゼロ**: 「誘う/誘われる」という社会的プレッシャーなし
+- **リアルタイムプレゼンス**: 友達が今どこにいるかがすぐ分かる
+- **自然な合流**: 計画せずに偶然を装った出会いの創出
+- **プライバシー重視**: 自分の情報をどこまで共有するか完全にコントロール
 
-PintHop is built by the community, for the community. We believe that:
+## 💫 主な機能
 
-- **Craft beer culture should be accessible to everyone**
-- **Technology should bring people together in real life**
-- **Community contributions create better experiences than commercial products**
-- **The value is in the connections formed, not monetization**
+- **ワンタップチェックイン**: ブルワリーに着いたらタップするだけ。詳細入力は必要なし
+- **アンビエント存在表示**: 友達がどこにいるかを控えめに通知
+- **滞在時間共有**: 「あと1時間ほどいる」などの簡易情報表示
+- **プラン可視化**: 今日・今週のブルワリー訪問予定が分かる（任意共有）
+- **グループダイナミクス**: 友達グループの形成・移動が自然に見える
+- **リアルタイムマップ**: 現在アクティブなスポットとそこにいる友達が分かる
 
-As an open-source project, PintHop will always be:
-- **Free to use** - No paid features, subscriptions, or hidden costs
-- **Transparent in development** - Public roadmap and decision-making
-- **Community-governed** - Features driven by user needs, not profit motives
-- **Ethically developed** - Privacy-respecting and user-centric design
+## 🚀 従来のSNSとの違い
 
-## 🚀 Why PintHop is Different
+### 1. 「投稿」ではなく「存在」
+- **従来型SNS**: 行った場所・飲んだものを後から投稿・シェア
+- **PintHop**: 今どこにいるかのシンプルな共有がすべての始まり
+- **記録よりも体験**: 写真・レビューは二の次、まずは一緒に楽しむことが優先
 
-### 1. Experience-First Philosophy
-- **Beyond just logging**: While apps like Untappd focus on tracking what you drink, PintHop prioritizes where and who you drink with.
-- **Minimal input barriers**: Take a photo and you're done—detailed entries are completely optional.
+### 2. 心理的ハードルの排除
+- **従来型アプリ**: 「誘う→承認/拒否される」という明示的フロー
+- **PintHop**: 「今ここにいます」という情報提示のみ、応答義務なし
+- **自然な参加**: 「行くかも」「興味あり」など曖昧な意思表明も可能
 
-### 2. Real-time Social Experience
-- **Focus on "now"**: See active brewery hotspots and join spontaneous meetups.
-- **"Join me" functionality**: Instantly invite friends to your current location.
+### 3. リアルタイム体験
+- **従来型SNS**: 過去の活動の記録と未来の予定の調整
+- **PintHop**: 「今この瞬間」に焦点を当てた臨場感
+- **即時性**: 開いた瞬間に今アクティブな場所と友達が分かる
 
-### 3. Narrative Beer Journeys
-- **Contextual exploration**: Discover breweries through themed routes with historical or stylistic connections.
-- **Community-created paths**: Share your own perfect beer crawl with stories and context.
+### 4. プライバシー中心設計
+- **従来型SNS**: 基本的に全体公開が前提
+- **PintHop**: 公開範囲・期間を細かく設定可能
+- **一時的存在**: データは永続的に保存されない選択肢
 
-### 4. Community Integration
-- **Built for existing groups**: Seamless integration with communities like "Seattle Beer Club."
-- **Circle creation tools**: Anyone can start and manage their own beer community.
+## 💻 技術スタック
 
-### 5. Knowledge Democratization
-- **Expert verification**: Certified beer judges and professionals can share their expertise.
-- **Educational elements**: Style guides and tasting notes for those wanting to learn more.
+### 現在の実装（PWA）
+- **フロントエンド**: React + TypeScript（Progressive Web App）
+- **リアルタイム基盤**: Firebase Realtime Database + Firestore
+- **マップ**: Google Maps JavaScript API
+- **認証**: Firebase Authentication
+- **ホスティング**: Firebase Hosting
 
-## 💻 Technology Stack
+### 将来の拡張
+- **プレゼンス最適化**: バッテリー負荷を抑えたリアルタイム更新
+- **コンテキスト認識**: 時間帯・場所に応じた適応的挙動
+- **オフライン操作**: 接続状態に関わらず利用可能な設計
 
-### Current Implementation (PWA)
-- **Frontend**: React + TypeScript as Progressive Web App
-- **Backend**: Firebase (Authentication, Firestore, Storage, Functions)
-- **Maps**: Google Maps API
-- **Real-time**: Firebase Realtime Database
-- **Deployment**: Firebase Hosting
+## 🗺️ 開発ロードマップ
 
-### Future Expansion
-- **Mobile**: React Native implementation (when community resources allow)
-- **International**: i18n foundation for global communities
+### フェーズ0：最小プレゼンスMVP（1-2ヶ月）
+- 基本的な「今ここにいます」機能
+- シアトル限定ブルワリーマップ
+- 友達接続の基本機能
+- シンプルな滞在時間共有
 
-## 🗺️ Development Roadmap
+### フェーズ1：プレゼンス強化（2-3ヶ月）
+- リッチなプレゼンス状態表現
+- プランの簡易共有機能
+- コンテキスト情報の拡充
+- アンビエント通知システム
 
-### Phase 0: Micro MVP (1-2 months)
-- Basic brewery database (Seattle area only)
-- Simple map display
-- Google authentication
-- MVP user interface
+### フェーズ2：グループダイナミクス（3-4ヶ月）
+- グループプレゼンスの可視化
+- 移動パターンの分析と表示
+- 「次に行くかも」の緩やかな意思表明
+- 自然な合流ポイントの提案
 
-### Phase 1: Core MVP (3-4 months)
-- Check-in functionality
-- Activity feed
-- PWA capabilities
-- Seattle-wide brewery data
+### フェーズ3：体験拡張（4-6ヶ月）
+- シンプルな記録機能（オプション）
+- イベントとの自然な接続
+- 複数都市対応の基盤
+- 国際化対応の開始
 
-### Phase 2: Social Features (3-4 months)
-- Follow functionality
-- Photo sharing
-- Event discovery
-- User profiles
+## <a name="contribute"></a>🛠️ コミュニティに参加する
 
-### Phase 3: Community Expansion (6 months)
-- Beer route planning
-- Community circles
-- Real-time presence
-- Achievement system
+私たちは一緒にPintHopを構築しています！以下の方法で貢献できます：
 
-### Phase 4: Scaling (6-12 months)
-- Regional expansion
-- Enhanced native features
-- Advanced review system
-- Community moderation tools
+### 開発者向け
+- **フロントエンド開発**: リアルタイムUI/UXコンポーネントの設計・実装
+- **バックエンド最適化**: Firebase RTDBの効率的活用とクエリ最適化
+- **位置情報処理**: 高効率・低消費電力の位置情報システム開発
+- **PWA専門家**: オフライン機能とプッシュ通知の改善
+- **始め方**: [GitHub Issues](https://github.com/pinthop/pinthop)で「初心者向け課題」をチェック
 
-## <a name="contribute"></a>🛠️ Join the Community
+### デザイナー向け
+- **UX設計**: 心理的障壁ゼロの操作フローデザイン
+- **アンビエントUI**: 控えめながら効果的な情報表示のデザイン
+- **地図可視化**: 空間情報の直感的な表現方法の設計
+- **状態表現**: 多様なプレゼンス状態を伝えるビジュアル設計
 
-We're building PintHop together! Here's how you can contribute:
+### ビール愛好家向け
+- **現地テスター**: 実際のブルワリーでのアプリ使用体験のフィードバック
+- **地域アンバサダー**: 地域ビールコミュニティとの橋渡し
+- **ブルワリーデータ**: 地域ブルワリーの基本情報整備
+- **ビアカルチャー**: 地域特有のビール文化の理解と実装提案
 
-### For Developers
-- **Frontend developers**: Help create responsive, intuitive UI components
-- **Backend developers**: Improve our data models and API efficiency
-- **Mobile developers**: Assist with PWA optimization and future React Native implementation
-- **DevOps**: Support CI/CD pipeline and deployment automation
-- **Get started**: Check our [GitHub Issues](https://github.com/pinthop/pinthop) for "good first issues"
+### 全ての人向け
+- **ユーザーテスト**: 早期バージョンの試用とフィードバック
+- **コンセプト提案**: 「自然な合流体験」のための新機能アイデア
+- **コミュニティ形成**: 地域PintHopユーザーグループの立ち上げ・運営
+- **言葉を広める**: ビール仲間へのアプリ紹介
 
-### For Designers
-- **UI/UX designers**: Improve user flows and visual consistency
-- **Visual designers**: Create iconography, illustrations, and branding assets
-- **Researchers**: Help conduct user interviews and usability testing
+## 🌐 参加方法
 
-### For Beer Enthusiasts
-- **Data contributors**: Help build our brewery database for your region
-- **Route creators**: Design and share themed beer exploration routes
-- **Community ambassadors**: Represent PintHop in your local beer community
-- **Translators**: Help make PintHop accessible in your language
+1. **GitHubリポジトリをスター・ウォッチ**: [github.com/pinthop/pinthop](https://github.com/pinthop/pinthop)
+2. **Discordコミュニティに参加**: [discord.gg/pinthop](https://discord.gg/pinthop)
+3. **開発進捗をフォロー**: [community.pinthop.org](https://community.pinthop.org)
+4. **コアチームに連絡**: pinthop.community@example.com
 
-### For Everyone
-- **Testers**: Provide feedback on new features and report bugs
-- **Documentation**: Improve guides, tutorials, and help content
-- **Community support**: Answer questions and welcome new users
-- **Spread the word**: Tell your favorite breweries and beer friends about PintHop
+### 貢献ガイドライン
+- コード標準とPR手順は[貢献ガイド](CONTRIBUTING.md)を参照
+- コミュニティ参加ルールは[行動規範](CODE_OF_CONDUCT.md)をご覧ください
+- 支援方法を探すには[オープンイシュー](https://github.com/pinthop/pinthop/issues)をブラウズ
 
-## 🌐 Getting Involved
+## 👥 誰のためのアプリか
 
-1. **Star and watch** our [GitHub repository](https://github.com/pinthop/pinthop)
-2. **Join the conversation** on [Discord](https://discord.gg/pinthop)
-3. **Follow development** on our [community forum](https://community.pinthop.org)
-4. **Contact the core team**: pinthop.community@example.com
+- 事前計画なしに友達と会いたいクラフトビール愛好家
+- 誘うことや誘われることの社会的プレッシャーを感じる人
+- 地域ビールコミュニティのメンバーやオーガナイザー
+- 新しい街を訪れる旅行者
+- 「偶然の出会い」を大切にする人々
 
-### Contribution Guidelines
-- Check our [Contribution Guide](CONTRIBUTING.md) for code standards and pull request process
-- Read our [Code of Conduct](CODE_OF_CONDUCT.md) for community participation guidelines
-- Browse [open issues](https://github.com/pinthop/pinthop/issues) to find ways to help
+## 📄 ライセンス
 
-## 👥 Who's Using PintHop
-
-- Craft beer enthusiasts from beginners to experts
-- Local beer clubs and community organizers
-- Beer tourists exploring new cities
-- Certified beer judges and industry professionals
-- Anyone looking to make real connections through shared beer experiences
-
-## 📄 License
-
-MIT License - See [LICENSE](LICENSE) for details
+MITライセンス - 詳細は[LICENSE](LICENSE)を参照
 
 ---
 
-**PintHop** - Brewed with ❤️ by the community.
+**PintHop** - 自然な出会いをビールと共に
