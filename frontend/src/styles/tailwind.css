@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* カスタムスタイル */
+@layer components {
+  .btn-primary {
+    @apply bg-primary text-white font-bold py-2 px-4 rounded hover:bg-primary/80;
+  }
+  .btn-secondary {
+    @apply bg-secondary text-white font-bold py-2 px-4 rounded hover:bg-secondary/80;
+  }
+  .card {
+    @apply bg-white rounded-lg shadow-md p-4;
+  }
+}
