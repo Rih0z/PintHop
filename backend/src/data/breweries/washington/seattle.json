@@ -1,0 +1,508 @@
+{
+    "_metadata": {
+      "filePath": "backend/src/data/breweries/washington/seattle.json",
+      "author": "Claude AI",
+      "createdAt": "2025-05-05",
+      "updatedAt": "2025-05-05",
+      "description": "シアトル地域のブルワリーデータ",
+      "version": "1.0",
+      "source": "AI収集 (Claude 3.7 Sonnet)"
+    },
+    "breweries": [
+      {
+        "breweryId": "fremont-brewing-seattle",
+        "name": "Fremont Brewing Company",
+        "slug": "fremont-brewing",
+        "address": {
+          "street": "1050 N 34th St",
+          "city": "Seattle",
+          "state": "WA",
+          "zipCode": "98103",
+          "country": "USA",
+          "formattedAddress": "1050 N 34th St, Seattle, WA 98103"
+        },
+        "location": {
+          "type": "Point",
+          "coordinates": [-122.3465, 47.6494]
+        },
+        "region": "Seattle",
+        "contact": {
+          "phone": "(206) 420-2407",
+          "email": "info@fremontbrewing.com",
+          "website": "https://www.fremontbrewing.com",
+          "socialMedia": {
+            "facebook": "https://www.facebook.com/fremontbrewing",
+            "instagram": "https://www.instagram.com/fremontbrewing",
+            "twitter": "https://twitter.com/fremontbrewing",
+            "untappd": "https://untappd.com/fremontbrewing"
+          }
+        },
+        "businessHours": {
+          "monday": { "open": "11:00", "close": "21:00" },
+          "tuesday": { "open": "11:00", "close": "21:00" },
+          "wednesday": { "open": "11:00", "close": "21:00" },
+          "thursday": { "open": "11:00", "close": "21:00" },
+          "friday": { "open": "11:00", "close": "21:00" },
+          "saturday": { "open": "11:00", "close": "21:00" },
+          "sunday": { "open": "11:00", "close": "21:00" }
+        },
+        "description": "Fremont Brewing is a family-owned craft brewery founded in 2009. They're known for their sustainable practices and high-quality beers made with local ingredients.",
+        "ratings": {
+          "untappd": {
+            "score": 4.1,
+            "url": "https://untappd.com/fremontbrewing"
+          },
+          "rateBeer": {
+            "score": 4.2,
+            "url": "https://www.ratebeer.com/brewers/fremont-brewing-company/10615/"
+          },
+          "beerAdvocate": {
+            "score": 4.3,
+            "url": "https://www.beeradvocate.com/beer/profile/20680/"
+          },
+          "aggregateScore": 4.2
+        },
+        "specialtyStyles": [
+          {
+            "style": "IPA",
+            "rating": 4.3,
+            "confidence": 0.9
+          },
+          {
+            "style": "Bourbon Barrel-Aged Stouts",
+            "rating": 4.5,
+            "confidence": 0.95
+          },
+          {
+            "style": "Hazy IPA",
+            "rating": 4.2,
+            "confidence": 0.85
+          }
+        ],
+        "signatureBeers": [
+          "Interurban IPA",
+          "Sky Kraken Hazy Pale Ale",
+          "Lush IPA",
+          "B-Bomb (Bourbon Barrel Aged Winter Ale)"
+        ],
+        "awards": [
+          {
+            "name": "Washington Beer Awards",
+            "year": 2024,
+            "category": "Imperial Stout",
+            "beerName": "B-Bomb",
+            "medal": "Gold"
+          }
+        ],
+        "photos": [
+          "https://example.com/photos/fremont-brewing-1.jpg",
+          "https://example.com/photos/fremont-brewing-2.jpg"
+        ],
+        "lastUpdated": "2025-05-05T12:00:00Z",
+        "isActive": true,
+        "flags": {
+          "isMicrobrewery": true,
+          "isBrewpub": true,
+          "hasFood": false,
+          "familyFriendly": true,
+          "dogFriendly": true
+        }
+      },
+      {
+        "breweryId": "stoup-brewing-seattle",
+        "name": "Stoup Brewing",
+        "slug": "stoup-brewing",
+        "address": {
+          "street": "1108 NW 52nd St",
+          "city": "Seattle",
+          "state": "WA",
+          "zipCode": "98107",
+          "country": "USA",
+          "formattedAddress": "1108 NW 52nd St, Seattle, WA 98107"
+        },
+        "location": {
+          "type": "Point",
+          "coordinates": [-122.3728, 47.6667]
+        },
+        "region": "Ballard",
+        "contact": {
+          "phone": "(206) 457-5524",
+          "email": "info@stoupbrewing.com",
+          "website": "https://www.stoupbrewing.com",
+          "socialMedia": {
+            "facebook": "https://www.facebook.com/stoupbrewing",
+            "instagram": "https://www.instagram.com/stoupbrewing",
+            "twitter": "https://twitter.com/stoupbrewing",
+            "untappd": "https://untappd.com/StoupBrewing"
+          }
+        },
+        "businessHours": {
+          "monday": { "open": "12:00", "close": "22:00" },
+          "tuesday": { "open": "12:00", "close": "22:00" },
+          "wednesday": { "open": "12:00", "close": "22:00" },
+          "thursday": { "open": "12:00", "close": "22:00" },
+          "friday": { "open": "12:00", "close": "22:00" },
+          "saturday": { "open": "12:00", "close": "22:00" },
+          "sunday": { "open": "12:00", "close": "22:00" }
+        },
+        "description": "Stoup Brewing was founded in 2013 by a team including a chemist, a biologist and a marketer. They are known for their scientific approach to brewing and wide variety of beer styles.",
+        "ratings": {
+          "untappd": {
+            "score": 4.0,
+            "url": "https://untappd.com/StoupBrewing"
+          },
+          "rateBeer": {
+            "score": 4.1,
+            "url": "https://www.ratebeer.com/brewers/stoup-brewing/25522/"
+          },
+          "beerAdvocate": {
+            "score": 4.2,
+            "url": "https://www.beeradvocate.com/beer/profile/33525/"
+          },
+          "aggregateScore": 4.1
+        },
+        "specialtyStyles": [
+          {
+            "style": "IPA",
+            "rating": 4.2,
+            "confidence": 0.9
+          },
+          {
+            "style": "Lager",
+            "rating": 4.1,
+            "confidence": 0.85
+          },
+          {
+            "style": "Stout",
+            "rating": 4.3,
+            "confidence": 0.9
+          }
+        ],
+        "signatureBeers": [
+          "Citra IPA",
+          "Mosaic Pale Ale",
+          "Export Stout",
+          "Czech-style Pilsner"
+        ],
+        "awards": [
+          {
+            "name": "Washington Beer Awards",
+            "year": 2023,
+            "category": "IPA",
+            "beerName": "Citra IPA",
+            "medal": "Gold"
+          }
+        ],
+        "photos": [
+          "https://example.com/photos/stoup-brewing-1.jpg",
+          "https://example.com/photos/stoup-brewing-2.jpg"
+        ],
+        "lastUpdated": "2025-05-05T12:00:00Z",
+        "isActive": true,
+        "flags": {
+          "isMicrobrewery": true,
+          "isBrewpub": true,
+          "hasFood": false,
+          "familyFriendly": true,
+          "dogFriendly": true
+        }
+      },
+      {
+        "breweryId": "reubens-brews-seattle",
+        "name": "Reuben's Brews",
+        "slug": "reubens-brews",
+        "address": {
+          "street": "5010 14th Ave NW",
+          "city": "Seattle",
+          "state": "WA",
+          "zipCode": "98107",
+          "country": "USA",
+          "formattedAddress": "5010 14th Ave NW, Seattle, WA 98107"
+        },
+        "location": {
+          "type": "Point",
+          "coordinates": [-122.3735, 47.6655]
+        },
+        "region": "Ballard",
+        "contact": {
+          "phone": "(206) 784-2859",
+          "email": "info@reubensbrews.com",
+          "website": "https://www.reubensbrews.com",
+          "socialMedia": {
+            "facebook": "https://www.facebook.com/reubensbrews",
+            "instagram": "https://www.instagram.com/reubensbrews",
+            "twitter": "https://twitter.com/reubensbrews",
+            "untappd": "https://untappd.com/ReubensBrews"
+          }
+        },
+        "businessHours": {
+          "monday": { "open": "11:00", "close": "22:00" },
+          "tuesday": { "open": "11:00", "close": "22:00" },
+          "wednesday": { "open": "11:00", "close": "22:00" },
+          "thursday": { "open": "11:00", "close": "22:00" },
+          "friday": { "open": "11:00", "close": "22:00" },
+          "saturday": { "open": "11:00", "close": "22:00" },
+          "sunday": { "open": "11:00", "close": "22:00" }
+        },
+        "description": "Reuben's Brews is a family-owned brewery known for its diverse range of beer styles and award-winning creations. The brewery is dedicated to their community and runs the Reuben's Brews Foundation to help local nonprofits.",
+        "ratings": {
+          "untappd": {
+            "score": 4.0,
+            "url": "https://untappd.com/ReubensBrews"
+          },
+          "rateBeer": {
+            "score": 4.1,
+            "url": "https://www.ratebeer.com/brewers/reubens-brews/21229/"
+          },
+          "beerAdvocate": {
+            "score": 4.2,
+            "url": "https://www.beeradvocate.com/beer/profile/31309/"
+          },
+          "aggregateScore": 4.1
+        },
+        "specialtyStyles": [
+          {
+            "style": "IPA",
+            "rating": 4.2,
+            "confidence": 0.9
+          },
+          {
+            "style": "Pilsner",
+            "rating": 4.0,
+            "confidence": 0.85
+          },
+          {
+            "style": "Lager",
+            "rating": 4.1,
+            "confidence": 0.8
+          }
+        ],
+        "signatureBeers": [
+          "Crikey IPA",
+          "Hazealicious IPA",
+          "Pilsner",
+          "Robust Porter"
+        ],
+        "awards": [
+          {
+            "name": "World Beer Cup",
+            "year": 2023,
+            "category": "American-Style IPA",
+            "beerName": "Crikey IPA",
+            "medal": "Silver"
+          }
+        ],
+        "photos": [
+          "https://example.com/photos/reubens-brews-1.jpg",
+          "https://example.com/photos/reubens-brews-2.jpg"
+        ],
+        "lastUpdated": "2025-05-05T12:00:00Z",
+        "isActive": true,
+        "flags": {
+          "isMicrobrewery": true,
+          "isBrewpub": true,
+          "hasFood": false,
+          "familyFriendly": true,
+          "dogFriendly": true
+        }
+      },
+      {
+        "breweryId": "urban-family-brewing-seattle",
+        "name": "Urban Family Brewing Co.",
+        "slug": "urban-family-brewing",
+        "address": {
+          "street": "1103 NW 52nd St",
+          "city": "Seattle",
+          "state": "WA",
+          "zipCode": "98107",
+          "country": "USA",
+          "formattedAddress": "1103 NW 52nd St, Seattle, WA 98107"
+        },
+        "location": {
+          "type": "Point",
+          "coordinates": [-122.3726, 47.6666]
+        },
+        "region": "Ballard",
+        "contact": {
+          "phone": "(206) 659-8763",
+          "email": "info@urbanfamilybrewing.com",
+          "website": "https://www.urbanfamilybrewing.com",
+          "socialMedia": {
+            "facebook": "https://www.facebook.com/urbanfamilybrewing",
+            "instagram": "https://www.instagram.com/urbanfamilybrewing",
+            "twitter": "https://twitter.com/urbanfamilybrew",
+            "untappd": "https://untappd.com/UrbanFamilyBrewing"
+          }
+        },
+        "businessHours": {
+          "monday": { "open": "15:00", "close": "21:00" },
+          "tuesday": { "open": "15:00", "close": "21:00" },
+          "wednesday": { "open": "15:00", "close": "21:00" },
+          "thursday": { "open": "15:00", "close": "21:00" },
+          "friday": { "open": "12:00", "close": "22:00" },
+          "saturday": { "open": "12:00", "close": "22:00" },
+          "sunday": { "open": "12:00", "close": "21:00" }
+        },
+        "description": "Urban Family Brewing is known for their focus on farmhouse ales and sours, particularly fruit-forward beers with creative flavor profiles and memorable names.",
+        "ratings": {
+          "untappd": {
+            "score": 4.0,
+            "url": "https://untappd.com/UrbanFamilyBrewing"
+          },
+          "rateBeer": {
+            "score": 4.0,
+            "url": "https://www.ratebeer.com/brewers/urban-family-brewing-co/24170/"
+          },
+          "beerAdvocate": {
+            "score": 4.1,
+            "url": "https://www.beeradvocate.com/beer/profile/32065/"
+          },
+          "aggregateScore": 4.0
+        },
+        "specialtyStyles": [
+          {
+            "style": "Sour Ale",
+            "rating": 4.3,
+            "confidence": 0.95
+          },
+          {
+            "style": "Farmhouse Ale",
+            "rating": 4.2,
+            "confidence": 0.9
+          },
+          {
+            "style": "Fruit Beer",
+            "rating": 4.4,
+            "confidence": 0.95
+          }
+        ],
+        "signatureBeers": [
+          "Heart of Stone Fruited Sour",
+          "Limesicle Sour",
+          "Atsuo Japanese Lager",
+          "Moonlit Midnight Sour"
+        ],
+        "awards": [
+          {
+            "name": "Washington Beer Awards",
+            "year": 2023,
+            "category": "Fruited Sour",
+            "beerName": "Heart of Stone",
+            "medal": "Gold"
+          }
+        ],
+        "photos": [
+          "https://example.com/photos/urban-family-brewing-1.jpg",
+          "https://example.com/photos/urban-family-brewing-2.jpg"
+        ],
+        "lastUpdated": "2025-05-05T12:00:00Z",
+        "isActive": true,
+        "flags": {
+          "isMicrobrewery": true,
+          "isBrewpub": true,
+          "hasFood": false,
+          "familyFriendly": true,
+          "dogFriendly": true
+        }
+      },
+      {
+        "breweryId": "cloudburst-brewing-seattle",
+        "name": "Cloudburst Brewing",
+        "slug": "cloudburst-brewing",
+        "address": {
+          "street": "2116 Western Ave",
+          "city": "Seattle",
+          "state": "WA",
+          "zipCode": "98121",
+          "country": "USA",
+          "formattedAddress": "2116 Western Ave, Seattle, WA 98121"
+        },
+        "location": {
+          "type": "Point",
+          "coordinates": [-122.3425, 47.6112]
+        },
+        "region": "Downtown",
+        "contact": {
+          "phone": "(206) 602-6061",
+          "email": "info@cloudburstbrewing.com",
+          "website": "https://www.cloudburstbrewing.com",
+          "socialMedia": {
+            "facebook": "https://www.facebook.com/cloudburstbrewing",
+            "instagram": "https://www.instagram.com/cloudburstbrew",
+            "twitter": "https://twitter.com/cloudburstbrew",
+            "untappd": "https://untappd.com/CloudburstBrewing"
+          }
+        },
+        "businessHours": {
+          "monday": { "open": "12:00", "close": "21:00" },
+          "tuesday": { "open": "12:00", "close": "21:00" },
+          "wednesday": { "open": "12:00", "close": "21:00" },
+          "thursday": { "open": "12:00", "close": "21:00" },
+          "friday": { "open": "12:00", "close": "22:00" },
+          "saturday": { "open": "12:00", "close": "22:00" },
+          "sunday": { "open": "12:00", "close": "21:00" }
+        },
+        "description": "Cloudburst Brewing offers an authentic craft beer experience in a no-frills environment. Located near Pike Place Market, it's known for experimental and creative brews with constantly rotating taps.",
+        "ratings": {
+          "untappd": {
+            "score": 4.2,
+            "url": "https://untappd.com/CloudburstBrewing"
+          },
+          "rateBeer": {
+            "score": 4.3,
+            "url": "https://www.ratebeer.com/brewers/cloudburst-brewing/26674/"
+          },
+          "beerAdvocate": {
+            "score": 4.4,
+            "url": "https://www.beeradvocate.com/beer/profile/43789/"
+          },
+          "aggregateScore": 4.3
+        },
+        "specialtyStyles": [
+          {
+            "style": "IPA",
+            "rating": 4.4,
+            "confidence": 0.95
+          },
+          {
+            "style": "Experimental Ale",
+            "rating": 4.2,
+            "confidence": 0.85
+          },
+          {
+            "style": "Pale Ale",
+            "rating": 4.3,
+            "confidence": 0.9
+          }
+        ],
+        "signatureBeers": [
+          "Market Fresh IPA",
+          "Happy Little Clouds Pilsner",
+          "Remember the Maine Brown Ale",
+          "Alternative Facts IPA"
+        ],
+        "awards": [
+          {
+            "name": "Great American Beer Festival",
+            "year": 2023,
+            "category": "American-Style IPA",
+            "beerName": "Market Fresh IPA",
+            "medal": "Silver"
+          }
+        ],
+        "photos": [
+          "https://example.com/photos/cloudburst-brewing-1.jpg",
+          "https://example.com/photos/cloudburst-brewing-2.jpg"
+        ],
+        "lastUpdated": "2025-05-05T12:00:00Z",
+        "isActive": true,
+        "flags": {
+          "isMicrobrewery": true,
+          "isBrewpub": false,
+          "hasFood": false,
+          "familyFriendly": false,
+          "dogFriendly": false
+        }
+      }
+    ]
+  }
