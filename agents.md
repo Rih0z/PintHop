@@ -63,21 +63,38 @@ PintHopは「次の一杯を見つける」個人体験と「自然に友達と�
 ```
 PintHop/
 ├── Document/
-│   └── jp/
-│       ├── Code-rule.md              # 汎用的なコード規則
-│       ├── api-document.md           # API仕様書
-│       ├── database-schema.md        # データベーススキーマ定義
-│       ├── project-structure.md      # プロジェクト構造定義
-│       ├── security-checklist.md     # セキュリティチェックリスト
-│       ├── security-policy.md        # セキュリティポリシー
-│       ├── specification.md          # 仕様書・戦略・実装計画
-│       ├── strategy.md              # 統合戦略
-│       └── ui-ux-flow.md            # UI/UXフロー設計
-├── Prompts/                         # AI開発支援プロンプト
-├── frontend/                        # フロントエンドアプリケーション
-├── backend/                         # バックエンドアプリケーション
-└── AGENTS.md                        # 本ファイル
+│   ├── Design/                        # デザイン資料
+│   │   └── prototypes/
+│   ├── en/                           # 英語ドキュメント
+│   │   ├── README.md
+│   │   ├── specification.md
+│   │   └── strategy.md
+│   └── jp/                           # 日本語ドキュメント
+│       ├── Code-rule.md
+│       ├── api-document.md
+│       ├── database-schema.md
+│       ├── deployment-document.md
+│       ├── documents-consistency-analysis.md
+│       ├── git-workflow.md
+│       ├── implementation-plan.md
+│       ├── implementation-status.md
+│       ├── incident-response.md
+│       ├── phase0-implementation-plan.md
+│       ├── project-structure.md
+│       ├── security-checklist.md
+│       ├── security-policy.md
+│       ├── setup-guide.md
+│       ├── specification.md
+│       ├── sprint-plan.md
+│       ├── strategy.md
+│       ├── test-plan.md
+│       └── ui-ux-flow.md
+├── Prompts/                          # AI開発支援プロンプト
+├── frontend/                         # フロントエンドアプリケーション
+├── backend/                          # バックエンドアプリケーション
+└── AGENTS.md                         # 本ファイル
 ```
+
 
 ### 実装予定構造（Document/jp/project-structure.mdより）
 
@@ -130,22 +147,31 @@ backend/
 - [x] Document/jp/Code-rule.md
 - [x] Document/jp/api-document.md (最終更新: 2025-05-04)
 - [x] Document/jp/database-schema.md
+- [x] Document/jp/deployment-document.md
+- [x] Document/jp/documents-consistency-analysis.md
+- [x] Document/jp/git-workflow.md
+- [x] Document/jp/implementation-plan.md
+- [x] Document/jp/implementation-status.md
+- [x] Document/jp/incident-response.md
+- [x] Document/jp/phase0-implementation-plan.md
 - [x] Document/jp/project-structure.md
 - [x] Document/jp/security-checklist.md
 - [x] Document/jp/security-policy.md
+- [x] Document/jp/setup-guide.md
 - [x] Document/jp/specification.md (最終更新: 2025-04-27)
+- [x] Document/jp/sprint-plan.md
 - [x] Document/jp/strategy.md
+- [x] Document/jp/test-plan.md
 - [x] Document/jp/ui-ux-flow.md (最終更新: 2025-05-04)
+### ソースコード（主要ファイル）
 
-### ソースコード（未実装）
-- [ ] frontend/package.json
-- [ ] frontend/tsconfig.json
-- [ ] frontend/src/index.tsx
-- [ ] frontend/src/App.tsx
-- [ ] backend/package.json
-- [ ] backend/src/server.js
-- [ ] backend/src/app.js
-
+- [x] frontend/package.json
+- [x] frontend/tsconfig.json
+- [x] frontend/src/index.tsx
+- [x] frontend/src/App.tsx
+- [x] backend/package.json
+- [x] backend/src/server.ts
+- [x] backend/src/app.ts
 ## 技術スタック
 
 ### フロントエンド
@@ -237,8 +263,8 @@ backend/
 5. `npm run dev`で開発サーバー起動
 
 ### 既知の課題
-- 現在ソースコードは未実装
-- フェーズ0の開発環境構築詳細は`Document/jp/Setup/Phase0.md`参照（未作成）
+- 基本的なTypeScript実装は完了
+- フェーズ0の開発環境構築詳細は`Document/jp/Setup/Phase0.md`参照
 
 ### 次のステップ
 1. プロジェクト初期化（package.json作成）
