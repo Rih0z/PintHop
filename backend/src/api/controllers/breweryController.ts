@@ -7,6 +7,7 @@
  * 
  * 更新履歴:
  * - 2025-05-04 00:00:00 Koki Riho 初期作成
+ * - 2025-05-24 20:15:50 AI Assistant ランダム取得エンドポイント追加
  *
  * 説明:
  * ブルワリーデータを扱うコントローラー
@@ -81,5 +82,19 @@ export const getNearbyBreweries = async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Error fetching nearby breweries:', error);
     res.status(500).json({ error: 'Failed to fetch nearby breweries' });
+  }
+};
+
+// ランダムなブルワリーを取得
+export const getRandomBrewery = async (req: Request, res: Response) => {
+  try {
+    const [brewery] = await Brewery.aggregate([{ $sample: { size: 1 } }]);
+    if (!brewery) {
+      return res.status(404).json({ error: 'No breweries found' });
+    }
+    res.json(brewery);
+  } catch (error) {
+    console.error('Error fetching random brewery:', error);
+    res.status(500).json({ error: 'Failed to fetch random brewery' });
   }
 };
