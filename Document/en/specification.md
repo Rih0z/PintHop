@@ -59,10 +59,11 @@ PintHop is being redefined as a comprehensive craft beer platform that equally e
   - AI recommendation features
 
 ### 1.5 User Interface
-- **4-Tab Structure**:
+- **5-Tab Structure**:
   - Timeline (friends' activities)
   - Map (location information)
   - Brewery search
+  - Events
   - User profile
 - **Brewery Details Page**:
   - Tap list (latest posts)
