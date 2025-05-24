@@ -33,6 +33,18 @@ PintHop/
     └── scripts/         # 運用自動化スクリプト
 ```
 
+### Document/jp ディレクトリ
+主要ドキュメントを格納します。例:
+
+```
+Document/jp/
+├── architecture.md          # システムアーキテクチャ概要
+├── Code-rule.md             # コーディング規則
+├── api-document.md          # API仕様書
+├── database-schema.md       # データベーススキーマ
+└── ...
+```
+
 ## 3. フロントエンドの構造
 
 フロントエンドは React 18, TypeScript 5.0, Tailwind CSS 3.0 で構築され、以下の構造を持ちます：
