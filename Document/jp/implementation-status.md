@@ -19,6 +19,7 @@
 - 2025-05-24 AI Assistant マップ表示コンポーネント実装
 - 2025-05-24 AI Assistant ルーティング設定とMapページ追加
 - 2025-05-24 AI Assistant 認証APIの基本実装
+- 2025-05-24 AI Assistant プレゼンスAPI実装
 
 # 説明
 PintHopアプリケーションの現在の実装状況を追跡するドキュメント。実装フェーズ、完了した作業、進行中の作業、および次のステップについて概要を説明します。
@@ -205,11 +206,13 @@ PintHop/
 │   │   │   │   ├── breweries.ts （空ファイル）
 │   │   │   │   ├── breweryController.ts （新規作成）
 │   │   │   │   └── authController.ts    （新規作成）
+│   │   │   │   └── presenceController.ts （新規作成）
 │   │   │   ├── middlewares/ （現在空のディレクトリ）
 │   │   │   └── routes/
 │   │   │       ├── breweries.ts （空ファイル）
 │   │   │       └── breweryRoutes.ts （新規作成）
 │   │   │       └── authRoutes.ts    （新規作成）
+│   │   │       └── presenceRoutes.ts    （新規作成）
 │   │   ├── app.ts （新規作成）
 │   │   ├── config/ （現在空のディレクトリ）
 │   │   ├── data/
@@ -221,6 +224,7 @@ PintHop/
 │   │   ├── models/
 │   │   │   ├── Brewery.ts （新規作成）
 │   │   │   └── User.ts    （新規作成）
+│   │   │   └── Presence.ts    （新規作成）
 │   │   ├── server.ts （新規作成）
 │   │   ├── services/ （現在空のディレクトリ）
 │   │   ├── socket/ （現在空のディレクトリ）
