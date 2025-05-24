@@ -198,6 +198,13 @@ PintHopは二つの核心体験を融合させたアプリです：
 
 一人でも友達と一緒でも、それぞれの楽しみ方で最高のビール体験を追求する全ての人のために。
 
+## 開発ガイド
+
+開発環境構築の手順は `Document/jp/setup-guide.md` を参照してください。
+環境変数の例は `.env.example` に示しています。Pull Request を送る際は
+`CONTRIBUTING.md` を必ず確認してください。
+システム全体の構成は `Document/jp/architecture.md` に図示しています。
+
 ## 📄 ライセンス
 
 MITライセンス 

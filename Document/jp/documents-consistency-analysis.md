@@ -6,13 +6,14 @@
 ファイルパス: Document/jp/documents-consistency-analysis.md
 作成者: Koki Riho (https://github.com/Rih0z)
 作成日: 2025-04-21
-最終更新: 2025-04-21
+最終更新: 2025-05-24
 
 ## 更新履歴
 - 2025-04-21 Koki Riho implementation-plan.mdの分析と修正提案を追加
 - 2025-04-21 Koki Riho 解決済みの矛盾点を更新（specification.mdのドキュメントヘッダー追加）
 - 2025-04-21 Koki Riho implementation-plan.mdの修正による解決済み矛盾点を更新
 - 2025-04-21 Koki Riho セキュリティ、モバイル開発、AI機能の矛盾点を解決済みとして更新
+- 2025-05-24 AI Assistant architecture.md, CONTRIBUTING.md, .env.example の追加を反映
 
 ## 説明
 本ドキュメントはPintHopプロジェクトの各ドキュメント間の整合性を分析し、不一致点や改善点を記録するためのものです。specification.mdをベースドキュメントとして、他のドキュメントとの整合性を確認します。
@@ -42,6 +43,8 @@
 - **Document/jp/database-schema.md** (2025-04-21更新)
   - MongoDBデータベースのスキーマ定義
   - 各コレクションの構造、リレーション、インデックス、クエリ最適化戦略の説明
+- **Document/jp/architecture.md** (2025-05-24新規追加)
+  - システム全体のアーキテクチャ概要を図示
 
 ## 2. 解決済みの矛盾点
 
