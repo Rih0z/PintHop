@@ -10,6 +10,7 @@
 - 2025-04-19 Koki Riho 初版作成
 - 2025-05-24 AI Assistant BreweryMapコンポーネントを追加
 - 2025-05-24 AI Assistant Mapページとルーティング設定を追加
+- 2025-05-24 AI Assistant 認証APIファイル追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。
@@ -212,6 +213,7 @@ backend/
 │   ├── integration/     # 統合テスト
 │   └── fixtures/        # テスト用データ
 │   └── breweryRoutes.test.ts # ブルワリールートテスト
+│   └── authRoutes.test.ts    # 認証ルートテスト
 │
 ├── .env.example         # 環境変数サンプル
 ├── .gitignore           # Gitの除外ファイル設定
