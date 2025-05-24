@@ -75,7 +75,7 @@ PintHop is being redefined as a craft beer experience enhancement platform that 
 
 ## 3. User Experience Design: Optimal Experience According to State
 
-### 4-Tab + Event Navigation Structure
+### 5-Tab Navigation Structure
 - **Timeline**:
   - Activities and posts from followed users (initial display tab)
   - Updates from breweries of interest

@@ -87,13 +87,17 @@ PintHopは二つの核心体験を融合させたアプリです：
 
 ## 💻 技術スタック
 
-### 現在の実装（PWA）
-- **フロントエンド**: React + TypeScript（Progressive Web App）
-- **リアルタイム基盤**: Firebase Realtime Database + Firestore
-- **マップ**: Google Maps JavaScript API
-- **認証**: Firebase Authentication
-- **ホスティング**: Firebase Hosting
-- **データ管理**: JSONベースのブルワリーデータシステム（地域拡張を考慮）
+### 現在の実装
+- **フロントエンド**: React + TypeScript
+- **バックエンド**: Node.js + Express
+- **データベース**: MongoDB
+- **リアルタイム通信**: Socket.IO
+- **マップ**: Leaflet.js
+- **認証**: JWT
+- **ホスティング**: Netlify（フロントエンド） + rihobeer.com（バックエンド）
+
+以前の試作段階では Firebase を用いた PWA 版を開発していましたが、
+現在は Express サーバーと MongoDB を用いた構成に統一しています。
 
 ### 将来の拡張
 - **プレゼンス最適化**: バッテリー負荷を抑えたリアルタイム更新
@@ -143,7 +147,7 @@ PintHopは二つの核心体験を融合させたアプリです：
 
 ### 開発者向け
 - **フロントエンド開発**: リアルタイムUI/UXコンポーネントの設計・実装
-- **バックエンド最適化**: Firebase RTDBの効率的活用とクエリ最適化
+- **バックエンド最適化**: Express サーバーの性能改善とクエリ最適化
 - **位置情報処理**: 高効率・低消費電力の位置情報システム開発
 - **PWA専門家**: オフライン機能とプッシュ通知の改善
 - **データ管理システム**: JSONベースのブルワリーデータ更新・検証システムの改善

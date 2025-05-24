@@ -71,13 +71,17 @@ A design that enhances both the joy of exploring new beers alone and the fun of 
 
 ## 💻 Technology Stack
 
-### Current Implementation (PWA)
-- **Frontend**: React + TypeScript (Progressive Web App)
-- **Real-time Foundation**: Firebase Realtime Database + Firestore
-- **Maps**: Google Maps JavaScript API
-- **Authentication**: Firebase Authentication
-- **Hosting**: Firebase Hosting
-- **Data Management**: JSON-based brewery data system (considering regional expansion)
+### Current Implementation
+- **Frontend**: React + TypeScript
+- **Backend**: Node.js + Express
+- **Database**: MongoDB
+- **Real-time Communication**: Socket.IO
+- **Maps**: Leaflet.js
+- **Authentication**: JWT
+- **Hosting**: Netlify (frontend) + rihobeer.com (backend)
+
+The repository previously experimented with a Firebase-based PWA prototype,
+but the project is now unified on an Express server with MongoDB.
 
 ### Future Extensions
 - **Presence Optimization**: Real-time updates with reduced battery load
@@ -127,7 +131,7 @@ We are building PintHop together! You can contribute in the following ways:
 
 ### For Developers
 - **Frontend Development**: Design and implementation of real-time UI/UX components
-- **Backend Optimization**: Efficient utilization and query optimization of Firebase RTDB
+- **Backend Optimization**: Performance tuning of the Express server and query optimization
 - **Location Information Processing**: Development of efficient, low-power location information systems
 - **PWA Specialists**: Improvement of offline functions and push notifications
 - **Data Management System**: Improvement of JSON-based brewery data update and verification systems
