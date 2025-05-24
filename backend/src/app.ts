@@ -36,7 +36,7 @@ app.use(helmet());
 app.use(morgan('dev'));
 
 // APIルート
-app.use('/api/breweries', breweryRoutes);
+app.use('/api/v1/breweries', breweryRoutes);
 
 // ヘルスチェックエンドポイント
 app.get('/health', (req: Request, res: Response) => {

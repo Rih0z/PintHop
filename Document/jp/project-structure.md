@@ -206,6 +206,7 @@ backend/
 │   ├── unit/            # ユニットテスト
 │   ├── integration/     # 統合テスト
 │   └── fixtures/        # テスト用データ
+│   └── breweryRoutes.test.ts # ブルワリールートテスト
 │
 ├── .env.example         # 環境変数サンプル
 ├── .gitignore           # Gitの除外ファイル設定
