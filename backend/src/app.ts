@@ -20,6 +20,7 @@ import dotenv from 'dotenv';
 import breweryRoutes from './api/routes/breweryRoutes';
 import authRoutes from './api/routes/authRoutes';
 import presenceRoutes from './api/routes/presenceRoutes';
+import checkinRoutes from './api/routes/checkinRoutes';
 
 // 環境変数の読み込み
 dotenv.config();
@@ -41,6 +42,7 @@ app.use(morgan('dev'));
 app.use('/api/v1/auth', authRoutes);
 app.use('/api/v1/breweries', breweryRoutes);
 app.use('/api/v1/presence', presenceRoutes);
+app.use('/api/v1/checkins', checkinRoutes);
 
 // ヘルスチェックエンドポイント
 app.get('/health', (req: Request, res: Response) => {

@@ -12,6 +12,7 @@
 - 2025-05-24 AI Assistant Mapページとルーティング設定を追加
 - 2025-05-24 AI Assistant 認証APIファイル追加
 - 2025-05-24 AI Assistant プレゼンスAPIファイル追加
+- 2025-05-24 AI Assistant チェックインAPIファイル追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。
@@ -139,7 +140,7 @@ backend/
 │   │   │   ├── users.js     # ユーザールート
 │   │   │   ├── breweries.js # ブルワリールート
 │   │   │   ├── beers.js     # ビールルート
-│   │   │   ├── checkins.js  # チェックインルート
+│   │   │   ├── checkinRoutes.ts # チェックインルート
 │   │   │   ├── presenceRoutes.ts # プレゼンスルート
 │   │   │   └── events.js    # イベントルート
 │   │   │
@@ -148,7 +149,7 @@ backend/
 │   │   │   ├── users.js     # ユーザーコントローラー
 │   │   │   ├── breweries.js # ブルワリーコントローラー
 │   │   │   ├── beers.js     # ビールコントローラー
-│   │   │   ├── checkins.js  # チェックインコントローラー
+│   │   │   ├── checkinController.ts # チェックインコントローラー
 │   │   │   ├── presenceController.ts # プレゼンスコントローラー
 │   │   │   └── events.js    # イベントコントローラー
 │   │   │
@@ -218,6 +219,7 @@ backend/
 │   └── breweryRoutes.test.ts # ブルワリールートテスト
 │   └── authRoutes.test.ts    # 認証ルートテスト
 │   └── presenceRoutes.test.ts # プレゼンスルートテスト
+│   └── checkinRoutes.test.ts  # チェックインルートテスト
 │
 ├── .env.example         # 環境変数サンプル
 ├── .gitignore           # Gitの除外ファイル設定
