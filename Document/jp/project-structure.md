@@ -20,6 +20,7 @@
 - 2025-05-27 Koki Riho and Codex PresenceContextとusePresenceフック追加
 - 2025-05-28 Koki Riho and Codex presenceRoutesに/meエンドポイント追加
 - 2025-05-29 Koki Riho and Codex useBreweryPresenceフック追加
+- 2025-05-30 Koki Riho and Codex PresenceContext初期プレゼンス取得ロジック追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。
