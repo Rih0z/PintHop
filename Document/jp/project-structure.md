@@ -17,6 +17,7 @@
 - 2025-05-25 Codex BreweryCardコンポーネント追加
 - 2025-05-25 Codex AuthContextコンポーネントと認証サービス追加
 - 2025-05-26 Codex useGeolocationフック追加
+- 2025-05-27 Koki Riho and Codex PresenceContextとusePresenceフック追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。

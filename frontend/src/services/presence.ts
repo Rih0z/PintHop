@@ -2,11 +2,12 @@
  * プロジェクト: PintHop
  * ファイルパス: frontend/src/services/presence.ts
  *
- * 作成者: Koki Riho
+ * 作成者: Koki Riho and Codex
  * 作成日: 2025-05-24 00:00:00
  *
  * 更新履歴:
  * - 2025-05-24 00:00:00 Koki Riho 新規作成
+ * - 2025-05-27 00:00:00 Koki Riho and Codex updatePresence関数追加
  *
  * 説明:
  * プレゼンスデータ取得サービス
@@ -20,4 +21,21 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 export const fetchFriendsPresence = async (): Promise<Presence[]> => {
   const response = await axios.get(`${API_URL}/v1/presence/friends`);
   return response.data as Presence[];
+};
+
+export interface UpdatePresenceData {
+  status?: 'online' | 'away' | 'offline';
+  location?: {
+    type: 'Point';
+    coordinates: [number, number];
+  };
+  breweryId?: string;
+  visibility?: 'everyone' | 'friends' | 'none';
+}
+
+export const updatePresence = async (
+  data: UpdatePresenceData
+): Promise<Presence> => {
+  const response = await axios.post(`${API_URL}/v1/presence`, data);
+  return response.data as Presence;
 };
