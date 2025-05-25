@@ -23,6 +23,7 @@
 - 2025-05-24 AI Assistant プレゼンスAPI実装
 - 2025-05-24 Koki Riho タイムラインページとプレゼンス表示コンポーネント追加
 - 2025-05-25 Codex BreweryCardコンポーネント追加
+- 2025-05-25 Codex AuthContextとuseAuthフック追加
 
 # 説明
 PintHopアプリケーションの現在の実装状況を追跡するドキュメント。実装フェーズ、完了した作業、進行中の作業、および次のステップについて概要を説明します。
@@ -180,10 +181,12 @@ PintHop/
 │   │   │   ├── presence/
 │   │   │   │   └── FriendsPresenceList.tsx （新規作成）
 │   │   │   └── user/ （新規作成、現在空のディレクトリ）
-│   │   ├── context/ （新規作成、現在空のディレクトリ）
+│   │   ├── context/
+│   │   │   └── AuthContext.tsx （新規作成）
 │   │   ├── hooks/
 │   │   │   ├── useFriendsPresence.ts （新規作成）
-│   │   │   └── useBreweries.ts （新規作成）
+│   │   │   ├── useBreweries.ts （新規作成）
+│   │   │   └── useAuth.ts （新規作成）
 │   │   ├── index.css （新規作成）
 │   │   ├── index.tsx （新規作成）
 │   │   ├── router.tsx （新規作成）
@@ -193,11 +196,13 @@ PintHop/
 │   │   │   ├── Timeline.tsx （新規作成）
 │   │   │   ├── test_MapPage_renders_map.tsx （新規作成）
 │   │   │   └── test_TimelinePage_renders_list.tsx （新規作成）
+│   │   │   └── test_AuthContext_login_flow.tsx （新規作成）
 │   │   ├── react-app-env.d.ts （新規作成）
 │   │   ├── reportWebVitals.ts （新規作成）
 │   │   ├── services/
 │   │   │   ├── breweries.ts （新規作成）
-│   │   │   └── presence.ts （新規作成）
+│   │   │   ├── presence.ts （新規作成）
+│   │   │   └── auth.ts （新規作成）
 │   │   ├── setupTests.ts （新規作成）
 │   │   ├── styles/ （新規作成）
 │   │   │   ├── brewery.css （新規作成）
