@@ -14,6 +14,7 @@
 - 2025-05-24 AI Assistant プレゼンスAPIファイル追加
 - 2025-05-24 AI Assistant チェックインAPIファイル追加
 - 2025-05-24 Koki Riho Timelineページとプレゼンス関連コンポーネント追加
+- 2025-05-25 Codex BreweryCardコンポーネント追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。
@@ -70,7 +71,8 @@ frontend/
 │   │   │   └── BreweryMap.tsx    # ブルワリーマップ表示
 │   │   ├── brewery/     # ブルワリー関連コンポーネント
 │   │   │   ├── BreweryDetails.tsx    # ブルワリー詳細表示
-│   │   │   └── BreweryRatings.tsx    # レビューサイト評価表示
+│   │   │   ├── BreweryRatings.tsx    # レビューサイト評価表示
+│   │   │   └── BreweryCard.tsx       # ブルワリーカード表示
 │   │   ├── beer/        # ビール関連コンポーネント
 │   │   ├── user/        # ユーザー関連コンポーネント
 │   │   └── presence/    # プレゼンス関連コンポーネント
