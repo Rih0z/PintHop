@@ -13,6 +13,7 @@
 - 2025-05-24 AI Assistant 認証APIファイル追加
 - 2025-05-24 AI Assistant プレゼンスAPIファイル追加
 - 2025-05-24 AI Assistant チェックインAPIファイル追加
+- 2025-05-24 Koki Riho Timelineページとプレゼンス関連コンポーネント追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。
@@ -73,6 +74,7 @@ frontend/
 │   │   ├── beer/        # ビール関連コンポーネント
 │   │   ├── user/        # ユーザー関連コンポーネント
 │   │   └── presence/    # プレゼンス関連コンポーネント
+│   │       └── FriendsPresenceList.tsx # 友達プレゼンス表示
 │   │
 │   ├── context/         # Reactコンテキスト
 │   │   ├── AuthContext.tsx     # 認証コンテキスト
@@ -82,6 +84,7 @@ frontend/
 │   ├── hooks/           # カスタムフック
 │   │   ├── useAuth.ts         # 認証フック
 │   │   ├── usePresence.ts     # プレゼンス関連フック
+│   │   ├── useFriendsPresence.ts # 友達プレゼンス取得フック
 │   │   ├── useBreweries.ts    # ブルワリーデータフック
 │   │   └── useGeolocation.ts  # 位置情報フック
 │   │
@@ -104,6 +107,7 @@ frontend/
 │   ├── types/           # TypeScript型定義
 │   │   ├── models.ts        # データモデル型
 │   │   ├── api.ts           # API関連型
+│   │   ├── presence.ts      # プレゼンス型定義
 │   │   └── common.ts        # 共通型
 │   │
 │   ├── utils/           # ユーティリティ関数
