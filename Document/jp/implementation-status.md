@@ -18,6 +18,7 @@
 - 2025-05-24 AI Assistant ランダムブルワリー取得APIを実装
 - 2025-05-24 AI Assistant マップ表示コンポーネント実装
 - 2025-05-24 AI Assistant ルーティング設定とMapページ追加
+- 2025-05-24 AI Assistant チェックインAPI実装
 - 2025-05-24 AI Assistant 認証APIの基本実装
 - 2025-05-24 AI Assistant プレゼンスAPI実装
 
