@@ -8,6 +8,7 @@ const mockPresence = { user: 'u1', status: 'online' };
 
 (Presence.findOneAndUpdate as jest.Mock).mockResolvedValue(mockPresence);
 (Presence.find as jest.Mock).mockResolvedValue([mockPresence]);
+(Presence.findOne as jest.Mock).mockResolvedValue(mockPresence);
 
 describe('POST /api/v1/presence', () => {
   it('test_updatePresence_validData_returnsPresence', async () => {
@@ -24,5 +25,13 @@ describe('GET /api/v1/presence/friends', () => {
     const res = await request(app).get('/api/v1/presence/friends');
     expect(res.status).toBe(200);
     expect(res.body).toEqual([mockPresence]);
+  });
+});
+
+describe('GET /api/v1/presence/me', () => {
+  it('test_getMyPresence_returnsPresence', async () => {
+    const res = await request(app).get('/api/v1/presence/me');
+    expect(res.status).toBe(200);
+    expect(res.body).toEqual(mockPresence);
   });
 });
