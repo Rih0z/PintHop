@@ -18,6 +18,7 @@
 - 2025-05-25 Codex AuthContextコンポーネントと認証サービス追加
 - 2025-05-26 Codex useGeolocationフック追加
 - 2025-05-27 Koki Riho and Codex PresenceContextとusePresenceフック追加
+- 2025-05-28 Koki Riho and Codex presenceRoutesに/meエンドポイント追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。
@@ -150,7 +151,7 @@ backend/
 │   │   │   ├── breweries.js # ブルワリールート
 │   │   │   ├── beers.js     # ビールルート
 │   │   │   ├── checkinRoutes.ts # チェックインルート
-│   │   │   ├── presenceRoutes.ts # プレゼンスルート
+│   │   │   ├── presenceRoutes.ts # プレゼンスルート(/me, /friends)
 │   │   │   └── events.js    # イベントルート
 │   │   │
 │   │   ├── controllers/   # コントローラー
