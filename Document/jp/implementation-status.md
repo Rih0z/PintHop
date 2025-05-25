@@ -21,6 +21,7 @@
 - 2025-05-24 AI Assistant チェックインAPI実装
 - 2025-05-24 AI Assistant 認証APIの基本実装
 - 2025-05-24 AI Assistant プレゼンスAPI実装
+- 2025-05-24 Koki Riho タイムラインページとプレゼンス表示コンポーネント追加
 
 # 説明
 PintHopアプリケーションの現在の実装状況を追跡するドキュメント。実装フェーズ、完了した作業、進行中の作業、および次のステップについて概要を説明します。
@@ -173,10 +174,12 @@ PintHop/
 │   │   │   ├── map/
 │   │   │   │   ├── BreweryMap.tsx （新規作成）
 │   │   │   │   └── test_BreweryMap_render_markers.tsx （新規作成）
-│   │   │   ├── presence/ （新規作成、現在空のディレクトリ）
+│   │   │   ├── presence/
+│   │   │   │   └── FriendsPresenceList.tsx （新規作成）
 │   │   │   └── user/ （新規作成、現在空のディレクトリ）
 │   │   ├── context/ （新規作成、現在空のディレクトリ）
 │   │   ├── hooks/
+│   │   │   ├── useFriendsPresence.ts （新規作成）
 │   │   │   └── useBreweries.ts （新規作成）
 │   │   ├── index.css （新規作成）
 │   │   ├── index.tsx （新規作成）
@@ -184,17 +187,21 @@ PintHop/
 │   │   ├── logo.svg （新規作成）
 │   │   ├── pages/
 │   │   │   ├── Map.tsx （新規作成）
-│   │   │   └── test_MapPage_renders_map.tsx （新規作成）
+│   │   │   ├── Timeline.tsx （新規作成）
+│   │   │   ├── test_MapPage_renders_map.tsx （新規作成）
+│   │   │   └── test_TimelinePage_renders_list.tsx （新規作成）
 │   │   ├── react-app-env.d.ts （新規作成）
 │   │   ├── reportWebVitals.ts （新規作成）
 │   │   ├── services/
-│   │   │   └── breweries.ts （新規作成）
+│   │   │   ├── breweries.ts （新規作成）
+│   │   │   └── presence.ts （新規作成）
 │   │   ├── setupTests.ts （新規作成）
 │   │   ├── styles/ （新規作成）
 │   │   │   ├── brewery.css （新規作成）
 │   │   │   └── tailwind.css （新規作成）
 │   │   ├── types/ （新規作成）
-│   │   │   └── brewery.ts （新規作成）
+│   │   │   ├── brewery.ts （新規作成）
+│   │   │   └── presence.ts （新規作成）
 │   │   └── utils/ （新規作成、現在空のディレクトリ）
 │   ├── tailwind.config.js （新規作成）
 │   └── tsconfig.json （新規作成）
