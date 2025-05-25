@@ -19,6 +19,7 @@
 - 2025-05-26 Codex useGeolocationフック追加
 - 2025-05-27 Koki Riho and Codex PresenceContextとusePresenceフック追加
 - 2025-05-28 Koki Riho and Codex presenceRoutesに/meエンドポイント追加
+- 2025-05-29 Koki Riho and Codex useBreweryPresenceフック追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。
@@ -92,6 +93,7 @@ frontend/
 │   │   ├── usePresence.ts     # プレゼンス関連フック
 │   │   ├── useFriendsPresence.ts # 友達プレゼンス取得フック
 │   │   ├── useBreweries.ts    # ブルワリーデータフック
+│   │   ├── useBreweryPresence.ts # ブルワリーごとのプレゼンスフック
 │   │   └── useGeolocation.ts  # 位置情報フック
 │   │
 │   ├── pages/           # 画面コンポーネント
