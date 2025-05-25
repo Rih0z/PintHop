@@ -22,6 +22,7 @@
 - 2025-05-24 AI Assistant 認証APIの基本実装
 - 2025-05-24 AI Assistant プレゼンスAPI実装
 - 2025-05-24 Koki Riho タイムラインページとプレゼンス表示コンポーネント追加
+- 2025-05-25 Codex BreweryCardコンポーネント追加
 
 # 説明
 PintHopアプリケーションの現在の実装状況を追跡するドキュメント。実装フェーズ、完了した作業、進行中の作業、および次のステップについて概要を説明します。
@@ -168,7 +169,9 @@ PintHop/
 │   │   │   ├── beer/ （新規作成、現在空のディレクトリ）
 │   │   │   ├── brewery/ （新規作成）
 │   │   │   │   ├── BreweryDetails.tsx （新規作成）
-│   │   │   │   └── BreweryRatings.tsx （新規作成）
+│   │   │   │   ├── BreweryRatings.tsx （新規作成）
+│   │   │   │   ├── BreweryCard.tsx （新規作成）
+│   │   │   │   └── test_BreweryCard_renders_name.tsx （新規作成）
 │   │   │   ├── common/ （新規作成、現在空のディレクトリ）
 │   │   │   ├── layout/ （新規作成、現在空のディレクトリ）
 │   │   │   ├── map/
