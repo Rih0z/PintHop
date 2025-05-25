@@ -27,6 +27,7 @@
 - 2025-05-26 Codex useGeolocationフック追加
 - 2025-05-27 Koki Riho and Codex PresenceContextとusePresenceフック追加
 - 2025-05-28 Koki Riho and Codex 自分のプレゼンス取得API追加
+- 2025-05-29 Koki Riho and Codex ブルワリーのプレゼンス取得API追加
 
 # 説明
 PintHopアプリケーションの現在の実装状況を追跡するドキュメント。実装フェーズ、完了した作業、進行中の作業、および次のステップについて概要を説明します。

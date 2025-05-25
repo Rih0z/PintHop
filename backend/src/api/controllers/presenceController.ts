@@ -8,6 +8,7 @@
  * 更新履歴:
  * - 2025-05-24 00:00:00 AI Assistant 新規作成
  * - 2025-05-28 00:00:00 Koki Riho and Codex getMyPresence追加
+ * - 2025-05-29 00:00:00 Koki Riho and Codex getPresenceByBrewery追加
  *
  * 説明:
  * プレゼンスAPIコントローラー
@@ -67,6 +68,22 @@ export const getMyPresence = async (req: Request, res: Response) => {
   } catch (err) {
     console.error('Get my presence error:', err);
     res.status(500).json({ error: 'Failed to get presence' });
+  }
+};
+
+export const getPresenceByBrewery = async (
+  req: Request,
+  res: Response
+) => {
+  try {
+    const { breweryId } = req.params;
+    const presences = await Presence.find({ brewery: breweryId })
+      .populate('user', 'username')
+      .populate('brewery', 'name');
+    res.json(presences);
+  } catch (err) {
+    console.error('Get brewery presence error:', err);
+    res.status(500).json({ error: 'Failed to get brewery presence' });
   }
 };
 

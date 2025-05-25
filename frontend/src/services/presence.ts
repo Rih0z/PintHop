@@ -8,6 +8,7 @@
  * 更新履歴:
  * - 2025-05-24 00:00:00 Koki Riho 新規作成
  * - 2025-05-27 00:00:00 Koki Riho and Codex updatePresence関数追加
+ * - 2025-05-29 00:00:00 Koki Riho and Codex fetchBreweryPresence関数追加
  *
  * 説明:
  * プレゼンスデータ取得サービス
@@ -20,6 +21,15 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
 
 export const fetchFriendsPresence = async (): Promise<Presence[]> => {
   const response = await axios.get(`${API_URL}/v1/presence/friends`);
+  return response.data as Presence[];
+};
+
+export const fetchBreweryPresence = async (
+  breweryId: string
+): Promise<Presence[]> => {
+  const response = await axios.get(
+    `${API_URL}/v1/breweries/${breweryId}/presence`
+  );
   return response.data as Presence[];
 };
 

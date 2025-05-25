@@ -12,6 +12,7 @@
 - 2025-05-24 AI Assistant ランダムブルワリー取得API追加
 - 2025-05-24 AI Assistant チェックインAPI実装
 - 2025-05-28 Koki Riho and Codex 自分のプレゼンス取得API追加
+- 2025-05-29 Koki Riho and Codex ブルワリーのプレゼンス取得API追加
 
 # 説明
 PintHopアプリケーションのAPIインターフェース仕様を定義するドキュメント。各エンドポイント、リクエスト/レスポンス形式、認証方法、およびWebSocketイベントを詳細に説明します。
