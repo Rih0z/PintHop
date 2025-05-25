@@ -24,6 +24,7 @@
 - 2025-05-24 Koki Riho タイムラインページとプレゼンス表示コンポーネント追加
 - 2025-05-25 Codex BreweryCardコンポーネント追加
 - 2025-05-25 Codex AuthContextとuseAuthフック追加
+- 2025-05-26 Codex useGeolocationフック追加
 
 # 説明
 PintHopアプリケーションの現在の実装状況を追跡するドキュメント。実装フェーズ、完了した作業、進行中の作業、および次のステップについて概要を説明します。
@@ -187,6 +188,8 @@ PintHop/
 │   │   │   ├── useFriendsPresence.ts （新規作成）
 │   │   │   ├── useBreweries.ts （新規作成）
 │   │   │   └── useAuth.ts （新規作成）
+│   │   │   └── useGeolocation.ts （新規作成）
+│   │   │   └── test_useGeolocation_updates_position.tsx （新規作成）
 │   │   ├── index.css （新規作成）
 │   │   ├── index.tsx （新規作成）
 │   │   ├── router.tsx （新規作成）
