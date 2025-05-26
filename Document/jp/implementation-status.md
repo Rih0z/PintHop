@@ -29,6 +29,7 @@
 - 2025-05-28 Koki Riho and Codex 自分のプレゼンス取得API追加
 - 2025-05-29 Koki Riho and Codex ブルワリーのプレゼンス取得API追加
 - 2025-05-30 Koki Riho and Codex PresenceContext初期プレゼンス取得ロジック追加
+- 2025-05-31 Koki Riho and Codex チェックインサービスとuseCheckinsフック追加
 
 # 説明
 PintHopアプリケーションの現在の実装状況を追跡するドキュメント。実装フェーズ、完了した作業、進行中の作業、および次のステップについて概要を説明します。
