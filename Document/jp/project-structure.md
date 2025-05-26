@@ -21,6 +21,7 @@
 - 2025-05-28 Koki Riho and Codex presenceRoutesに/meエンドポイント追加
 - 2025-05-29 Koki Riho and Codex useBreweryPresenceフック追加
 - 2025-05-30 Koki Riho and Codex PresenceContext初期プレゼンス取得ロジック追加
+- 2025-05-31 Koki Riho and Codex チェックインサービスとuseCheckinsフック追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。
@@ -95,6 +96,7 @@ frontend/
 │   │   ├── useFriendsPresence.ts # 友達プレゼンス取得フック
 │   │   ├── useBreweries.ts    # ブルワリーデータフック
 │   │   ├── useBreweryPresence.ts # ブルワリーごとのプレゼンスフック
+    │   │   ├── useCheckins.ts     # チェックイン一覧取得フック
 │   │   └── useGeolocation.ts  # 位置情報フック
 │   │
 │   ├── pages/           # 画面コンポーネント
@@ -110,6 +112,7 @@ frontend/
 │   │   ├── api.ts           # APIクライアント
 │   │   ├── auth.ts          # 認証サービス
 │   │   ├── breweries.ts     # ブルワリーサービス
+│   │   ├── checkins.ts     # チェックインサービス
 │   │   ├── presence.ts      # プレゼンスサービス
 │   │   └── websocket.ts     # WebSocket接続
 │   │
@@ -117,6 +120,7 @@ frontend/
 │   │   ├── models.ts        # データモデル型
 │   │   ├── api.ts           # API関連型
 │   │   ├── presence.ts      # プレゼンス型定義
+│   │   ├── checkin.ts      # チェックイン型定義
 │   │   └── common.ts        # 共通型
 │   │
 │   ├── utils/           # ユーティリティ関数
