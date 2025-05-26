@@ -7,6 +7,7 @@
  * 
  * 更新履歴:
  * - 2025-05-04 00:00:00 Koki Riho 初期作成
+ * - 2025-05-31 00:00:00 Koki Riho and Codex logger適用
  *
  * 説明:
  * サーバーのエントリーポイント、HTTPサーバーの初期化とデータベース接続
@@ -16,6 +17,7 @@ import app from './app';
 import http from 'http';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import logger from './utils/logger';
 
 // 環境変数の読み込み
 dotenv.config();
@@ -31,9 +33,9 @@ const connectDB = async () => {
   try {
     const mongoURI = process.env.MONGODB_URI as string;
     await mongoose.connect(mongoURI);
-    console.log('MongoDB connected successfully');
+    logger.info('MongoDB connected successfully');
   } catch (err) {
-    console.error('MongoDB connection error:', err);
+    logger.error('MongoDB connection error:', err);
     process.exit(1);
   }
 };
@@ -43,19 +45,19 @@ const startServer = async () => {
   await connectDB();
   
   server.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-    console.log(`Environment: ${process.env.NODE_ENV}`);
+    logger.info(`Server running on port ${PORT}`);
+    logger.info(`Environment: ${process.env.NODE_ENV}`);
   });
 };
 
 // プロセスの例外ハンドリング
 process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err);
+  logger.error('Uncaught Exception:', err);
   process.exit(1);
 });
 
 process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err);
+  logger.error('Unhandled Rejection:', err);
   process.exit(1);
 });
 

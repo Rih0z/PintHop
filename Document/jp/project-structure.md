@@ -22,6 +22,7 @@
 - 2025-05-29 Koki Riho and Codex useBreweryPresenceフック追加
 - 2025-05-30 Koki Riho and Codex PresenceContext初期プレゼンス取得ロジック追加
 - 2025-05-31 Koki Riho and Codex チェックインサービスとuseCheckinsフック追加
+- 2025-05-31 Koki Riho and Codex loggerユーティリティとテスト追加
 
 # 説明
 PintHopアプリケーションのプロジェクト構造を定義するドキュメント。ディレクトリ構成、ファイル構造、および各コンポーネントの関係性を詳細に説明します。
@@ -204,7 +205,7 @@ backend/
 │   │   └── seeds/         # シードデータ
 │   │
 │   ├── utils/           # ユーティリティ関数
-│   │   ├── logger.js      # ロギングユーティリティ
+│   │   ├── logger.ts      # ロギングユーティリティ
 │   │   ├── security.js    # セキュリティユーティリティ
 │   │   ├── validation.js  # バリデーションユーティリティ
 │   │   └── formatter.js   # フォーマットユーティリティ
@@ -237,6 +238,7 @@ backend/
 │   └── authRoutes.test.ts    # 認証ルートテスト
 │   └── presenceRoutes.test.ts # プレゼンスルートテスト
 │   └── checkinRoutes.test.ts  # チェックインルートテスト
+│   └── logger.test.ts         # ロガーテスト
 │
 ├── .env.example         # 環境変数サンプル
 ├── .gitignore           # Gitの除外ファイル設定
