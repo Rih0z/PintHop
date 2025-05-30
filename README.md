@@ -11,6 +11,22 @@
 
 ※ ビール発見機能「次の一杯を見つける」は[NextPint](https://github.com/Rih0z/NextPint)に移行しました。
 
+## 🚀 ライブデモ
+
+**本番環境**: https://67515bf9.pinthop.pages.dev
+
+**API エンドポイント**: https://pinthop-api.riho-dare.workers.dev
+
+### 🧪 テスト認証情報
+
+以下の認証情報でログインできます：
+
+| Username | Password | 説明 |
+|----------|----------|------|
+| `testuser` | `test123456` | メインテストユーザー |
+| `alice` | `alice123456` | テストユーザー（Alice） |
+| `bob` | `bob123456` | テストユーザー（Bob） |
+
 **[一緒に作りませんか？](#contribute)**
 
 ## 🌟 コンセプト
@@ -84,16 +100,22 @@ PintHopは偶然の出会いとビアホッピング体験を核心としたア�
 ## 💻 技術スタック
 
 ### 現在の実装
-- **フロントエンド**: React + TypeScript
-- **バックエンド**: Node.js + Express
-- **データベース**: MongoDB
-- **リアルタイム通信**: Socket.IO
+- **フロントエンド**: React 18.2.0 + TypeScript 5.1.6
+- **スタイリング**: Tailwind CSS 3.3.3 + カスタムデザインシステム
+- **バックエンド**: Cloudflare Workers + Hono Framework
+- **データベース**: MongoDB Atlas
+- **認証**: JWT（Base64エンコード）
 - **マップ**: Leaflet.js
-- **認証**: JWT
-- **ホスティング**: Netlify（フロントエンド） + rihobeer.com（バックエンド）
+- **ホスティング**: Cloudflare Pages（フロントエンド）+ Cloudflare Workers（API）
 
-以前の試作段階では Firebase を用いた PWA 版を開発していましたが、
-現在は Express サーバーと MongoDB を用いた構成に統一しています。
+### デザインシステム
+- **カラーパレット**: 色彩心理学に基づくモダンテーマ
+- **UIスタイル**: Netflix/Uber風ダークテーマ
+- **インタラクション**: マイクロアニメーション、ホバー効果
+- **レスポンシブ**: モバイルファースト設計
+
+以前の試作段階では Firebase を用いた PWA 版、その後 Express サーバーと MongoDB を経て、
+現在は Cloudflare のエッジコンピューティングを活用した高速・グローバル配信の構成に進化しています。
 
 ### 将来の拡張
 - **プレゼンス最適化**: バッテリー負荷を抑えたリアルタイム更新
@@ -196,10 +218,51 @@ PintHopは偶然の出会いとビアホッピング体験を核心としたア�
 
 ## 開発ガイド
 
-開発環境構築の手順は `Document/jp/setup-guide.md` を参照してください。
-環境変数の例は `.env.example` に示しています。Pull Request を送る際は
-`CONTRIBUTING.md` を必ず確認してください。
-システム全体の構成は `Document/jp/architecture.md` に図示しています。
+### クイックスタート
+
+```bash
+# リポジトリのクローン
+git clone https://github.com/Rih0z/PintHop.git
+cd PintHop
+
+# フロントエンド開発
+cd frontend
+npm install
+npm start  # http://localhost:3000
+
+# バックエンド開発（ローカル）
+cd backend
+npm install
+npm run dev  # http://localhost:5001
+
+# Cloudflareデプロイ
+npm run deploy  # Workers API
+wrangler pages deploy build --project-name=pinthop  # Pages
+```
+
+### 詳細ドキュメント
+
+- **環境構築**: `Document/jp/setup-guide.md`
+- **システム構成**: `Document/jp/architecture.md`
+- **デプロイガイド**: `cloudflare-deployment.md`
+- **デザインガイド**: `design-research.md`
+- **貢献ガイド**: `CONTRIBUTING.md`
+
+### 開発コマンド
+
+```bash
+# テスト
+npm test           # フロントエンド・バックエンド共通
+npm run test:watch # ウォッチモード
+
+# ビルド
+npm run build      # 本番ビルド
+npm run lint       # コード品質チェック
+
+# データベース
+npm run seed       # ブルワリーデータ投入
+npm run seed:users # テストユーザー作成
+```
 
 ## 📄 ライセンス
 
