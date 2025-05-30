@@ -17,6 +17,7 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MapPage from './pages/Map';
 import TimelinePage from './pages/Timeline';
+import Dashboard from './pages/Dashboard';
 import { LoginPage } from './pages/Login';
 import { RegisterPage } from './pages/Register';
 import { PrivateRoute } from './components/auth/PrivateRoute';
@@ -29,7 +30,15 @@ const AppRouter: React.FC = () => (
       <Route path="/register" element={<RegisterPage />} />
       
       {/* Protected routes */}
-      <Route path="/" element={<Navigate to="/timeline" replace />} />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route
+        path="/dashboard"
+        element={
+          <PrivateRoute>
+            <Dashboard />
+          </PrivateRoute>
+        }
+      />
       <Route
         path="/timeline"
         element={

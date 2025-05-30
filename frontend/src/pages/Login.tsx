@@ -14,7 +14,7 @@
 
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
-import { useAuth } from '../hooks/useAuth';
+import { useAuth } from '../context/AuthContext';
 
 interface LocationState {
   from?: {
@@ -27,12 +27,12 @@ export const LoginPage: React.FC = () => {
   const location = useLocation();
   const { login } = useAuth();
   
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const from = (location.state as LocationState)?.from?.pathname || '/';
+  const from = (location.state as LocationState)?.from?.pathname || '/dashboard';
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -40,11 +40,11 @@ export const LoginPage: React.FC = () => {
     setLoading(true);
 
     try {
-      await login(email, password);
+      await login(username, password);
       navigate(from, { replace: true });
     } catch (err: any) {
       console.error('Login error:', err);
-      const errorMessage = err.response?.data?.message || err.message || 'Failed to login';
+      const errorMessage = err.response?.data?.error || err.message || 'Failed to login';
       setError(`Login failed: ${errorMessage}`);
     } finally {
       setLoading(false);
@@ -64,6 +64,13 @@ export const LoginPage: React.FC = () => {
               create a new account
             </Link>
           </p>
+          <div className="mt-4 p-3 bg-blue-50 rounded-md">
+            <p className="text-xs text-blue-800 text-center">
+              🧪 <strong>Test Credentials:</strong><br />
+              Username: <code>testuser</code> | Password: <code>test123456</code><br />
+              Username: <code>alice</code> | Password: <code>alice123456</code>
+            </p>
+          </div>
         </div>
         
         <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
@@ -75,19 +82,19 @@ export const LoginPage: React.FC = () => {
           
           <div className="rounded-md shadow-sm -space-y-px">
             <div>
-              <label htmlFor="email" className="sr-only">
-                Email address
+              <label htmlFor="username" className="sr-only">
+                Username
               </label>
               <input
-                id="email"
-                name="email"
+                id="username"
+                name="username"
                 type="text"
-                autoComplete="email"
+                autoComplete="username"
                 required
                 className="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-amber-500 focus:border-amber-500 focus:z-10 sm:text-sm"
-                placeholder="Email address"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Username"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
               />
             </div>
             <div>
