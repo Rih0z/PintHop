@@ -105,16 +105,16 @@ const seedUsers = async () => {
 
     logger.info(`Total: ${testUsers.length} test users seeded successfully`);
     
-    // テストユーザー情報を表示
-    console.log('\n🧪 Test User Credentials:');
+    // テストユーザー情報を表示（パスワードは表示しない）
+    console.log('\n🧪 Test Users Created:');
     console.log('================================');
     testUsers.forEach(user => {
       console.log(`Username: ${user.username}`);
       console.log(`Email: ${user.email}`);
-      console.log(`Password: ${user.password}`);
       console.log('--------------------------------');
     });
-    console.log('');
+    console.log('\n⚠️  Test credentials are stored securely.');
+    console.log('Please refer to documentation for login information.\n');
     
   } catch (err) {
     logger.error('Error seeding user data:', err);

@@ -16,9 +16,6 @@ import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
 
-// Debug: Log the API URL being used
-console.log('Auth Service - API URL:', API_URL);
-
 export const login = async (username: string, password: string) => {
   const res = await axios.post(`${API_URL}/api/auth/login`, { username, password });
   return res.data;
