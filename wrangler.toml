@@ -15,9 +15,10 @@ routes = ["staging-api.pinthop.com/*"]
 # JWT_SECRET
 # CORS_ORIGIN
 
-[build]
-command = "npm run build:worker"
-cwd = "backend"
+# Remove build command since we'll build manually
+# [build]
+# command = "npm run build:worker"
+# cwd = "backend"
 
 [dev]
 port = 8787
