@@ -10,6 +10,7 @@
     "lint": "eslint . --ext .ts",
     "test": "jest",
     "seed": "ts-node src/data/seeds/brewerySeeder.ts",
+    "seed:users": "ts-node src/data/seeds/userSeeder.ts",
     "deploy": "wrangler deploy"
   },
   "keywords": [],
