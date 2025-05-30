@@ -11,6 +11,10 @@ const mockBreweries: Brewery[] = [
     breweryId: 'b1',
     name: 'Test Brewery',
     slug: 'test-brewery',
+    address: {
+      city: 'Seattle',
+      state: 'Washington'
+    },
     region: 'seattle',
     location: { type: 'Point', coordinates: [-122.33, 47.6] },
     ratings: {

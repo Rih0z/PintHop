@@ -21,6 +21,11 @@ export const logger = {
   },
   warn: (message: string, ...optionalParams: unknown[]): void => {
     console.warn(message, ...optionalParams);
+  },
+  debug: (message: string, ...optionalParams: unknown[]): void => {
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[DEBUG]', message, ...optionalParams);
+    }
   }
 };
 

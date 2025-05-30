@@ -16,14 +16,12 @@ import express, { Express, Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import morgan from 'morgan';
-import dotenv from 'dotenv';
+import { env } from './config/env';
+import { AppError } from './utils/AppError';
 import breweryRoutes from './api/routes/breweryRoutes';
 import authRoutes from './api/routes/authRoutes';
 import presenceRoutes from './api/routes/presenceRoutes';
 import checkinRoutes from './api/routes/checkinRoutes';
-
-// 環境変数の読み込み
-dotenv.config();
 
 // アプリケーションの初期化
 const app: Express = express();
@@ -31,12 +29,21 @@ const app: Express = express();
 // ミドルウェアの設定
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(cors({
-  origin: process.env.CORS_ORIGIN,
-  credentials: true
+
+// シンプルなCORS設定
+const corsOptions = {
+  origin: env.CORS_ORIGIN,
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+app.use(cors(corsOptions));
+
+// Helmetの設定を調整
+app.use(helmet({
+  crossOriginResourcePolicy: false,
 }));
-app.use(helmet());
-app.use(morgan('dev'));
+app.use(morgan(env.NODE_ENV === 'production' ? 'combined' : 'dev'));
 
 // APIルート
 app.use('/api/v1/auth', authRoutes);
@@ -55,9 +62,25 @@ app.use((req: Request, res: Response) => {
 });
 
 // エラーハンドラー
-app.use((err: Error, req: Request, res: Response, next: NextFunction) => {
-  console.error(err.stack);
-  res.status(500).json({ status: 'error', message: 'Internal server error' });
+app.use((err: Error | AppError, req: Request, res: Response, next: NextFunction) => {
+  // AppErrorインスタンスの場合
+  if (err instanceof AppError && err.isOperational) {
+    return res.status(err.statusCode).json({
+      status: 'error',
+      code: err.code,
+      message: err.message
+    });
+  }
+
+  // 予期しないエラーの場合
+  console.error('ERROR 💥', err);
+  res.status(500).json({
+    status: 'error',
+    code: 'INTERNAL_ERROR',
+    message: env.NODE_ENV === 'production' 
+      ? 'Something went wrong!' 
+      : err.message
+  });
 });
 
 export default app;

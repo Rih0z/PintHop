@@ -13,58 +13,73 @@
  * ブルワリーデータを扱うコントローラー
  */
 
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import Brewery from '../../models/Brewery';
+import { AppError, ErrorCodes } from '../../utils/AppError';
 
 // すべてのブルワリーを取得
-export const getAllBreweries = async (req: Request, res: Response) => {
+export const getAllBreweries = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const breweries = await Brewery.find().sort({ name: 1 });
-    res.json(breweries);
+    res.json({
+      status: 'success',
+      data: breweries
+    });
   } catch (error) {
-    console.error('Error fetching breweries:', error);
-    res.status(500).json({ error: 'Failed to fetch breweries' });
+    next(new AppError(500, ErrorCodes.DATABASE_ERROR, 'Failed to fetch breweries'));
   }
 };
 
 // IDによるブルワリー取得
-export const getBreweryById = async (req: Request, res: Response) => {
+export const getBreweryById = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const brewery = await Brewery.findById(req.params.id);
     if (!brewery) {
-      return res.status(404).json({ error: 'Brewery not found' });
+      throw new AppError(404, ErrorCodes.BREWERY_NOT_FOUND, 'Brewery not found');
     }
-    res.json(brewery);
+    res.json({
+      status: 'success',
+      data: brewery
+    });
   } catch (error) {
-    console.error('Error fetching brewery:', error);
-    res.status(500).json({ error: 'Failed to fetch brewery' });
+    if (error instanceof AppError) {
+      next(error);
+    } else {
+      next(new AppError(500, ErrorCodes.DATABASE_ERROR, 'Failed to fetch brewery'));
+    }
   }
 };
 
 // 地域によるブルワリー取得
-export const getBreweriesByRegion = async (req: Request, res: Response) => {
+export const getBreweriesByRegion = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { region } = req.params;
     const breweries = await Brewery.find({ 'region.name': region }).sort({ name: 1 });
-    res.json(breweries);
+    res.json({
+      status: 'success',
+      data: breweries
+    });
   } catch (error) {
-    console.error('Error fetching breweries by region:', error);
-    res.status(500).json({ error: 'Failed to fetch breweries by region' });
+    next(new AppError(500, ErrorCodes.DATABASE_ERROR, 'Failed to fetch breweries by region'));
   }
 };
 
 // 近くのブルワリーを取得
-export const getNearbyBreweries = async (req: Request, res: Response) => {
+export const getNearbyBreweries = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { longitude, latitude, maxDistance = 5000 } = req.query;
     
     if (!longitude || !latitude) {
-      return res.status(400).json({ error: 'Longitude and latitude are required' });
+      throw new AppError(400, ErrorCodes.VALIDATION_ERROR, 'Longitude and latitude are required');
     }
     
     const lng = parseFloat(longitude as string);
     const lat = parseFloat(latitude as string);
     const distance = parseFloat(maxDistance as string);
+    
+    if (isNaN(lng) || isNaN(lat) || isNaN(distance)) {
+      throw new AppError(400, ErrorCodes.VALIDATION_ERROR, 'Invalid coordinate or distance values');
+    }
     
     const breweries = await Brewery.find({
       location: {
@@ -78,23 +93,31 @@ export const getNearbyBreweries = async (req: Request, res: Response) => {
       }
     });
     
-    res.json(breweries);
+    res.json({
+      status: 'success',
+      data: breweries
+    });
   } catch (error) {
-    console.error('Error fetching nearby breweries:', error);
-    res.status(500).json({ error: 'Failed to fetch nearby breweries' });
+    next(new AppError(500, ErrorCodes.DATABASE_ERROR, 'Failed to fetch nearby breweries'));
   }
 };
 
 // ランダムなブルワリーを取得
-export const getRandomBrewery = async (req: Request, res: Response) => {
+export const getRandomBrewery = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const [brewery] = await Brewery.aggregate([{ $sample: { size: 1 } }]);
     if (!brewery) {
-      return res.status(404).json({ error: 'No breweries found' });
+      throw new AppError(404, ErrorCodes.NOT_FOUND, 'No breweries found in database');
     }
-    res.json(brewery);
+    res.json({
+      status: 'success',
+      data: brewery
+    });
   } catch (error) {
-    console.error('Error fetching random brewery:', error);
-    res.status(500).json({ error: 'Failed to fetch random brewery' });
+    if (error instanceof AppError) {
+      next(error);
+    } else {
+      next(new AppError(500, ErrorCodes.DATABASE_ERROR, 'Failed to fetch random brewery'));
+    }
   }
 };

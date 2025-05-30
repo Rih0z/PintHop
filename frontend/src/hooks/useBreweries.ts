@@ -19,14 +19,17 @@ import { fetchBreweries } from '../services/breweries';
 export const useBreweries = () => {
   const [breweries, setBreweries] = useState<Brewery[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
     const load = async () => {
       try {
         const data = await fetchBreweries();
         setBreweries(data);
+        setError(null);
       } catch (err) {
         console.error('Failed to fetch breweries', err);
+        setError(err instanceof Error ? err : new Error('Failed to fetch breweries'));
       } finally {
         setLoading(false);
       }
@@ -34,5 +37,5 @@ export const useBreweries = () => {
     load();
   }, []);
 
-  return { breweries, loading };
+  return { breweries, loading, error };
 };

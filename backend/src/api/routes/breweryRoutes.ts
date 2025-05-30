@@ -17,6 +17,7 @@
 import express from 'express';
 import * as breweryController from '../controllers/breweryController';
 import * as presenceController from '../controllers/presenceController';
+import { optionalAuthenticate } from '../middlewares/auth';
 
 const router = express.Router();
 
@@ -26,6 +27,7 @@ router.get('/random', breweryController.getRandomBrewery);
 router.get('/nearby', breweryController.getNearbyBreweries);
 router.get('/region/:region', breweryController.getBreweriesByRegion);
 router.get('/:id', breweryController.getBreweryById);
-router.get('/:breweryId/presence', presenceController.getPresenceByBrewery);
+// オプショナル認証（プライバシー設定によって見える情報が変わる）
+router.get('/:breweryId/presence', optionalAuthenticate, presenceController.getPresenceByBrewery);
 
 export default router;

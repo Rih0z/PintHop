@@ -1,0 +1,101 @@
+name: CI Pipeline
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  backend-tests:
+    name: Backend Tests
+    runs-on: ubuntu-latest
+    
+    services:
+      mongodb:
+        image: mongo:7.0
+        ports:
+          - 27017:27017
+        options: >-
+          --health-cmd "mongosh --eval 'db.adminCommand(\"ping\")'"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18.x
+        cache: 'npm'
+        cache-dependency-path: backend/package-lock.json
+    
+    - name: Install backend dependencies
+      working-directory: ./backend
+      run: npm ci
+    
+    - name: Run backend linter
+      working-directory: ./backend
+      run: npm run lint
+    
+    - name: Run backend tests
+      working-directory: ./backend
+      env:
+        NODE_ENV: test
+        MONGODB_URI: mongodb://localhost:27017/pinthop-test
+        JWT_SECRET: test-jwt-secret
+        JWT_EXPIRES_IN: 15m
+        JWT_REFRESH_EXPIRES_IN: 7d
+        CORS_ORIGIN: http://localhost:3000
+      run: npm test
+    
+    - name: Build backend
+      working-directory: ./backend
+      run: npm run build
+
+  frontend-tests:
+    name: Frontend Tests
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Use Node.js 18.x
+      uses: actions/setup-node@v4
+      with:
+        node-version: 18.x
+        cache: 'npm'
+        cache-dependency-path: frontend/package-lock.json
+    
+    - name: Install frontend dependencies
+      working-directory: ./frontend
+      run: npm ci
+    
+    - name: Run frontend tests
+      working-directory: ./frontend
+      env:
+        CI: true
+      run: npm test -- --passWithNoTests
+    
+    - name: Build frontend
+      working-directory: ./frontend
+      run: npm run build
+
+  security-scan:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run backend security audit
+      working-directory: ./backend
+      run: npm audit --audit-level=high
+      continue-on-error: true
+    
+    - name: Run frontend security audit
+      working-directory: ./frontend
+      run: npm audit --audit-level=high
+      continue-on-error: true

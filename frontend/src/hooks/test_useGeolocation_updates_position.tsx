@@ -16,7 +16,8 @@ beforeEach(() => {
   (global as any).navigator.geolocation = {
     watchPosition: mockWatch,
     clearWatch: mockClear,
-  } as Geolocation;
+    getCurrentPosition: jest.fn(),
+  } as unknown as Geolocation;
 });
 
 afterEach(() => {

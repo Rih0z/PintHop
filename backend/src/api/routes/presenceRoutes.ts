@@ -15,11 +15,13 @@
 
 import express from 'express';
 import * as presenceController from '../controllers/presenceController';
+import { authenticate } from '../middlewares/auth';
 
 const router = express.Router();
 
-router.post('/', presenceController.updatePresence);
-router.get('/friends', presenceController.getFriendsPresence);
-router.get('/me', presenceController.getMyPresence);
+// 認証が必要なルート
+router.post('/', authenticate, presenceController.updatePresence);
+router.get('/friends', authenticate, presenceController.getFriendsPresence);
+router.get('/me', authenticate, presenceController.getMyPresence);
 
 export default router;

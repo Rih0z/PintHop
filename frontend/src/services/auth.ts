@@ -14,24 +14,30 @@
 
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api/v1';
+
+// Debug: Log the API URL being used
+console.log('Auth Service - API URL:', API_URL);
+
+// Axios default configuration
+axios.defaults.withCredentials = true;
 
 export const login = async (email: string, password: string) => {
-  const res = await axios.post(`${API_URL}/v1/auth/login`, { email, password });
+  const res = await axios.post(`${API_URL}/auth/login`, { email, password });
   return res.data;
 };
 
 export const register = async (username: string, email: string, password: string) => {
-  const res = await axios.post(`${API_URL}/v1/auth/register`, { username, email, password });
+  const res = await axios.post(`${API_URL}/auth/register`, { username, email, password });
   return res.data;
 };
 
 export const refresh = async (refreshToken: string) => {
-  const res = await axios.post(`${API_URL}/v1/auth/refresh`, { refreshToken });
+  const res = await axios.post(`${API_URL}/auth/refresh`, { refreshToken });
   return res.data;
 };
 
 export const logout = async () => {
-  const res = await axios.post(`${API_URL}/v1/auth/logout`);
+  const res = await axios.post(`${API_URL}/auth/logout`);
   return res.data;
 };

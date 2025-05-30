@@ -14,12 +14,16 @@
 
 import express from 'express';
 import * as checkinController from '../controllers/checkinController';
+import { authenticate, optionalAuthenticate } from '../middlewares/auth';
 
 const router = express.Router();
 
-router.post('/', checkinController.createCheckin);
-router.post('/:checkinId/checkout', checkinController.checkout);
-router.get('/', checkinController.getCheckins);
+// 認証が必要なルート
+router.post('/', authenticate, checkinController.createCheckin);
+router.post('/:checkinId/checkout', authenticate, checkinController.checkout);
+
+// オプショナル認証（ログインしていなくても見られるが、ログインしていれば自分のデータを優先）
+router.get('/', optionalAuthenticate, checkinController.getCheckins);
 
 export default router;
 

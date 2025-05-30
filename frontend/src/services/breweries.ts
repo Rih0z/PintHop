@@ -15,9 +15,9 @@
 import axios from 'axios';
 import { Brewery } from '../types/brewery';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api';
+const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api/v1';
 
 export const fetchBreweries = async (): Promise<Brewery[]> => {
-  const response = await axios.get(`${API_URL}/v1/breweries`);
+  const response = await axios.get(`${API_URL}/breweries`);
   return response.data as Brewery[];
 };

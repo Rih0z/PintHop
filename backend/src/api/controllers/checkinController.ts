@@ -12,15 +12,21 @@
  * チェックインAPIコントローラー
  */
 
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 import Checkin from '../../models/Checkin';
+import { AppError, ErrorCodes } from '../../utils/AppError';
 
-export const createCheckin = async (req: Request, res: Response) => {
+export const createCheckin = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = req.user?.id || req.body.userId;
     if (!userId) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      throw new AppError(401, ErrorCodes.UNAUTHORIZED, 'User authentication required');
     }
+    
+    if (!req.body.breweryId) {
+      throw new AppError(400, ErrorCodes.VALIDATION_ERROR, 'Brewery ID is required');
+    }
+    
     const checkin = await Checkin.create({
       user: userId,
       brewery: req.body.breweryId,
@@ -28,48 +34,82 @@ export const createCheckin = async (req: Request, res: Response) => {
       visibility: req.body.visibility,
       beers: req.body.beers || []
     });
-    res.status(201).json(checkin);
+    
+    res.status(201).json({
+      status: 'success',
+      data: checkin
+    });
   } catch (error) {
-    console.error('Checkin create error:', error);
-    res.status(500).json({ error: 'Failed to create checkin' });
+    if (error instanceof AppError) {
+      next(error);
+    } else {
+      next(new AppError(500, ErrorCodes.DATABASE_ERROR, 'Failed to create checkin'));
+    }
   }
 };
 
-export const checkout = async (req: Request, res: Response) => {
+export const checkout = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { checkinId } = req.params;
+    
+    if (!checkinId) {
+      throw new AppError(400, ErrorCodes.VALIDATION_ERROR, 'Checkin ID is required');
+    }
+    
     const checkin = await Checkin.findByIdAndUpdate(
       checkinId,
       { checkoutTime: new Date(), status: 'completed' },
       { new: true }
     );
+    
     if (!checkin) {
-      return res.status(404).json({ error: 'Checkin not found' });
+      throw new AppError(404, ErrorCodes.NOT_FOUND, 'Checkin not found');
     }
-    res.json(checkin);
+    
+    res.json({
+      status: 'success',
+      data: checkin
+    });
   } catch (error) {
-    console.error('Checkin checkout error:', error);
-    res.status(500).json({ error: 'Failed to checkout' });
+    if (error instanceof AppError) {
+      next(error);
+    } else {
+      next(new AppError(500, ErrorCodes.DATABASE_ERROR, 'Failed to checkout'));
+    }
   }
 };
 
-export const getCheckins = async (req: Request, res: Response) => {
+export const getCheckins = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const userId = (req.query.userId as string) || req.user?.id;
     const query: any = {};
     if (userId) query.user = userId;
     if (req.query.breweryId) query.brewery = req.query.breweryId;
     if (req.query.status) query.status = req.query.status;
-    const limit = parseInt((req.query.limit as string) || '20', 10);
-    const page = parseInt((req.query.page as string) || '1', 10);
+    
+    const limit = Math.min(parseInt((req.query.limit as string) || '20', 10), 100);
+    const page = Math.max(parseInt((req.query.page as string) || '1', 10), 1);
+    
     const checkins = await Checkin.find(query)
       .sort({ checkinTime: -1 })
       .skip((page - 1) * limit)
-      .limit(limit);
-    res.json({ checkins });
+      .limit(limit)
+      .populate('brewery', 'name location')
+      .populate('user', 'username');
+    
+    res.json({
+      status: 'success',
+      data: {
+        checkins,
+        pagination: {
+          page,
+          limit,
+          hasMore: checkins.length === limit
+        }
+      }
+    });
   } catch (error) {
-    console.error('Get checkins error:', error);
-    res.status(500).json({ error: 'Failed to get checkins' });
+    next(new AppError(500, ErrorCodes.DATABASE_ERROR, 'Failed to get checkins'));
   }
 };
 

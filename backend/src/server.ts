@@ -16,23 +16,23 @@
 import app from './app';
 import http from 'http';
 import mongoose from 'mongoose';
-import dotenv from 'dotenv';
+import { env } from './config/env';
 import logger from './utils/logger';
-
-// 環境変数の読み込み
-dotenv.config();
+import { initializeSocketServer } from './socket';
 
 // ポート設定
-const PORT = process.env.PORT || 5000;
+const PORT = env.PORT;
 
 // サーバーの作成
 const server = http.createServer(app);
 
+// Socket.IOサーバーの初期化
+const io = initializeSocketServer(server);
+
 // MongoDBへの接続
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI as string;
-    await mongoose.connect(mongoURI);
+    await mongoose.connect(env.MONGODB_URI);
     logger.info('MongoDB connected successfully');
   } catch (err) {
     logger.error('MongoDB connection error:', err);
@@ -46,7 +46,8 @@ const startServer = async () => {
   
   server.listen(PORT, () => {
     logger.info(`Server running on port ${PORT}`);
-    logger.info(`Environment: ${process.env.NODE_ENV}`);
+    logger.info(`Environment: ${env.NODE_ENV}`);
+    logger.info(`CORS Origin: ${env.CORS_ORIGIN}`);
   });
 };
 

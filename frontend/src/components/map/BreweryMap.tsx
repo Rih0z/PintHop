@@ -21,7 +21,7 @@ interface BreweryMapProps {
 }
 
 const BreweryMap: React.FC<BreweryMapProps> = ({ breweries }) => {
-  const center = breweries[0]?.location?.coordinates
+  const center: [number, number] = breweries[0]?.location?.coordinates
     ? [breweries[0].location.coordinates[1], breweries[0].location.coordinates[0]]
     : [47.6038, -122.3301];
 

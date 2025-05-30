@@ -19,13 +19,13 @@ interface FriendsPresenceListProps {
   presences: Presence[];
 }
 
-const FriendsPresenceList: React.FC<FriendsPresenceListProps> = ({ presences }) => (
+const FriendsPresenceList: React.FC<FriendsPresenceListProps> = ({ presences = [] }) => (
   <ul data-testid="presence-list">
-    {presences.map((p) => (
+    {presences && Array.isArray(presences) ? presences.map((p) => (
       <li key={p.user}>
         {p.user}: {p.status}
       </li>
-    ))}
+    )) : null}
   </ul>
 );
 

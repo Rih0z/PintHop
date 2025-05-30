@@ -17,13 +17,35 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import MapPage from './pages/Map';
 import TimelinePage from './pages/Timeline';
+import { LoginPage } from './pages/Login';
+import { RegisterPage } from './pages/Register';
+import { PrivateRoute } from './components/auth/PrivateRoute';
 
 const AppRouter: React.FC = () => (
   <Router>
     <Routes>
+      {/* Public routes */}
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
+      
+      {/* Protected routes */}
       <Route path="/" element={<Navigate to="/timeline" replace />} />
-      <Route path="/timeline" element={<TimelinePage />} />
-      <Route path="/map" element={<MapPage />} />
+      <Route
+        path="/timeline"
+        element={
+          <PrivateRoute>
+            <TimelinePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/map"
+        element={
+          <PrivateRoute>
+            <MapPage />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   </Router>
 );

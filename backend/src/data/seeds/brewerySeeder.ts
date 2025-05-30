@@ -20,20 +20,17 @@
 import mongoose from 'mongoose';
 import fs from 'fs';
 import path from 'path';
-import dotenv from 'dotenv';
+import { env } from '../../config/env';
 import Brewery from '../../models/Brewery';
-
-// 環境変数の読み込み
-dotenv.config();
+import logger from '../../utils/logger';
 
 // MongoDBに接続
 const connectDB = async () => {
   try {
-    const mongoURI = process.env.MONGODB_URI as string;
-    await mongoose.connect(mongoURI);
-    console.log('MongoDB connected successfully');
+    await mongoose.connect(env.MONGODB_URI);
+    logger.info('MongoDB connected successfully for seeding');
   } catch (err) {
-    console.error('MongoDB connection error:', err);
+    logger.error('MongoDB connection error:', err);
     process.exit(1);
   }
 };
@@ -43,14 +40,14 @@ const seedBreweries = async () => {
   try {
     // ブルワリーコレクションをクリア
     await Brewery.deleteMany({});
-    console.log('Existing brewery data cleared');
+    logger.info('Existing brewery data cleared');
 
     // breweries ディレクトリのパス
     const breweriesBaseDir = path.join(__dirname, '../breweries');
     
     // breweries ディレクトリが存在するか確認
     if (!fs.existsSync(breweriesBaseDir)) {
-      console.error(`Directory not found: ${breweriesBaseDir}`);
+      logger.error(`Directory not found: ${breweriesBaseDir}`);
       return;
     }
 
@@ -60,7 +57,7 @@ const seedBreweries = async () => {
       .map(dirent => dirent.name);
     
     if (stateDirs.length === 0) {
-      console.log('No state directories found in the breweries directory');
+      logger.warn('No state directories found in the breweries directory');
       return;
     }
 
@@ -76,11 +73,11 @@ const seedBreweries = async () => {
         .filter(file => file.endsWith('.json'));
       
       if (regionFiles.length === 0) {
-        console.log(`No JSON files found in ${stateDir} directory`);
+        logger.warn(`No JSON files found in ${stateDir} directory`);
         continue;
       }
 
-      console.log(`Processing ${stateDir} state with ${regionFiles.length} region files...`);
+      logger.info(`Processing ${stateDir} state with ${regionFiles.length} region files...`);
       
       // 各地域JSONファイルを処理
       for (const regionFile of regionFiles) {
@@ -94,7 +91,7 @@ const seedBreweries = async () => {
           const breweries = jsonData.breweries || jsonData;
           
           if (!Array.isArray(breweries)) {
-            console.warn(`Warning: ${stateDir}/${regionFile} does not contain a valid breweries array`);
+            logger.warn(`Warning: ${stateDir}/${regionFile} does not contain a valid breweries array`);
             continue;
           }
           
@@ -110,27 +107,27 @@ const seedBreweries = async () => {
             
             if (existingBrewery) {
               // 既存のブルワリーを更新
-              console.log(`Updating brewery: ${brewery.name}`);
+              logger.debug(`Updating brewery: ${brewery.name}`);
               await Brewery.updateOne({ breweryId: brewery.breweryId }, brewery);
             } else {
               // 新しいブルワリーを追加
-              console.log(`Adding new brewery: ${brewery.name}`);
+              logger.debug(`Adding new brewery: ${brewery.name}`);
               await Brewery.create(brewery);
             }
           }
           
-          console.log(`${breweries.length} breweries from ${stateDir}/${regionFile} processed successfully`);
+          logger.info(`${breweries.length} breweries from ${stateDir}/${regionFile} processed successfully`);
           totalBreweries += breweries.length;
           totalFiles++;
         } catch (error) {
-          console.error(`Error processing ${stateDir}/${regionFile}:`, error);
+          logger.error(`Error processing ${stateDir}/${regionFile}:`, error);
         }
       }
     }
 
-    console.log(`Total: ${totalBreweries} breweries seeded from ${totalFiles} files across ${stateDirs.length} states`);
+    logger.info(`Total: ${totalBreweries} breweries seeded from ${totalFiles} files across ${stateDirs.length} states`);
   } catch (err) {
-    console.error('Error seeding brewery data:', err);
+    logger.error('Error seeding brewery data:', err);
   }
 };
 
@@ -141,7 +138,7 @@ const runSeeder = async () => {
   
   // 完了後に接続を閉じる
   mongoose.connection.close();
-  console.log('Database connection closed');
+  logger.info('Database connection closed');
 };
 
 // スクリプトを実行
