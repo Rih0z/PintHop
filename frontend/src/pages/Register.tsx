@@ -15,7 +15,9 @@
 
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
+import { LanguageSwitcher } from '../components/common/LanguageSwitcher';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.workers.dev';
@@ -23,6 +25,7 @@ const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.
 export const RegisterPage: React.FC = () => {
   const navigate = useNavigate();
   const { register } = useAuth();
+  const { t } = useTranslation();
   
   const [formData, setFormData] = useState({
     username: '',
@@ -49,14 +52,14 @@ export const RegisterPage: React.FC = () => {
     
     // ユーザー名の検証
     if (formData.username && !/^[a-zA-Z0-9_]{3,20}$/.test(formData.username)) {
-      errors.username = 'Username must be 3-20 characters (letters, numbers, underscore only)';
+      errors.username = t('auth.validation.usernamePattern');
     } else {
       errors.username = '';
     }
     
     // メールの検証
     if (formData.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
-      errors.email = 'Please enter a valid email address';
+      errors.email = t('auth.validation.emailInvalid');
     } else {
       errors.email = '';
     }
@@ -64,9 +67,9 @@ export const RegisterPage: React.FC = () => {
     // パスワードの検証
     if (formData.password) {
       if (formData.password.length < 8) {
-        errors.password = 'Password must be at least 8 characters';
+        errors.password = t('auth.validation.passwordTooShort');
       } else if (!/^(?=.*[A-Za-z])(?=.*\d).{8,}$/.test(formData.password)) {
-        errors.password = 'Password must contain at least one letter and one number';
+        errors.password = t('auth.validation.passwordPattern');
       } else {
         errors.password = '';
       }
@@ -74,13 +77,13 @@ export const RegisterPage: React.FC = () => {
     
     // パスワード確認の検証
     if (formData.confirmPassword && formData.password !== formData.confirmPassword) {
-      errors.confirmPassword = 'Passwords do not match';
+      errors.confirmPassword = t('auth.validation.passwordsNotMatch');
     } else {
       errors.confirmPassword = '';
     }
     
     setValidationErrors(errors);
-  }, [formData]);
+  }, [formData, t]);
 
   // ユーザー名の利用可能性チェック（デバウンス付き）
   useEffect(() => {
@@ -129,17 +132,17 @@ export const RegisterPage: React.FC = () => {
 
     // バリデーションエラーがある場合は送信しない
     if (Object.values(validationErrors).some(err => err !== '')) {
-      setError('Please fix all errors before submitting');
+      setError(t('auth.validation.registrationFailed'));
       return;
     }
 
     // 利用可能性チェック
     if (availability.username === false) {
-      setError('Username is already taken');
+      setError(t('auth.validation.usernameNotAvailable'));
       return;
     }
     if (availability.email === false) {
-      setError('Email is already registered');
+      setError(t('auth.validation.emailNotAvailable'));
       return;
     }
 
@@ -149,7 +152,7 @@ export const RegisterPage: React.FC = () => {
       await register(formData.username, formData.email, formData.password);
       navigate('/dashboard');
     } catch (err: any) {
-      setError(err.response?.data?.error || 'Failed to register');
+      setError(err.response?.data?.error || t('auth.validation.registrationFailed'));
     } finally {
       setLoading(false);
     }
@@ -158,18 +161,23 @@ export const RegisterPage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-dark-800 via-dark-900 to-primary-900 flex items-center justify-center px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full">
+        {/* 言語切り替え */}
+        <div className="flex justify-end mb-4">
+          <LanguageSwitcher />
+        </div>
+        
         {/* ロゴ・タイトル */}
         <div className="text-center mb-8">
           <h1 className="text-6xl md:text-6xl font-extrabold mb-4">
             <span className="bg-gradient-to-r from-primary-400 to-beer-400 bg-clip-text text-transparent">
-              PintHop
+              {t('app.title')}
             </span>
           </h1>
           <h2 className="text-2xl font-bold text-white mb-2">
-            Join the Community
+            {t('auth.registerTitle')}
           </h2>
           <p className="text-dark-300">
-            Start your beer hopping journey today
+            {t('auth.registerSubtitle')}
           </p>
         </div>
 

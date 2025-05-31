@@ -9,13 +9,12 @@ CORS_ORIGIN = "https://67515bf9.pinthop.pages.dev"
 # KV Namespace for user storage
 [[kv_namespaces]]
 binding = "USERS_KV"
-id = "your_kv_namespace_id"
-preview_id = "your_preview_kv_namespace_id"
+id = "fa659b1141e5435eb905680ccdc69aff"
+preview_id = "a43b7a10469c44439935de0e976aab95"
 
 # 環境変数の定義
 # 実際の値はCloudflare Dashboardで設定します
 # wrangler secret put JWT_SECRET
 # wrangler secret put MONGODB_URI (optional for KV version)
 
-[[compatibility_flags]]
-nodejs_compat = true
+compatibility_flags = ["nodejs_compat"]

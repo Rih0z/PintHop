@@ -88,11 +88,21 @@ npm update
 
 Phase 0 features implemented:
 - Basic authentication API
+- **NEW**: Full user registration system with KV storage
+- **NEW**: Real-time form validation and availability checking
+- **NEW**: bcrypt password hashing and secure JWT authentication
 - Brewery CRUD operations with random brewery endpoint
 - Presence tracking system
 - Check-in functionality
 - Map display with brewery markers
 - Timeline view for presence updates
+
+### Latest Deployment Information
+
+- **Backend API**: https://pinthop-api.riho-dare.workers.dev
+- **Frontend**: https://fc9d96f0.pinthop.pages.dev
+- **KV Namespace ID**: fa659b1141e5435eb905680ccdc69aff
+- **Preview KV ID**: a43b7a10469c44439935de0e976aab95
 
 ## Environment Setup
 
@@ -163,7 +173,20 @@ When deploying to Cloudflare or any production environment:
 ### Important Security Notes
 
 - **Never expose API endpoints in public documentation**
-- **Always use worker-secure.ts for production deployments**
+- **Always use worker-with-registration.ts for production deployments**
 - **Change all default passwords and secrets before production**
-- **Review security-setup.md before deployment**
+- **Review security-setup.md and registration-setup.md before deployment**
 - **Use Cloudflare's secret management for sensitive data**
+- **KV storage now used for user registration data**
+- **bcryptjs used for password hashing (saltRounds: 10)**
+
+### New Registration System Architecture
+
+- **Storage**: Cloudflare KV (replacing MongoDB for user data)
+- **Security**: bcryptjs password hashing + JWT tokens
+- **Validation**: Real-time username/email availability checking
+- **UX**: Modern registration form with progressive enhancement
+- **API Endpoints**:
+  - `POST /api/auth/register` - User registration
+  - `GET /api/auth/check-username/:username` - Username availability
+  - `GET /api/auth/check-email/:email` - Email availability
