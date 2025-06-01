@@ -14,7 +14,7 @@
 
 import axios from 'axios';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001';
+const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.workers.dev';
 
 export const login = async (username: string, password: string) => {
   const res = await axios.post(`${API_URL}/api/auth/login`, { username, password });
