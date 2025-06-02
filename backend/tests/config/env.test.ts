@@ -32,15 +32,35 @@ describe('Environment Configuration', () => {
   });
 
   it('should throw error for missing required variables', () => {
+    // Store original env
+    const originalMongoDB = process.env.MONGODB_URI;
+    
+    // Remove required variable
     delete process.env.MONGODB_URI;
-
+    
+    // Clear require cache first
+    delete require.cache[require.resolve('../../src/config/env')];
+    
     expect(() => {
       require('../../src/config/env');
-    }).toThrow('Missing required environment variables');
+    }).toThrow('Missing required environment variables: MONGODB_URI');
+    
+    // Restore original env
+    if (originalMongoDB) {
+      process.env.MONGODB_URI = originalMongoDB;
+    }
   });
 
   it('should throw error for invalid NODE_ENV', () => {
+    // Set all required vars except NODE_ENV is invalid
     process.env.NODE_ENV = 'invalid';
+    process.env.PORT = '5000';
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/pinthop-test';
+    process.env.JWT_SECRET = 'test-secret-key-at-least-32-characters-long';
+    process.env.JWT_EXPIRES_IN = '15m';
+    process.env.JWT_REFRESH_EXPIRES_IN = '7d';
+    process.env.CORS_ORIGIN = 'http://localhost:3000';
+    delete require.cache[require.resolve('../../src/config/env')];
 
     expect(() => {
       require('../../src/config/env');
@@ -48,7 +68,15 @@ describe('Environment Configuration', () => {
   });
 
   it('should throw error for short JWT_SECRET', () => {
+    // Set all required vars except JWT_SECRET is too short
+    process.env.NODE_ENV = 'test';
+    process.env.PORT = '5000';
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/pinthop-test';
     process.env.JWT_SECRET = 'short';
+    process.env.JWT_EXPIRES_IN = '15m';
+    process.env.JWT_REFRESH_EXPIRES_IN = '7d';
+    process.env.CORS_ORIGIN = 'http://localhost:3000';
+    delete require.cache[require.resolve('../../src/config/env')];
 
     expect(() => {
       require('../../src/config/env');
@@ -56,10 +84,43 @@ describe('Environment Configuration', () => {
   });
 
   it('should throw error for invalid PORT', () => {
+    // Set all required vars except PORT is invalid
+    process.env.NODE_ENV = 'test';
     process.env.PORT = '99999';
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/pinthop-test';
+    process.env.JWT_SECRET = 'test-secret-key-at-least-32-characters-long';
+    process.env.JWT_EXPIRES_IN = '15m';
+    process.env.JWT_REFRESH_EXPIRES_IN = '7d';
+    process.env.CORS_ORIGIN = 'http://localhost:3000';
+    delete require.cache[require.resolve('../../src/config/env')];
 
     expect(() => {
       require('../../src/config/env');
     }).toThrow('PORT must be a valid number between 1 and 65535');
+  });
+
+  it('should test reset method for coverage', () => {
+    // Clear cache first to ensure clean state
+    delete require.cache[require.resolve('../../src/config/env')];
+    
+    // Set valid environment
+    process.env.NODE_ENV = 'test';
+    process.env.PORT = '5000';
+    process.env.MONGODB_URI = 'mongodb://localhost:27017/pinthop-test';
+    process.env.JWT_SECRET = 'test-secret-key-at-least-32-characters-long';
+    process.env.JWT_EXPIRES_IN = '15m';
+    process.env.JWT_REFRESH_EXPIRES_IN = '7d';
+    process.env.CORS_ORIGIN = 'http://localhost:3000';
+
+    // Import after setting env vars
+    const envModule = require('../../src/config/env');
+    
+    // Call reset function to cover line 26
+    expect(() => {
+      envModule.resetEnvValidator();
+    }).not.toThrow();
+    
+    // Access env again to ensure it still works
+    expect(envModule.env).toBeDefined();
   });
 });

@@ -58,7 +58,8 @@ const resources = {
           emailNotAvailable: 'Email is already registered',
           invalidCredentials: 'Invalid credentials',
           registrationFailed: 'Registration failed',
-          loginFailed: 'Login failed'
+          loginFailed: 'Login failed',
+          loginRequired: 'Please login to continue'
         },
         status: {
           signingIn: 'Signing in...',
@@ -76,6 +77,58 @@ const resources = {
         profile: 'Profile',
         settings: 'Settings',
         language: 'Language'
+      },
+      map: {
+        peopleHere: 'people here',
+        friendsHere: 'friends here',
+        viewOnMap: 'View on Map'
+      },
+      checkin: {
+        title: 'Check In',
+        checkIn: 'Check In',
+        checkingIn: 'Checking in...',
+        success: 'Successfully checked in!',
+        failed: 'Check-in failed',
+        estimatedDuration: 'How long will you stay?',
+        message: 'Message',
+        messagePlaceholder: 'What are you drinking?',
+        sharePublicly: 'Share publicly'
+      },
+      timeline: {
+        justNow: 'just now',
+        minutesAgo: '{{count}} minutes ago',
+        hoursAgo: '{{count}} hours ago',
+        daysAgo: '{{count}} days ago',
+        todayRoute: "Today's Route",
+        totalStops: '{{count}} stops',
+        allActivity: 'All Activity',
+        friendsOnly: 'Friends',
+        myActivity: 'My Activity',
+        noActivity: 'No activity yet',
+        checkInNow: 'Check In Now',
+        checkedInAt: 'checked in at',
+        viewOnMap: 'View on Map'
+      },
+      common: {
+        loading: 'Loading...',
+        error: 'Error',
+        success: 'Success',
+        cancel: 'Cancel',
+        save: 'Save',
+        delete: 'Delete',
+        edit: 'Edit',
+        confirm: 'Confirm',
+        email: 'Email',
+        password: 'Password',
+        username: 'Username',
+        required: 'Required',
+        optional: 'Optional',
+        minutes: 'minutes',
+        hour: 'hour',
+        hours: 'hours',
+        website: 'Website',
+        call: 'Call',
+        loadMore: 'Load More'
       },
       dashboard: {
         welcome: 'Welcome to PintHop',
@@ -151,7 +204,8 @@ const resources = {
           emailNotAvailable: 'このメールアドレスは既に登録されています',
           invalidCredentials: 'ユーザー名またはパスワードが間違っています',
           registrationFailed: 'アカウント作成に失敗しました',
-          loginFailed: 'ログインに失敗しました'
+          loginFailed: 'ログインに失敗しました',
+          loginRequired: 'ログインしてください'
         },
         status: {
           signingIn: 'サインイン中...',
@@ -169,6 +223,58 @@ const resources = {
         profile: 'プロフィール',
         settings: '設定',
         language: '言語'
+      },
+      map: {
+        peopleHere: '人がここにいます',
+        friendsHere: '人の友達がここにいます',
+        viewOnMap: 'マップで見る'
+      },
+      checkin: {
+        title: 'チェックイン',
+        checkIn: 'チェックイン',
+        checkingIn: 'チェックイン中...',
+        success: 'チェックインしました！',
+        failed: 'チェックインに失敗しました',
+        estimatedDuration: 'どのくらい滞在しますか？',
+        message: 'メッセージ',
+        messagePlaceholder: '何を飲んでいますか？',
+        sharePublicly: '公開で共有'
+      },
+      timeline: {
+        justNow: 'たった今',
+        minutesAgo: '{{count}}分前',
+        hoursAgo: '{{count}}時間前',
+        daysAgo: '{{count}}日前',
+        todayRoute: '今日のルート',
+        totalStops: '{{count}}箇所',
+        allActivity: 'すべて',
+        friendsOnly: '友達のみ',
+        myActivity: '自分のみ',
+        noActivity: 'まだアクティビティがありません',
+        checkInNow: '今すぐチェックイン',
+        checkedInAt: 'にチェックイン',
+        viewOnMap: 'マップで見る'
+      },
+      common: {
+        loading: '読み込み中...',
+        error: 'エラー',
+        success: '成功',
+        cancel: 'キャンセル',
+        save: '保存',
+        delete: '削除',
+        edit: '編集',
+        confirm: '確認',
+        email: 'メールアドレス',
+        password: 'パスワード',
+        username: 'ユーザー名',
+        required: '必須',
+        optional: '任意',
+        minutes: '分',
+        hour: '時間',
+        hours: '時間',
+        website: 'ウェブサイト',
+        call: '電話',
+        loadMore: 'もっと見る'
       },
       dashboard: {
         welcome: 'PintHopへようこそ',

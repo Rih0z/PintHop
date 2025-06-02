@@ -1,5 +1,5 @@
 name = "pinthop-api"
-main = "src/worker-with-registration.ts"
+main = "src/worker-full.ts"
 compatibility_date = "2024-01-01"
 
 [vars]
@@ -11,6 +11,30 @@ CORS_ORIGIN = "https://67515bf9.pinthop.pages.dev"
 binding = "USERS_KV"
 id = "fa659b1141e5435eb905680ccdc69aff"
 preview_id = "a43b7a10469c44439935de0e976aab95"
+
+# KV Namespace for breweries
+[[kv_namespaces]]
+binding = "BREWERIES_KV"
+id = "breweries_kv_id"
+preview_id = "breweries_preview_kv_id"
+
+# KV Namespace for presence
+[[kv_namespaces]]
+binding = "PRESENCE_KV"
+id = "presence_kv_id"
+preview_id = "presence_preview_kv_id"
+
+# KV Namespace for check-ins
+[[kv_namespaces]]
+binding = "CHECKINS_KV"
+id = "checkins_kv_id"
+preview_id = "checkins_preview_kv_id"
+
+# KV Namespace for friends
+[[kv_namespaces]]
+binding = "FRIENDS_KV"
+id = "friends_kv_id"
+preview_id = "friends_preview_kv_id"
 
 # 環境変数の定義
 # 実際の値はCloudflare Dashboardで設定します

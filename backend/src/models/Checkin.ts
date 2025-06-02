@@ -14,27 +14,39 @@
 
 import mongoose, { Document, Model } from 'mongoose';
 
+export interface ICheckin {
+  _id?: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId;
+  brewery: mongoose.Types.ObjectId;
+  beer?: mongoose.Types.ObjectId;
+  rating: number;
+  notes?: string;
+  flavorProfile?: {
+    bitter: number;
+    sweet: number;
+    sour: number;
+    malty: number;
+    hoppy: number;
+  };
+  photoUrl?: string;
+  timestamp: Date;
+}
+
 export interface CheckinDocument extends Document {
   user: mongoose.Types.ObjectId;
   brewery: mongoose.Types.ObjectId;
-  checkinTime: Date;
-  checkoutTime?: Date;
-  status: 'active' | 'completed' | 'cancelled';
-  visibility: 'public' | 'friends' | 'private';
-  location?: {
-    type: string;
-    coordinates: [number, number];
+  beer?: mongoose.Types.ObjectId;
+  rating: number;
+  notes?: string;
+  flavorProfile?: {
+    bitter: number;
+    sweet: number;
+    sour: number;
+    malty: number;
+    hoppy: number;
   };
-  beers: Array<{
-    beer: {
-      name: string;
-      style: string;
-    };
-    rating?: number;
-    comment?: string;
-    photo?: string;
-    timestamp: Date;
-  }>;
+  photoUrl?: string;
+  timestamp: Date;
 }
 
 const checkinSchema = new mongoose.Schema<CheckinDocument>(
@@ -49,56 +61,36 @@ const checkinSchema = new mongoose.Schema<CheckinDocument>(
       ref: 'Brewery',
       required: true
     },
-    checkinTime: {
+    beer: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Beer'
+    },
+    rating: {
+      type: Number,
+      required: true,
+      min: 1,
+      max: 5
+    },
+    notes: String,
+    flavorProfile: {
+      bitter: { type: Number, min: 0, max: 10 },
+      sweet: { type: Number, min: 0, max: 10 },
+      sour: { type: Number, min: 0, max: 10 },
+      malty: { type: Number, min: 0, max: 10 },
+      hoppy: { type: Number, min: 0, max: 10 }
+    },
+    photoUrl: String,
+    timestamp: {
       type: Date,
-      default: Date.now,
-      required: true
-    },
-    checkoutTime: Date,
-    status: {
-      type: String,
-      enum: ['active', 'completed', 'cancelled'],
-      default: 'active'
-    },
-    visibility: {
-      type: String,
-      enum: ['public', 'friends', 'private'],
-      default: 'friends'
-    },
-    location: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        default: 'Point'
-      },
-      coordinates: [Number]
-    },
-    beers: [
-      {
-        beer: {
-          name: String,
-          style: String
-        },
-        rating: {
-          type: Number,
-          min: 1,
-          max: 5
-        },
-        comment: String,
-        photo: String,
-        timestamp: {
-          type: Date,
-          default: Date.now
-        }
-      }
-    ]
+      default: Date.now
+    }
   },
   { timestamps: true }
 );
 
-checkinSchema.index({ user: 1, checkinTime: -1 });
-checkinSchema.index({ brewery: 1, checkinTime: -1 });
-checkinSchema.index({ location: '2dsphere' });
+checkinSchema.index({ user: 1, timestamp: -1 });
+checkinSchema.index({ brewery: 1, timestamp: -1 });
+checkinSchema.index({ beer: 1 });
 checkinSchema.index({ status: 1 });
 
 const Checkin: Model<CheckinDocument> = mongoose.model<CheckinDocument>(

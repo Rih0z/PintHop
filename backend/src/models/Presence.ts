@@ -14,18 +14,37 @@
 
 import mongoose, { Document, Model } from 'mongoose';
 
+export interface IPresence {
+  _id?: mongoose.Types.ObjectId;
+  user: mongoose.Types.ObjectId;
+  brewery: mongoose.Types.ObjectId;
+  status: 'arrived' | 'at_brewery' | 'departed';
+  visibility: 'public' | 'friends' | 'private';
+  location?: {
+    latitude: number;
+    longitude: number;
+  };
+  estimatedDuration?: number;
+  notes?: string;
+  timestamp: Date;
+  departureTime?: Date;
+  isActive: boolean;
+}
+
 export interface PresenceDocument extends Document {
   user: mongoose.Types.ObjectId;
-  status: 'online' | 'away' | 'offline';
+  brewery: mongoose.Types.ObjectId;
+  status: 'arrived' | 'at_brewery' | 'departed';
+  visibility: 'public' | 'friends' | 'private';
   location?: {
-    type: string;
-    coordinates: [number, number];
-    accuracy?: number;
+    latitude: number;
+    longitude: number;
   };
-  brewery?: mongoose.Types.ObjectId;
-  visibility: 'everyone' | 'friends' | 'none';
-  lastUpdated: Date;
-  expiresAt?: Date;
+  estimatedDuration?: number;
+  notes?: string;
+  timestamp: Date;
+  departureTime?: Date;
+  isActive: boolean;
 }
 
 const presenceSchema = new mongoose.Schema<PresenceDocument>(
@@ -34,48 +53,47 @@ const presenceSchema = new mongoose.Schema<PresenceDocument>(
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',
       required: true,
-      unique: true
-    },
-    status: {
-      type: String,
-      enum: ['online', 'away', 'offline'],
-      default: 'online'
-    },
-    location: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        default: 'Point'
-      },
-      coordinates: [Number],
-      accuracy: Number
+      index: true
     },
     brewery: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Brewery'
+      ref: 'Brewery',
+      required: true
     },
-    lastUpdated: {
-      type: Date,
-      default: Date.now
+    status: {
+      type: String,
+      enum: ['arrived', 'at_brewery', 'departed'],
+      required: true
     },
     visibility: {
       type: String,
-      enum: ['everyone', 'friends', 'none'],
+      enum: ['public', 'friends', 'private'],
       default: 'friends'
     },
-    expiresAt: {
+    location: {
+      latitude: Number,
+      longitude: Number
+    },
+    estimatedDuration: Number,
+    notes: String,
+    timestamp: {
       type: Date,
-      expires: 3600
+      default: Date.now
+    },
+    departureTime: Date,
+    isActive: {
+      type: Boolean,
+      default: true
     }
   },
   { timestamps: true }
 );
 
-presenceSchema.index({ user: 1 }, { unique: true });
-presenceSchema.index({ location: '2dsphere' });
+presenceSchema.index({ user: 1 });
 presenceSchema.index({ brewery: 1 });
-presenceSchema.index({ lastUpdated: 1 });
-presenceSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 });
+presenceSchema.index({ timestamp: 1 });
+presenceSchema.index({ isActive: 1 });
+presenceSchema.index({ status: 1 });
 
 const Presence: Model<PresenceDocument> = mongoose.model<PresenceDocument>(
   'Presence',

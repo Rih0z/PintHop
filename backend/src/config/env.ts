@@ -22,6 +22,10 @@ class EnvValidator {
     return this.instance;
   }
 
+  static reset(): void {
+    this.instance = null;
+  }
+
   private static validate(): EnvConfig {
     const requiredVars = [
       'NODE_ENV',
@@ -69,3 +73,4 @@ class EnvValidator {
 }
 
 export const env = EnvValidator.get();
+export const resetEnvValidator = EnvValidator.reset;

@@ -19,6 +19,9 @@ export interface UserDocument extends Document {
   username: string;
   email: string;
   password: string;
+  friends?: mongoose.Types.ObjectId[];
+  createdAt: Date;
+  updatedAt: Date;
   comparePassword(candidate: string): Promise<boolean>;
 }
 
@@ -26,7 +29,8 @@ const userSchema = new mongoose.Schema<UserDocument>(
   {
     username: { type: String, required: true, unique: true, trim: true },
     email: { type: String, required: true, unique: true, trim: true, lowercase: true },
-    password: { type: String, required: true }
+    password: { type: String, required: true },
+    friends: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }]
   },
   { timestamps: true }
 );
