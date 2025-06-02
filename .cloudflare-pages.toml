@@ -1,0 +1,39 @@
+# Cloudflare Pages configuration
+# https://developers.cloudflare.com/pages/platform/build-configuration/
+
+# Build configuration
+[build]
+command = "cd frontend && npm ci && npm run build"
+destination = "frontend/build"
+
+# Environment variables
+[build.environment]
+NODE_VERSION = "18"
+REACT_APP_API_URL = "https://api.pinthop.com"
+
+# Preview environment
+[env.preview]
+REACT_APP_API_URL = "https://staging-api.pinthop.com"
+
+# Production environment
+[env.production]
+REACT_APP_API_URL = "https://api.pinthop.com"
+
+# Redirects and headers
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200
+
+[[headers]]
+for = "/*"
+[headers.values]
+X-Frame-Options = "DENY"
+X-Content-Type-Options = "nosniff"
+X-XSS-Protection = "1; mode=block"
+Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[headers]]
+for = "/static/*"
+[headers.values]
+Cache-Control = "public, max-age=31536000, immutable"
