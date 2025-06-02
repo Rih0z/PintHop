@@ -1,6 +1,7 @@
 name = "pinthop-api"
 main = "src/worker-full.ts"
 compatibility_date = "2024-01-01"
+compatibility_flags = ["nodejs_compat"]
 
 [vars]
 NODE_ENV = "production"
@@ -15,30 +16,24 @@ preview_id = "a43b7a10469c44439935de0e976aab95"
 # KV Namespace for breweries
 [[kv_namespaces]]
 binding = "BREWERIES_KV"
-id = "breweries_kv_id"
-preview_id = "breweries_preview_kv_id"
+id = "28452fe194034bb7a766ec0b2b25822f"
 
 # KV Namespace for presence
 [[kv_namespaces]]
 binding = "PRESENCE_KV"
-id = "presence_kv_id"
-preview_id = "presence_preview_kv_id"
+id = "2017a5934b0647cca5d222c2b943b1c4"
 
 # KV Namespace for check-ins
 [[kv_namespaces]]
 binding = "CHECKINS_KV"
-id = "checkins_kv_id"
-preview_id = "checkins_preview_kv_id"
+id = "f25de66074fd4627a6410b4b12107bf4"
 
 # KV Namespace for friends
 [[kv_namespaces]]
 binding = "FRIENDS_KV"
-id = "friends_kv_id"
-preview_id = "friends_preview_kv_id"
+id = "97d72437174047cb87ae7e543d98866a"
 
 # 環境変数の定義
 # 実際の値はCloudflare Dashboardで設定します
 # wrangler secret put JWT_SECRET
 # wrangler secret put MONGODB_URI (optional for KV version)
-
-compatibility_flags = ["nodejs_compat"]

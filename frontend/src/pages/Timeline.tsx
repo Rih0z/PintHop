@@ -259,7 +259,7 @@ const TimelinePage: React.FC = () => {
                       {[...Array(5)].map((_, i) => (
                         <svg
                           key={i}
-                          className={`w-5 h-5 ${i < checkin.rating ? 'text-beer-400' : 'text-dark-600'}`}
+                          className={`w-5 h-5 ${i < (checkin.rating || 0) ? 'text-beer-400' : 'text-dark-600'}`}
                           fill="currentColor"
                           viewBox="0 0 20 20"
                         >

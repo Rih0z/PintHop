@@ -190,7 +190,7 @@ describe('BeerRatingForm', () => {
     
     fireEvent.change(commentInput, { target: { value: longComment } });
 
-    expect(commentInput.value).toHaveLength(500); // Should be truncated
+    expect((commentInput as HTMLInputElement).value).toHaveLength(500); // Should be truncated
   });
 
   it('shows flavor profile visualization', () => {

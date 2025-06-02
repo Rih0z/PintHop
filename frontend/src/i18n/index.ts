@@ -109,7 +109,7 @@ const resources = {
         checkedInAt: 'checked in at',
         viewOnMap: 'View on Map'
       },
-      common: {
+      beerRating: {
         loading: 'Loading...',
         error: 'Error',
         success: 'Success',
@@ -255,7 +255,7 @@ const resources = {
         checkedInAt: 'にチェックイン',
         viewOnMap: 'マップで見る'
       },
-      common: {
+      beerRating: {
         loading: '読み込み中...',
         error: 'エラー',
         success: '成功',

@@ -242,11 +242,11 @@ const Dashboard: React.FC = () => {
 
   const formatActivity = (activity: any) => {
     if (activity.action === 'checkedInAt') {
-      return `${t[activity.action]} ${activity.brewery}`;
+      return `${(t as any)[activity.action]} ${activity.brewery}`;
     } else if (activity.action === 'startedHopping') {
-      return `${t[activity.action]} ${activity.location}`;
+      return `${(t as any)[activity.action]} ${activity.location}`;
     } else if (activity.action === 'discoveredBeer') {
-      return `${t[activity.action]} ${activity.beer}`;
+      return `${(t as any)[activity.action]} ${activity.beer}`;
     }
     return activity.action;
   };
@@ -411,7 +411,7 @@ const Dashboard: React.FC = () => {
                             <span className="text-dark-300">{formatActivity(activity)}</span>
                           </p>
                           <p className="text-dark-400 text-sm">
-                            {activity.time} {t[activity.unit]}
+                            {activity.time} {(t as any)[activity.unit]}
                           </p>
                         </div>
                       </div>
