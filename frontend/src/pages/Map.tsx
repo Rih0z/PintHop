@@ -22,6 +22,11 @@ import 'leaflet/dist/leaflet.css';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { LanguageSwitcher } from '../components/common/LanguageSwitcher';
+import { OptimizedBreweryCard, BreweryListItem } from '../components/brewery/OptimizedBreweryCard';
+import { BeerGlassLoader, EmptyBeerGlass } from '../components/common/LoadingStates';
+import { BeerTapButton, BeerFAB } from '../components/common/AnimatedCard';
+import { motion, AnimatePresence } from 'framer-motion';
+import { colors } from '../styles/design-system';
 
 // Fix Leaflet icon issue
 delete (L.Icon.Default.prototype as any)._getIconUrl;
@@ -36,15 +41,26 @@ const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.
 interface Brewery {
   id: string;
   name: string;
-  address: string;
-  city: string;
-  state: string;
+  description?: string;
+  address: {
+    street?: string;
+    city?: string;
+    state?: string;
+  };
   latitude: number;
   longitude: number;
   phone?: string;
   website?: string;
   tags?: string[];
   currentVisitors?: number;
+  photos?: string[];
+  currentTaps?: number;
+  specialtyStyles?: Array<{ style: string; rating: number }>;
+  ratings?: {
+    untappd?: { score: number };
+    rateBeer?: { score: number };
+    beerAdvocate?: { score: number };
+  };
 }
 
 interface Presence {
@@ -65,6 +81,7 @@ const MapPage: React.FC = () => {
   const [selectedBrewery, setSelectedBrewery] = useState<Brewery | null>(null);
   const [loading, setLoading] = useState(true);
   const [checkingIn, setCheckingIn] = useState(false);
+  const [showList, setShowList] = useState(false);
   const [checkInForm, setCheckInForm] = useState({
     estimatedDuration: 60,
     message: '',
@@ -175,26 +192,89 @@ const MapPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+        <BeerGlassLoader size="lg" />
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black">
       {/* Header */}
-      <div className="bg-dark-800/50 backdrop-blur-sm border-b border-dark-700">
+      <motion.div 
+        className="bg-gray-900/80 backdrop-blur-md border-b border-gray-800"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-white">{t('nav.map')}</h1>
-            <LanguageSwitcher />
+            <div className="flex items-center gap-4">
+              <LanguageSwitcher />
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.3, type: "spring" }}
+                className="text-amber-500 text-sm font-medium"
+              >
+                {breweries.length} breweries
+              </motion.div>
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Map Container */}
       <div className="relative h-[calc(100vh-80px)]">
+        {/* Brewery List Sidebar */}
+        <AnimatePresence>
+          {showList && (
+            <motion.div
+              className="absolute left-0 top-0 bottom-0 w-80 bg-gray-900/95 backdrop-blur-xl border-r border-gray-800 z-20 overflow-hidden"
+              initial={{ x: -320 }}
+              animate={{ x: 0 }}
+              exit={{ x: -320 }}
+              transition={{ type: "spring", damping: 25, stiffness: 500 }}
+            >
+              <div className="p-4 border-b border-gray-800">
+                <div className="flex justify-between items-center">
+                  <h2 className="text-lg font-bold text-white">Breweries ({breweries.length})</h2>
+                  <button
+                    onClick={() => setShowList(false)}
+                    className="text-gray-400 hover:text-white transition-colors"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+              <div className="overflow-y-auto h-full pb-20">
+                <div className="p-4 space-y-3">
+                  {breweries.length === 0 ? (
+                    <EmptyBeerGlass message="No breweries found" />
+                  ) : (
+                    breweries.map((brewery) => (
+                      <BreweryListItem
+                        key={brewery.id}
+                        brewery={{
+                          ...brewery,
+                          currentVisitors: getVisitorCount(brewery.id)
+                        }}
+                        onClick={() => {
+                          setSelectedBrewery(brewery);
+                          setShowList(false);
+                        }}
+                        selected={selectedBrewery?.id === brewery.id}
+                      />
+                    ))
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
         <MapContainer
           center={[47.6062, -122.3321]} // Seattle center
           zoom={12}
@@ -237,7 +317,10 @@ const MapPage: React.FC = () => {
                   <Popup>
                     <div className="p-2">
                       <h3 className="font-bold text-lg">{brewery.name}</h3>
-                      <p className="text-sm text-gray-600">{brewery.address}</p>
+                      <p className="text-sm text-gray-600">
+                        {brewery.address?.street && `${brewery.address.street}, `}
+                        {brewery.address?.city}, {brewery.address?.state}
+                      </p>
                       {hasVisitors && (
                         <div className="mt-2 text-primary-500 font-medium">
                           {visitorCount} {t('map.peopleHere')}
@@ -264,29 +347,46 @@ const MapPage: React.FC = () => {
           })}
         </MapContainer>
 
-        {/* Brewery Details Panel */}
-        {selectedBrewery && (
-          <div className="absolute bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 bg-dark-800/95 backdrop-blur-sm rounded-xl shadow-lg border border-dark-700 p-6 z-10">
-            <button
-              onClick={() => setSelectedBrewery(null)}
-              className="absolute top-4 right-4 text-dark-400 hover:text-white"
+        {/* Brewery Details Panel with Animation */}
+        <AnimatePresence>
+          {selectedBrewery && (
+            <motion.div 
+              className="absolute bottom-4 left-4 right-4 md:left-auto md:right-4 md:w-96 z-10"
+              initial={{ y: 100, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 100, opacity: 0 }}
+              transition={{ type: "spring", damping: 25, stiffness: 500 }}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
-            
-            <h2 className="text-xl font-bold text-white mb-2">{selectedBrewery.name}</h2>
-            <p className="text-dark-300 mb-4">{selectedBrewery.address}</p>
-            
-            {/* Current visitors */}
-            {getVisitorCount(selectedBrewery.id) > 0 && (
-              <div className="mb-4 p-3 bg-primary-500/10 rounded-lg border border-primary-500/20">
-                <p className="text-primary-400 font-medium">
-                  {getVisitorCount(selectedBrewery.id)} {t('map.friendsHere')}
+              <div className="bg-gray-900/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-amber-500/20 p-6">
+                <button
+                  onClick={() => setSelectedBrewery(null)}
+                  className="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+                
+                <h2 className="text-xl font-bold text-white mb-2">{selectedBrewery.name}</h2>
+                <p className="text-gray-400 mb-4">
+                  {selectedBrewery.address?.street || ''}
+                  {selectedBrewery.address?.city && selectedBrewery.address?.state && 
+                    `, ${selectedBrewery.address.city}, ${selectedBrewery.address.state}`}
                 </p>
-              </div>
-            )}
+                
+                {/* Current visitors with animation */}
+                {getVisitorCount(selectedBrewery.id) > 0 && (
+                  <motion.div 
+                    className="mb-4 p-3 bg-amber-500/10 rounded-lg border border-amber-500/30"
+                    initial={{ scale: 0.9, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                  >
+                    <p className="text-amber-400 font-medium">
+                      {getVisitorCount(selectedBrewery.id)} {t('map.friendsHere')}
+                    </p>
+                  </motion.div>
+                )}
             
             {/* Check-in form */}
             {user && (
@@ -336,38 +436,53 @@ const MapPage: React.FC = () => {
                   </label>
                 </div>
                 
-                <button
+                <BeerTapButton
                   onClick={() => handleCheckIn(selectedBrewery)}
                   disabled={checkingIn}
-                  className="w-full py-3 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium rounded-lg hover:from-primary-600 hover:to-primary-700 transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                  variant="primary"
+                  size="lg"
                 >
                   {checkingIn ? t('checkin.checkingIn') : t('checkin.checkIn')}
-                </button>
+                </BeerTapButton>
               </div>
             )}
             
-            {/* Brewery links */}
-            <div className="mt-4 flex gap-4">
-              {selectedBrewery.website && (
-                <a 
-                  href={selectedBrewery.website} 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="text-primary-400 hover:text-primary-300 text-sm"
-                >
-                  {t('common.website')} →
-                </a>
-              )}
-              {selectedBrewery.phone && (
-                <a 
-                  href={`tel:${selectedBrewery.phone}`}
-                  className="text-primary-400 hover:text-primary-300 text-sm"
-                >
-                  {t('common.call')} {selectedBrewery.phone}
-                </a>
-              )}
-            </div>
-          </div>
+                {/* Brewery links */}
+                <div className="mt-4 flex gap-4">
+                  {selectedBrewery.website && (
+                    <a 
+                      href={selectedBrewery.website} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-amber-400 hover:text-amber-300 text-sm transition-colors"
+                    >
+                      {t('common.website')} →
+                    </a>
+                  )}
+                  {selectedBrewery.phone && (
+                    <a 
+                      href={`tel:${selectedBrewery.phone}`}
+                      className="text-amber-400 hover:text-amber-300 text-sm transition-colors"
+                    >
+                      {t('common.call')} {selectedBrewery.phone}
+                    </a>
+                  )}
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
+        
+        {/* Floating Action Button */}
+        {!showList && (
+          <BeerFAB
+            onClick={() => setShowList(true)}
+            icon={
+              <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              </svg>
+            }
+          />
         )}
       </div>
     </div>

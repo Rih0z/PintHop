@@ -52,6 +52,29 @@ module.exports = {
           700: '#CC9720',
           800: '#B7831C',
           900: '#A36F18',
+        },
+        // Health-conscious colors (persona-based)
+        health: {
+          low: '#66BB6A',      // Good health (green)
+          moderate: '#FFB300', // Moderate (amber)
+          high: '#FF7043',     // Poor health (orange-red)
+          lowABV: '#81C784',   // Session beers
+          highABV: '#FF8A65',  // Strong beers
+        },
+        // Modern neutrals (Netflix-inspired)
+        neutral: {
+          0: '#FFFFFF',
+          50: '#FAFAFA',
+          100: '#F5F5F5',
+          200: '#EEEEEE',
+          300: '#E0E0E0',
+          400: '#BDBDBD',
+          500: '#9E9E9E',
+          600: '#757575',
+          700: '#616161',
+          800: '#424242',
+          900: '#212121',
+          950: '#121212',
         }
       },
       fontFamily: {
@@ -74,6 +97,8 @@ module.exports = {
         '18': '4.5rem',
         '88': '22rem',
         '128': '32rem',
+        'safe': 'env(safe-area-inset-bottom)',
+        'safe-top': 'env(safe-area-inset-top)',
       },
       borderRadius: {
         'xl': '0.75rem',
@@ -115,5 +140,102 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    // Add custom utilities for mobile optimization
+    function({ addUtilities, addComponents }) {
+      // Mobile-first utilities
+      const mobileUtilities = {
+        // Safe area utilities for iOS
+        '.safe-area-top': {
+          'padding-top': 'env(safe-area-inset-top)',
+        },
+        '.safe-area-bottom': {
+          'padding-bottom': 'env(safe-area-inset-bottom)',
+        },
+        '.safe-area-left': {
+          'padding-left': 'env(safe-area-inset-left)',
+        },
+        '.safe-area-right': {
+          'padding-right': 'env(safe-area-inset-right)',
+        },
+        '.safe-area-inset': {
+          'padding-top': 'env(safe-area-inset-top)',
+          'padding-right': 'env(safe-area-inset-right)',
+          'padding-bottom': 'env(safe-area-inset-bottom)',
+          'padding-left': 'env(safe-area-inset-left)',
+        },
+        // Touch targets (minimum 44px for iOS)
+        '.touch-target': {
+          'min-height': '44px',
+          'min-width': '44px',
+        },
+        // Glass morphism effects
+        '.glass': {
+          'backdrop-filter': 'blur(10px)',
+          'background-color': 'rgba(255, 255, 255, 0.1)',
+        },
+        '.glass-dark': {
+          'backdrop-filter': 'blur(10px)',
+          'background-color': 'rgba(0, 0, 0, 0.3)',
+        },
+        // Text truncation utilities
+        '.line-clamp-1': {
+          'overflow': 'hidden',
+          'display': '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': '1',
+        },
+        '.line-clamp-2': {
+          'overflow': 'hidden',
+          'display': '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': '2',
+        },
+        '.line-clamp-3': {
+          'overflow': 'hidden',
+          'display': '-webkit-box',
+          '-webkit-box-orient': 'vertical',
+          '-webkit-line-clamp': '3',
+        },
+      }
+      
+      // Modern component styles
+      const modernComponents = {
+        '.modern-card': {
+          'background': 'rgba(255, 255, 255, 0.9)',
+          'backdrop-filter': 'blur(10px)',
+          'border-radius': '1rem',
+          'box-shadow': '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+          'transition': 'all 0.25s ease-out',
+        },
+        '.modern-button': {
+          'padding': '0.625rem 1.25rem',
+          'border-radius': '0.5rem',
+          'font-weight': '500',
+          'transition': 'all 0.15s ease-out',
+          'min-height': '44px',
+          'display': 'flex',
+          'align-items': 'center',
+          'justify-content': 'center',
+        },
+        '.modern-input': {
+          'padding': '0.75rem 1rem',
+          'border-radius': '0.5rem',
+          'border': '1px solid #E0E0E0',
+          'min-height': '44px',
+          'transition': 'all 0.15s ease-out',
+          'background': '#FAFAFA',
+          '&:focus': {
+            'border-color': '#FFB300',
+            'background': '#FFFFFF',
+            'outline': 'none',
+            'box-shadow': '0 0 0 3px rgba(255, 179, 0, 0.1)',
+          },
+        },
+      }
+      
+      addUtilities(mobileUtilities, ['responsive'])
+      addComponents(modernComponents)
+    }
+  ],
 }

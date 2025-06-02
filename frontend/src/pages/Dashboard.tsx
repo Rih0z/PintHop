@@ -3,537 +3,484 @@
  * ファイルパス: frontend/src/pages/Dashboard.tsx
  *
  * 作成者: AI Assistant
- * 作成日: 2025-05-30
- * 
- * 更新履歴:
- * - 2025-06-01 AI Assistant リアルタイム機能、言語切り替え、自動更新を追加
+ * 作成日: 2025-06-02
  *
  * 説明:
- * ログイン後のダッシュボードページ
- * リアルタイムプレゼンス、チェックイン、友達アクティビティを表示
+ * ダッシュボード - ビールデータの可視化とユーザー統計
  */
 
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
+import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
-import { useFriendsPresence } from '../hooks/useFriendsPresence';
-import { useCheckins } from '../hooks/useCheckins';
-import { useBreweries } from '../hooks/useBreweries';
-import { Presence } from '../types/presence';
-import { Checkin } from '../types/checkin';
-import { Brewery } from '../types/brewery';
-import { fetchFriendsPresence, fetchMyPresence } from '../services/presence';
-import { fetchCheckins } from '../services/checkins';
-import { fetchBreweries } from '../services/breweries';
-import { useNavigate } from 'react-router-dom';
+import { LanguageSwitcher } from '../components/common/LanguageSwitcher';
+import { AnimatedCard, BeerTapButton } from '../components/common/AnimatedCard';
+import { BeerGlassLoader, BreweryCardSkeleton, BeerPourProgress } from '../components/common/LoadingStates';
+import { BeerFlavorChart, IBUMeter, ABVGauge } from '../components/beer/BeerFlavorChart';
+import { OptimizedBreweryCard } from '../components/brewery/OptimizedBreweryCard';
+import { motion, AnimatePresence } from 'framer-motion';
+import { colors } from '../styles/design-system';
+import { Line, Bar, Doughnut } from 'react-chartjs-2';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+} from 'chart.js';
 
-// 言語定義
-const translations = {
-  en: {
-    welcome: 'Welcome back,',
-    dashboard: 'Dashboard',
-    discover: 'Discover',
-    friends: 'Friends',
-    map: 'Map',
-    signOut: 'Sign Out',
-    realTimeStats: 'Real-Time Stats',
-    friendsAtBreweries: 'Friends at Breweries',
-    todaysCheckins: "Today's Check-ins",
-    activePresence: 'Friends Currently at Breweries',
-    recentActivity: 'Recent Activity',
-    todaysRoute: "Today's Route",
-    quickActions: 'Quick Actions',
-    checkIn: 'Check In',
-    checkInSubtitle: 'Mark your current location',
-    exploreMap: 'Explore Map',
-    exploreMapSubtitle: 'Find nearby breweries',
-    findFriends: 'Find Friends',
-    findFriendsSubtitle: "See who's nearby",
-    setGoal: 'Set Goal',
-    setGoalSubtitle: 'Plan your beer route',
-    hotSpots: 'Hot Spots',
-    mostPopular: 'Most popular breweries right now',
-    live: 'Live',
-    friendsHere: 'friends here',
-    checkedInAt: 'checked in at',
-    startedHopping: 'started beer hopping in',
-    discoveredBeer: 'discovered a new beer',
-    minAgo: 'min ago',
-    hourAgo: 'hour ago',
-    yourJourney: 'Your Journey',
-    breweriesVisited: 'Breweries Visited',
-    beersTried: 'Beers Tried',
-    friendsMet: 'Friends Met',
-    routesCompleted: 'Routes Completed',
-    developmentMode: 'Development Mode',
-    developmentNotice: 'This is a preview version. Features are being actively developed based on user feedback.',
-    noActivePresence: 'No friends are currently at breweries',
-    noRecentActivity: 'No recent activity',
-    noRouteToday: "You haven't started a route today",
-    startRoute: 'Start Your Route',
-    viewOnMap: 'View on Map',
-    lastUpdated: 'Last updated',
-    autoRefresh: 'Auto-refresh in',
-    seconds: 'seconds',
-    language: 'Language',
-  },
-  ja: {
-    welcome: 'おかえりなさい、',
-    dashboard: 'ダッシュボード',
-    discover: '発見',
-    friends: '友達',
-    map: 'マップ',
-    signOut: 'ログアウト',
-    realTimeStats: 'リアルタイム統計',
-    friendsAtBreweries: 'ブルワリーにいる友達',
-    todaysCheckins: '今日のチェックイン',
-    activePresence: '現在ブルワリーにいる友達',
-    recentActivity: '最近のアクティビティ',
-    todaysRoute: '今日のルート',
-    quickActions: 'クイックアクション',
-    checkIn: 'チェックイン',
-    checkInSubtitle: '現在地を記録',
-    exploreMap: 'マップを探索',
-    exploreMapSubtitle: '近くのブルワリーを見つける',
-    findFriends: '友達を探す',
-    findFriendsSubtitle: '近くにいる人を見る',
-    setGoal: '目標を設定',
-    setGoalSubtitle: 'ビールルートを計画',
-    hotSpots: 'ホットスポット',
-    mostPopular: '今最も人気のブルワリー',
-    live: 'ライブ',
-    friendsHere: '人の友達がここにいます',
-    checkedInAt: 'にチェックイン',
-    startedHopping: 'でビアホッピングを開始',
-    discoveredBeer: '新しいビールを発見',
-    minAgo: '分前',
-    hourAgo: '時間前',
-    yourJourney: 'あなたの旅',
-    breweriesVisited: '訪問したブルワリー',
-    beersTried: '試したビール',
-    friendsMet: '会った友達',
-    routesCompleted: '完了したルート',
-    developmentMode: '開発モード',
-    developmentNotice: 'これはプレビュー版です。ユーザーフィードバックに基づいて機能を積極的に開発しています。',
-    noActivePresence: '現在ブルワリーにいる友達はいません',
-    noRecentActivity: '最近のアクティビティはありません',
-    noRouteToday: '今日はまだルートを開始していません',
-    startRoute: 'ルートを開始',
-    viewOnMap: 'マップで見る',
-    lastUpdated: '最終更新',
-    autoRefresh: '自動更新まで',
-    seconds: '秒',
-    language: '言語',
-  },
-};
+// Register ChartJS components
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  BarElement,
+  ArcElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
-const Dashboard: React.FC = () => {
-  const { user, logout } = useAuth();
-  const navigate = useNavigate();
-  const [language, setLanguage] = useState<'en' | 'ja'>('en');
-  const [refreshTimer, setRefreshTimer] = useState(30);
-  const [friendsPresence, setFriendsPresence] = useState<Presence[]>([]);
-  const [todaysCheckins, setTodaysCheckins] = useState<Checkin[]>([]);
-  const [recentActivities, setRecentActivities] = useState<any[]>([]);
-  const [breweries, setBreweries] = useState<Map<string, Brewery>>(new Map());
+const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.workers.dev';
+
+interface BeerStats {
+  totalCheckins: number;
+  uniqueBeers: number;
+  uniqueBreweries: number;
+  favoriteStyle: string;
+  avgRating: number;
+  monthlyCheckins: Array<{ month: string; count: number }>;
+  styleDistribution: Array<{ style: string; count: number }>;
+}
+
+interface FavoriteBeer {
+  id: string;
+  name: string;
+  brewery: string;
+  style: string;
+  abv: number;
+  ibu: number;
+  rating: number;
+  flavorProfile: {
+    hoppy: number;
+    malty: number;
+    bitter: number;
+    sweet: number;
+    citrus: number;
+    roasted: number;
+    fruity: number;
+    spicy: number;
+  };
+}
+
+interface RecommendedBrewery {
+  id: string;
+  name: string;
+  description?: string;
+  address: {
+    street?: string;
+    city?: string;
+    state?: string;
+  };
+  ratings?: {
+    untappd?: { score: number };
+    rateBeer?: { score: number };
+    beerAdvocate?: { score: number };
+  };
+  photos?: string[];
+  currentTaps?: number;
+  currentVisitors?: number;
+  matchScore: number;
+}
+
+const DashboardPage: React.FC = () => {
+  const { t } = useTranslation();
+  const { token, user } = useAuth();
   const [loading, setLoading] = useState(true);
-  const [myPresence, setMyPresence] = useState<Presence | null>(null);
+  const [stats, setStats] = useState<BeerStats | null>(null);
+  const [favoriteBeer, setFavoriteBeer] = useState<FavoriteBeer | null>(null);
+  const [recommendedBreweries, setRecommendedBreweries] = useState<RecommendedBrewery[]>([]);
+  const [activeView, setActiveView] = useState<'overview' | 'beers' | 'breweries'>('overview');
 
-  const t = translations[language];
-
-  // データ取得関数
-  const fetchData = useCallback(async () => {
+  // Fetch user statistics
+  const fetchStats = async () => {
+    if (!token) return;
+    
     try {
-      // 友達のプレゼンス情報を取得
-      const presenceData = await fetchFriendsPresence();
-      setFriendsPresence(presenceData.filter(p => p.brewery && p.status === 'online'));
-
-      // 自分のプレゼンス情報を取得
-      const myPresenceData = await fetchMyPresence();
-      setMyPresence(myPresenceData);
-
-      // 今日のチェックインを取得
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      const checkinsData = await fetchCheckins();
-      const todaysData = checkinsData.filter(c => 
-        new Date(c.checkinTime || '').getTime() >= today.getTime()
-      );
-      setTodaysCheckins(todaysData);
-
-      // ブルワリー情報を取得
-      const breweriesData = await fetchBreweries();
-      const breweryMap = new Map(breweriesData.map(b => [b.breweryId, b]));
-      setBreweries(breweryMap);
-
-      // 最近のアクティビティ（モックデータ - 実際のAPIがあれば置き換え）
-      setRecentActivities([
-        { 
-          user: 'Alice', 
-          action: 'checkedInAt', 
-          brewery: 'Pike Brewing', 
-          time: '5', 
-          unit: 'minAgo',
-          avatar: 'A' 
-        },
-        { 
-          user: 'Bob', 
-          action: 'startedHopping', 
-          location: 'Ballard', 
-          time: '12', 
-          unit: 'minAgo',
-          avatar: 'B' 
-        },
-        { 
-          user: 'Charlie', 
-          action: 'discoveredBeer', 
-          beer: 'IPA', 
-          time: '1', 
-          unit: 'hourAgo',
-          avatar: 'C' 
-        },
+      // Simulated data for now
+      setStats({
+        totalCheckins: 142,
+        uniqueBeers: 89,
+        uniqueBreweries: 23,
+        favoriteStyle: 'IPA',
+        avgRating: 4.2,
+        monthlyCheckins: [
+          { month: 'Jan', count: 12 },
+          { month: 'Feb', count: 18 },
+          { month: 'Mar', count: 22 },
+          { month: 'Apr', count: 28 },
+          { month: 'May', count: 35 },
+          { month: 'Jun', count: 27 }
+        ],
+        styleDistribution: [
+          { style: 'IPA', count: 35 },
+          { style: 'Stout', count: 22 },
+          { style: 'Lager', count: 18 },
+          { style: 'Wheat', count: 14 }
+        ]
+      });
+      
+      setFavoriteBeer({
+        id: '1',
+        name: 'Space Dust IPA',
+        brewery: 'Elysian Brewing',
+        style: 'IPA',
+        abv: 8.2,
+        ibu: 73,
+        rating: 4.5,
+        flavorProfile: {
+          hoppy: 9,
+          malty: 4,
+          bitter: 8,
+          sweet: 2,
+          citrus: 7,
+          roasted: 1,
+          fruity: 6,
+          spicy: 3
+        }
+      });
+      
+      setRecommendedBreweries([
+        {
+          id: '1',
+          name: 'Fremont Brewing',
+          description: 'Urban beer garden with award-winning IPAs',
+          address: {
+            street: '1050 N 34th St',
+            city: 'Seattle',
+            state: 'WA'
+          },
+          ratings: {
+            untappd: { score: 4.3 },
+            rateBeer: { score: 4.2 },
+            beerAdvocate: { score: 4.4 }
+          },
+          photos: ['https://example.com/fremont.jpg'],
+          currentTaps: 12,
+          currentVisitors: 5,
+          matchScore: 92
+        }
       ]);
-
-      setLoading(false);
     } catch (error) {
-      console.error('Failed to fetch dashboard data:', error);
+      console.error('Failed to fetch stats:', error);
+    }
+  };
+
+  useEffect(() => {
+    const loadData = async () => {
+      setLoading(true);
+      await fetchStats();
       setLoading(false);
-    }
-  }, []);
-
-  // 初回データ取得と自動更新
-  useEffect(() => {
-    fetchData();
-
-    // 30秒ごとに自動更新
-    const interval = setInterval(() => {
-      fetchData();
-      setRefreshTimer(30);
-    }, 30000);
-
-    // カウントダウンタイマー
-    const timerInterval = setInterval(() => {
-      setRefreshTimer(prev => prev > 0 ? prev - 1 : 30);
-    }, 1000);
-
-    return () => {
-      clearInterval(interval);
-      clearInterval(timerInterval);
     };
-  }, [fetchData]);
-
-  // 言語を保存
-  useEffect(() => {
-    localStorage.setItem('language', language);
-  }, [language]);
-
-  // 保存された言語を読み込み
-  useEffect(() => {
-    const savedLanguage = localStorage.getItem('language') as 'en' | 'ja';
-    if (savedLanguage) {
-      setLanguage(savedLanguage);
-    }
-  }, []);
-
-  const activePresenceCount = friendsPresence.length;
-
-  const getBreweryName = (breweryId: string) => {
-    return breweries.get(breweryId)?.name || breweryId;
-  };
-
-  const formatActivity = (activity: any) => {
-    if (activity.action === 'checkedInAt') {
-      return `${(t as any)[activity.action]} ${activity.brewery}`;
-    } else if (activity.action === 'startedHopping') {
-      return `${(t as any)[activity.action]} ${activity.location}`;
-    } else if (activity.action === 'discoveredBeer') {
-      return `${(t as any)[activity.action]} ${activity.beer}`;
-    }
-    return activity.action;
-  };
+    
+    loadData();
+  }, [token]);
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark-900 flex items-center justify-center">
-        <div className="text-white text-xl">Loading...</div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+        <BeerGlassLoader size="lg" />
       </div>
     );
   }
 
+  // Chart configurations
+  const monthlyChartData = {
+    labels: stats?.monthlyCheckins.map(m => m.month) || [],
+    datasets: [{
+      label: 'Check-ins',
+      data: stats?.monthlyCheckins.map(m => m.count) || [],
+      fill: true,
+      backgroundColor: `${colors.beer.amber[500]}20`,
+      borderColor: colors.beer.amber[500],
+      tension: 0.4,
+      pointBackgroundColor: colors.beer.amber[600],
+      pointBorderColor: colors.foam[100],
+      pointBorderWidth: 2,
+      pointRadius: 6,
+      pointHoverRadius: 8
+    }]
+  };
+
+  const styleChartData = {
+    labels: stats?.styleDistribution.map(s => s.style) || [],
+    datasets: [{
+      data: stats?.styleDistribution.map(s => s.count) || [],
+      backgroundColor: [
+        colors.beer.amber[500],
+        colors.beer.dark[800],
+        colors.beer.light[400],
+        colors.hop[500]
+      ],
+      borderColor: colors.brewery[900],
+      borderWidth: 2
+    }]
+  };
+
+  const chartOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: {
+        labels: {
+          color: colors.foam[200],
+          font: {
+            size: 12
+          }
+        }
+      },
+      tooltip: {
+        backgroundColor: colors.brewery[900],
+        borderColor: colors.beer.amber[500],
+        borderWidth: 1
+      }
+    },
+    scales: {
+      x: {
+        ticks: { color: colors.foam[200] },
+        grid: { color: colors.brewery[800] }
+      },
+      y: {
+        ticks: { color: colors.foam[200] },
+        grid: { color: colors.brewery[800] }
+      }
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-dark-900">
-      {/* Header - Netflix Style */}
-      <header className="bg-dark-800/95 backdrop-blur-sm border-b border-dark-700 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-display font-bold text-white flex items-center">
-                🍺 <span className="ml-2 bg-gradient-to-r from-primary-500 to-beer-500 bg-clip-text text-transparent">PintHop</span>
-              </h1>
-              <nav className="hidden md:flex space-x-6">
-                <a href="#" className="text-dark-200 hover:text-white transition-colors font-medium">{t.discover}</a>
-                <a href="#" className="text-dark-200 hover:text-white transition-colors font-medium">{t.friends}</a>
-                <button 
-                  onClick={() => navigate('/map')}
-                  className="text-dark-200 hover:text-white transition-colors font-medium"
-                >
-                  {t.map}
-                </button>
-              </nav>
-            </div>
-            <div className="flex items-center space-x-4">
-              {/* Language Switcher */}
-              <select 
-                value={language} 
-                onChange={(e) => setLanguage(e.target.value as 'en' | 'ja')}
-                className="bg-dark-700 text-white border border-dark-600 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-primary-500"
-              >
-                <option value="en">🇺🇸 English</option>
-                <option value="ja">🇯🇵 日本語</option>
-              </select>
-
-              <div className="flex items-center space-x-3">
-                <div className="w-8 h-8 bg-gradient-to-r from-primary-500 to-beer-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                  {user?.username?.charAt(0).toUpperCase()}
-                </div>
-                <span className="text-white font-medium hidden sm:block">
-                  {t.welcome} {user?.username}!
-                </span>
-              </div>
-              <button
-                onClick={logout}
-                className="bg-dark-700 hover:bg-dark-600 text-white font-medium py-2 px-4 rounded-lg transition-all duration-200 hover:scale-105"
-              >
-                {t.signOut}
-              </button>
-            </div>
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black">
+      {/* Header */}
+      <motion.div 
+        className="bg-gray-900/80 backdrop-blur-md border-b border-gray-800"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex justify-between items-center">
+            <h1 className="text-2xl font-bold text-white">{t('nav.dashboard')}</h1>
+            <LanguageSwitcher />
           </div>
         </div>
-      </header>
+      </motion.div>
 
-      {/* Real-time Stats Bar */}
-      <div className="bg-gradient-to-r from-primary-900/50 to-beer-900/50 border-b border-dark-700">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-8">
-              <div className="flex items-center space-x-3">
-                <div className="w-3 h-3 bg-accent-success rounded-full animate-pulse"></div>
-                <span className="text-white font-medium">{t.realTimeStats}</span>
-              </div>
-              <div className="flex items-center space-x-6">
-                <div className="text-white">
-                  <span className="text-2xl font-bold">{activePresenceCount}</span>
-                  <span className="text-dark-300 ml-2">{t.friendsAtBreweries}</span>
+      <div className="container mx-auto px-4 py-6 max-w-7xl">
+        {/* View Tabs */}
+        <motion.div 
+          className="flex gap-2 mb-6"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <BeerTapButton
+            onClick={() => setActiveView('overview')}
+            variant={activeView === 'overview' ? 'primary' : 'ghost'}
+          >
+            Overview
+          </BeerTapButton>
+          <BeerTapButton
+            onClick={() => setActiveView('beers')}
+            variant={activeView === 'beers' ? 'primary' : 'ghost'}
+          >
+            Beer Analysis
+          </BeerTapButton>
+          <BeerTapButton
+            onClick={() => setActiveView('breweries')}
+            variant={activeView === 'breweries' ? 'primary' : 'ghost'}
+          >
+            Recommendations
+          </BeerTapButton>
+        </motion.div>
+
+        <AnimatePresence mode="wait">
+          {activeView === 'overview' && (
+            <motion.div
+              key="overview"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8"
+            >
+              {/* Stats Cards */}
+              <AnimatedCard variant="glass" glassEffect className="p-6">
+                <div className="text-amber-500 mb-2">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9 2a1 1 0 000 2h2a1 1 0 100-2H9z" />
+                    <path fillRule="evenodd" d="M4 5a2 2 0 012-2 1 1 0 000 2H6a2 2 0 100 4h2a2 2 0 100 4h2a1 1 0 100 2 2 2 0 01-2 2H6a2 2 0 01-2-2V5z" />
+                  </svg>
                 </div>
-                <div className="text-white">
-                  <span className="text-2xl font-bold">{todaysCheckins.length}</span>
-                  <span className="text-dark-300 ml-2">{t.todaysCheckins}</span>
+                <h3 className="text-3xl font-bold text-white">{stats?.totalCheckins || 0}</h3>
+                <p className="text-gray-400">Total Check-ins</p>
+              </AnimatedCard>
+
+              <AnimatedCard variant="glass" glassEffect className="p-6">
+                <div className="text-hop-500 mb-2">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" />
+                  </svg>
                 </div>
-              </div>
-            </div>
-            <div className="flex items-center space-x-2 text-dark-300 text-sm">
-              <span>{t.autoRefresh}</span>
-              <span className="text-primary-400 font-mono">{refreshTimer}</span>
-              <span>{t.seconds}</span>
-            </div>
-          </div>
-        </div>
-      </div>
+                <h3 className="text-3xl font-bold text-white">{stats?.uniqueBeers || 0}</h3>
+                <p className="text-gray-400">Unique Beers</p>
+              </AnimatedCard>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Active Presence & Recent Activity */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Active Presence */}
-            <div className="bg-dark-800 rounded-2xl overflow-hidden border border-dark-700">
-              <div className="p-6 border-b border-dark-700">
-                <h3 className="text-xl font-bold text-white flex items-center justify-between">
-                  <span className="flex items-center">
-                    👥 <span className="ml-2">{t.activePresence}</span>
-                  </span>
-                  <span className="text-sm text-accent-success">
-                    {activePresenceCount > 0 && '● ' + t.live}
-                  </span>
-                </h3>
-              </div>
-              <div className="p-6">
-                {activePresenceCount > 0 ? (
-                  <div className="space-y-4">
-                    {friendsPresence.map((presence, index) => (
-                      <div 
-                        key={index} 
-                        className="flex items-center justify-between p-4 rounded-xl bg-dark-700/50 hover:bg-dark-700 transition-all cursor-pointer"
-                      >
-                        <div className="flex items-center space-x-4">
-                          <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-beer-500 rounded-full flex items-center justify-center text-white font-bold">
-                            {presence.user.charAt(0).toUpperCase()}
-                          </div>
-                          <div>
-                            <p className="text-white font-medium">{presence.user}</p>
-                            <p className="text-dark-300 text-sm">
-                              @ {getBreweryName(presence.brewery || '')}
-                            </p>
-                          </div>
-                        </div>
-                        <button
-                          onClick={() => navigate('/map')}
-                          className="text-primary-400 hover:text-primary-300 text-sm font-medium"
-                        >
-                          {t.viewOnMap} →
-                        </button>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-dark-400 text-center py-8">{t.noActivePresence}</p>
-                )}
-              </div>
-            </div>
+              <AnimatedCard variant="glass" glassEffect className="p-6">
+                <div className="text-beer-dark-800 mb-2">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                  </svg>
+                </div>
+                <h3 className="text-3xl font-bold text-white">{stats?.uniqueBreweries || 0}</h3>
+                <p className="text-gray-400">Breweries Visited</p>
+              </AnimatedCard>
 
-            {/* Recent Activity */}
-            <div className="bg-dark-800 rounded-2xl overflow-hidden border border-dark-700">
-              <div className="p-6 border-b border-dark-700">
-                <h3 className="text-xl font-bold text-white flex items-center">
-                  ⚡ <span className="ml-2">{t.recentActivity}</span>
-                </h3>
-              </div>
-              <div className="p-6">
-                {recentActivities.length > 0 ? (
-                  <div className="space-y-4">
-                    {recentActivities.map((activity, index) => (
-                      <div key={index} className="flex items-center space-x-4 p-3 rounded-xl hover:bg-dark-700/50 transition-colors">
-                        <div className="w-10 h-10 bg-gradient-to-r from-primary-500 to-beer-500 rounded-full flex items-center justify-center text-white font-bold">
-                          {activity.avatar}
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-white">
-                            <span className="font-medium">{activity.user}</span>{" "}
-                            <span className="text-dark-300">{formatActivity(activity)}</span>
-                          </p>
-                          <p className="text-dark-400 text-sm">
-                            {activity.time} {(t as any)[activity.unit]}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <p className="text-dark-400 text-center py-8">{t.noRecentActivity}</p>
-                )}
-              </div>
-            </div>
-          </div>
+              <AnimatedCard variant="glass" glassEffect className="p-6">
+                <div className="text-foam-200 mb-2">
+                  <svg className="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                </div>
+                <h3 className="text-3xl font-bold text-white">{stats?.avgRating.toFixed(1) || 0}</h3>
+                <p className="text-gray-400">Average Rating</p>
+              </AnimatedCard>
 
-          {/* Right Column - Today's Route & Quick Actions */}
-          <div className="space-y-8">
-            {/* Today's Route */}
-            <div className="bg-dark-800 rounded-2xl overflow-hidden border border-dark-700">
-              <div className="p-6 border-b border-dark-700">
-                <h3 className="text-xl font-bold text-white flex items-center">
-                  🗺️ <span className="ml-2">{t.todaysRoute}</span>
-                </h3>
+              {/* Charts */}
+              <div className="col-span-1 md:col-span-2 lg:col-span-2">
+                <AnimatedCard variant="brewery" className="p-6 h-80">
+                  <h3 className="text-lg font-bold text-white mb-4">Monthly Activity</h3>
+                  <Line data={monthlyChartData} options={chartOptions} />
+                </AnimatedCard>
               </div>
-              <div className="p-6">
-                {todaysCheckins.length > 0 ? (
-                  <div className="space-y-4">
-                    {todaysCheckins.map((checkin, index) => (
-                      <div key={index} className="flex items-center space-x-3">
-                        <div className="w-8 h-8 bg-primary-500 rounded-full flex items-center justify-center text-white font-bold text-sm">
-                          {index + 1}
-                        </div>
-                        <div className="flex-1">
-                          <p className="text-white font-medium">
-                            {getBreweryName(checkin.brewery)}
-                          </p>
-                          <p className="text-dark-400 text-sm">
-                            {new Date(checkin.checkinTime || '').toLocaleTimeString()}
-                          </p>
-                        </div>
-                      </div>
-                    ))}
-                    <button 
-                      onClick={() => navigate('/map')}
-                      className="w-full mt-4 bg-dark-700 hover:bg-dark-600 text-white font-medium py-3 px-4 rounded-xl transition-all"
-                    >
-                      {t.viewOnMap} →
-                    </button>
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <p className="text-dark-400 mb-4">{t.noRouteToday}</p>
-                    <button className="bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 text-white font-bold py-3 px-6 rounded-xl transition-all hover:scale-105">
-                      🍺 {t.startRoute}
-                    </button>
-                  </div>
-                )}
-              </div>
-            </div>
 
-            {/* Quick Actions */}
-            <div className="bg-dark-800 rounded-2xl overflow-hidden border border-dark-700">
-              <div className="p-6 border-b border-dark-700">
-                <h3 className="text-xl font-bold text-white">{t.quickActions}</h3>
+              <div className="col-span-1 md:col-span-2 lg:col-span-2">
+                <AnimatedCard variant="brewery" className="p-6 h-80">
+                  <h3 className="text-lg font-bold text-white mb-4">Beer Styles</h3>
+                  <Doughnut data={styleChartData} options={{...chartOptions, maintainAspectRatio: true}} />
+                </AnimatedCard>
               </div>
-              <div className="p-6 space-y-3">
-                {[
-                  { icon: "📍", title: t.checkIn, subtitle: t.checkInSubtitle, color: "from-primary-500 to-primary-600" },
-                  { icon: "🗺️", title: t.exploreMap, subtitle: t.exploreMapSubtitle, color: "from-accent-blue to-blue-600", action: () => navigate('/map') },
-                  { icon: "👥", title: t.findFriends, subtitle: t.findFriendsSubtitle, color: "from-accent-success to-green-600" },
-                  { icon: "🎯", title: t.setGoal, subtitle: t.setGoalSubtitle, color: "from-beer-500 to-beer-600" },
-                ].map((action, index) => (
-                  <button
-                    key={index}
-                    onClick={action.action}
-                    className="w-full group bg-dark-700 hover:bg-dark-600 rounded-xl p-4 transition-all duration-200 hover:scale-105 cursor-pointer border border-dark-600 hover:border-primary-500/50 text-left"
-                  >
-                    <div className="flex items-center space-x-4">
-                      <div className={`w-10 h-10 bg-gradient-to-r ${action.color} rounded-xl flex items-center justify-center text-white text-lg`}>
-                        {action.icon}
-                      </div>
-                      <div className="flex-1">
-                        <h4 className="text-white font-bold">{action.title}</h4>
-                        <p className="text-dark-300 text-sm">{action.subtitle}</p>
-                      </div>
+            </motion.div>
+          )}
+
+          {activeView === 'beers' && favoriteBeer && (
+            <motion.div
+              key="beers"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              className="grid grid-cols-1 lg:grid-cols-2 gap-6"
+            >
+              {/* Favorite Beer Analysis */}
+              <AnimatedCard variant="beer" className="p-6">
+                <h2 className="text-xl font-bold text-white mb-4">Your Favorite Beer</h2>
+                <div className="mb-6">
+                  <h3 className="text-2xl font-bold text-amber-500">{favoriteBeer.name}</h3>
+                  <p className="text-gray-400">{favoriteBeer.brewery} • {favoriteBeer.style}</p>
+                </div>
+                
+                <div className="grid grid-cols-2 gap-6 mb-6">
+                  <ABVGauge abv={favoriteBeer.abv} style={favoriteBeer.style} />
+                  <IBUMeter ibu={favoriteBeer.ibu} />
+                </div>
+                
+                <div className="flex justify-center">
+                  <BeerFlavorChart flavorProfile={favoriteBeer.flavorProfile} size="md" />
+                </div>
+              </AnimatedCard>
+
+              {/* Beer Progress */}
+              <AnimatedCard variant="glass" glassEffect className="p-6">
+                <h2 className="text-xl font-bold text-white mb-6">Beer Journey Progress</h2>
+                
+                <div className="space-y-6">
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-300">IPA Explorer</span>
+                      <span className="text-amber-500 font-medium">72%</span>
                     </div>
-                  </button>
+                    <BeerPourProgress progress={72} />
+                    <p className="text-xs text-gray-500 mt-1">28 more IPAs to Master level</p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-300">Stout Connoisseur</span>
+                      <span className="text-amber-500 font-medium">45%</span>
+                    </div>
+                    <BeerPourProgress progress={45} />
+                    <p className="text-xs text-gray-500 mt-1">55 more Stouts to unlock</p>
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span className="text-gray-300">World Traveler</span>
+                      <span className="text-amber-500 font-medium">23%</span>
+                    </div>
+                    <BeerPourProgress progress={23} />
+                    <p className="text-xs text-gray-500 mt-1">Try beers from 77 more countries</p>
+                  </div>
+                </div>
+                
+                <div className="mt-8 p-4 bg-amber-500/10 rounded-lg border border-amber-500/30">
+                  <h4 className="font-medium text-amber-400 mb-2">Next Achievement</h4>
+                  <p className="text-gray-300">Try 3 more Belgian Tripels to unlock "Abbey Explorer" badge</p>
+                </div>
+              </AnimatedCard>
+            </motion.div>
+          )}
+
+          {activeView === 'breweries' && (
+            <motion.div
+              key="breweries"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+            >
+              <h2 className="text-xl font-bold text-white mb-6">Recommended Breweries</h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {recommendedBreweries.map((brewery, index) => (
+                  <motion.div
+                    key={brewery.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                  >
+                    <div className="relative">
+                      <OptimizedBreweryCard brewery={brewery} />
+                      <motion.div
+                        className="absolute top-4 left-4 bg-green-500/90 backdrop-blur-sm rounded-full px-3 py-1"
+                        initial={{ scale: 0 }}
+                        animate={{ scale: 1 }}
+                        transition={{ delay: 0.5 + index * 0.1, type: "spring" }}
+                      >
+                        <span className="text-white text-sm font-bold">{brewery.matchScore}% Match</span>
+                      </motion.div>
+                    </div>
+                  </motion.div>
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Stats Overview */}
-        <section className="mt-12">
-          <h3 className="text-2xl font-display font-bold text-white mb-6">{t.yourJourney}</h3>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-            {[
-              { label: t.breweriesVisited, value: "12", icon: "🏪" },
-              { label: t.beersTried, value: "47", icon: "🍺" },
-              { label: t.friendsMet, value: "8", icon: "👥" },
-              { label: t.routesCompleted, value: "3", icon: "🗺️" },
-            ].map((stat, index) => (
-              <div key={index} className="bg-dark-800 rounded-2xl p-6 text-center border border-dark-700 hover:border-primary-500/50 transition-all">
-                <div className="text-3xl mb-2">{stat.icon}</div>
-                <div className="text-2xl font-bold text-white mb-1">{stat.value}</div>
-                <div className="text-dark-300 text-sm">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Development Notice */}
-        <div className="mt-12 bg-gradient-to-r from-beer-500/20 to-primary-500/20 border border-beer-500/30 rounded-2xl p-6">
-          <div className="flex items-center space-x-3">
-            <span className="text-2xl">🚧</span>
-            <div>
-              <h4 className="text-beer-400 font-bold">{t.developmentMode}</h4>
-              <p className="text-dark-200 text-sm">{t.developmentNotice}</p>
-            </div>
-          </div>
-        </div>
-      </main>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default DashboardPage;

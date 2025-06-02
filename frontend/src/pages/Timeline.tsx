@@ -19,6 +19,10 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { LanguageSwitcher } from '../components/common/LanguageSwitcher';
+import { AnimatedCard, AnimatedBeerRating, BeerTapButton } from '../components/common/AnimatedCard';
+import { BeerGlassLoader, EmptyBeerGlass, TaplistSkeleton } from '../components/common/LoadingStates';
+import { motion, AnimatePresence } from 'framer-motion';
+import { colors } from '../styles/design-system';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.workers.dev';
 
@@ -143,8 +147,8 @@ const TimelinePage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-dark-900 flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-500"></div>
+      <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black flex items-center justify-center">
+        <BeerGlassLoader size="lg" />
       </div>
     );
   }
@@ -152,164 +156,206 @@ const TimelinePage: React.FC = () => {
   const filteredCheckins = getFilteredCheckins();
 
   return (
-    <div className="min-h-screen bg-dark-900">
+    <div className="min-h-screen bg-gradient-to-br from-gray-900 to-black">
       {/* Header */}
-      <div className="bg-dark-800/50 backdrop-blur-sm border-b border-dark-700 sticky top-0 z-10">
+      <motion.div 
+        className="bg-gray-900/80 backdrop-blur-md border-b border-gray-800 sticky top-0 z-10"
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.5 }}
+      >
         <div className="container mx-auto px-4 py-4">
           <div className="flex justify-between items-center">
             <h1 className="text-2xl font-bold text-white">{t('nav.timeline')}</h1>
             <LanguageSwitcher />
           </div>
         </div>
-      </div>
+      </motion.div>
 
       <div className="container mx-auto px-4 py-6 max-w-4xl">
         {/* Today's Route Summary */}
         {todayRoute && todayRoute.totalStops > 0 && (
-          <div className="mb-6 p-6 bg-gradient-to-r from-primary-500/10 to-beer-500/10 rounded-xl border border-primary-500/20">
-            <h2 className="text-lg font-bold text-white mb-3">{t('timeline.todayRoute')}</h2>
-            <div className="flex items-center space-x-2">
-              {todayRoute.stops.map((stop, index) => (
-                <React.Fragment key={index}>
-                  <div className="text-sm">
-                    <div className="font-medium text-white">{stop.breweryName}</div>
-                    <div className="text-dark-400 text-xs">
-                      {new Date(stop.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+          <motion.div 
+            className="mb-6"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <AnimatedCard variant="glass" glassEffect className="p-6 bg-gradient-to-r from-amber-500/10 to-amber-600/10 border border-amber-500/20">
+              <h2 className="text-lg font-bold text-white mb-3">{t('timeline.todayRoute')}</h2>
+              <div className="flex items-center space-x-2 overflow-x-auto pb-2">
+                {todayRoute.stops.map((stop, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, x: -20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.1 }}
+                    className="flex items-center gap-2"
+                  >
+                    <div className="text-sm flex-shrink-0">
+                      <div className="font-medium text-white">{stop.breweryName}</div>
+                      <div className="text-gray-400 text-xs">
+                        {new Date(stop.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </div>
                     </div>
-                  </div>
-                  {index < todayRoute.stops.length - 1 && (
-                    <svg className="w-4 h-4 text-primary-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  )}
-                </React.Fragment>
-              ))}
-            </div>
-            <p className="text-primary-400 text-sm mt-2">
-              {t('timeline.totalStops', { count: todayRoute.totalStops })}
-            </p>
-          </div>
+                    {index < todayRoute.stops.length - 1 && (
+                      <svg className="w-4 h-4 text-amber-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    )}
+                  </motion.div>
+                ))}
+              </div>
+              <p className="text-amber-400 text-sm mt-2">
+                {t('timeline.totalStops', { count: todayRoute.totalStops })}
+              </p>
+            </AnimatedCard>
+          </motion.div>
         )}
 
         {/* Tabs */}
-        <div className="flex space-x-1 mb-6 bg-dark-800/50 p-1 rounded-lg">
-          <button
+        <motion.div 
+          className="flex space-x-1 mb-6 bg-gray-900/50 backdrop-blur-sm p-1 rounded-lg"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <BeerTapButton
             onClick={() => setActiveTab('all')}
-            className={`flex-1 py-2 px-4 rounded-md font-medium transition-all ${
-              activeTab === 'all' 
-                ? 'bg-primary-500 text-white' 
-                : 'text-dark-300 hover:text-white'
-            }`}
+            variant={activeTab === 'all' ? 'primary' : 'ghost'}
+            size="md"
           >
             {t('timeline.allActivity')}
-          </button>
-          <button
+          </BeerTapButton>
+          <BeerTapButton
             onClick={() => setActiveTab('friends')}
-            className={`flex-1 py-2 px-4 rounded-md font-medium transition-all ${
-              activeTab === 'friends' 
-                ? 'bg-primary-500 text-white' 
-                : 'text-dark-300 hover:text-white'
-            }`}
+            variant={activeTab === 'friends' ? 'primary' : 'ghost'}
+            size="md"
           >
             {t('timeline.friendsOnly')}
-          </button>
-          <button
+          </BeerTapButton>
+          <BeerTapButton
             onClick={() => setActiveTab('mine')}
-            className={`flex-1 py-2 px-4 rounded-md font-medium transition-all ${
-              activeTab === 'mine' 
-                ? 'bg-primary-500 text-white' 
-                : 'text-dark-300 hover:text-white'
-            }`}
+            variant={activeTab === 'mine' ? 'primary' : 'ghost'}
+            size="md"
           >
             {t('timeline.myActivity')}
-          </button>
-        </div>
+          </BeerTapButton>
+        </motion.div>
 
         {/* Check-ins List */}
         <div className="space-y-4">
           {filteredCheckins.length === 0 ? (
-            <div className="text-center py-12">
-              <p className="text-dark-400 mb-4">{t('timeline.noActivity')}</p>
-              <Link
-                to="/map"
-                className="inline-flex items-center px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors"
+            <motion.div 
+              className="text-center py-12"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.3 }}
+            >
+              <EmptyBeerGlass message={t('timeline.noActivity')} />
+              <motion.div
+                initial={{ scale: 0 }}
+                animate={{ scale: 1 }}
+                transition={{ delay: 0.5, type: "spring" }}
               >
-                {t('timeline.checkInNow')}
-              </Link>
-            </div>
+                <Link to="/map">
+                  <BeerTapButton variant="primary" size="lg">
+                    {t('timeline.checkInNow')}
+                  </BeerTapButton>
+                </Link>
+              </motion.div>
+            </motion.div>
           ) : (
-            filteredCheckins.map((checkin) => (
-              <div 
-                key={checkin.id} 
-                className="bg-dark-800/50 rounded-xl p-6 border border-dark-700 hover:border-dark-600 transition-colors"
-              >
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h3 className="text-lg font-bold text-white">
-                      {checkin.username}
-                      <span className="text-dark-400 font-normal"> {t('timeline.checkedInAt')} </span>
-                      {checkin.breweryName}
-                    </h3>
-                    <p className="text-sm text-dark-400">
-                      {formatTimeAgo(checkin.timestamp)}
-                    </p>
-                  </div>
-                  {checkin.rating && (
-                    <div className="flex items-center">
-                      {[...Array(5)].map((_, i) => (
-                        <svg
-                          key={i}
-                          className={`w-5 h-5 ${i < (checkin.rating || 0) ? 'text-beer-400' : 'text-dark-600'}`}
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                        >
-                          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                        </svg>
-                      ))}
-                    </div>
-                  )}
-                </div>
-                
-                {checkin.note && (
-                  <p className="text-dark-200 mb-3">{checkin.note}</p>
-                )}
-                
-                {checkin.photos && checkin.photos.length > 0 && (
-                  <div className="flex gap-2 mb-3">
-                    {checkin.photos.map((photo, index) => (
-                      <img 
-                        key={index}
-                        src={photo} 
-                        alt={`Check-in photo ${index + 1}`}
-                        className="w-20 h-20 object-cover rounded-lg"
-                      />
-                    ))}
-                  </div>
-                )}
-                
-                <div className="flex items-center justify-between text-sm">
-                  <Link
-                    to="/map"
-                    className="text-primary-400 hover:text-primary-300 transition-colors"
+            <AnimatePresence>
+              {filteredCheckins.map((checkin, index) => (
+                <motion.div
+                  key={checkin.id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -20 }}
+                  transition={{ delay: index * 0.1 }}
+                >
+                  <AnimatedCard 
+                    variant="beer"
+                    hoverable
+                    className="p-6 mb-4"
                   >
-                    {t('timeline.viewOnMap')} →
-                  </Link>
-                  <div className="text-dark-400">
-                    {new Date(checkin.timestamp).toLocaleString()}
-                  </div>
-                </div>
-              </div>
-            ))
+                    <div className="flex justify-between items-start mb-3">
+                      <div>
+                        <h3 className="text-lg font-bold text-white">
+                          {checkin.username}
+                          <span className="text-gray-400 font-normal"> {t('timeline.checkedInAt')} </span>
+                          {checkin.breweryName}
+                        </h3>
+                        <p className="text-sm text-gray-400">
+                          {formatTimeAgo(checkin.timestamp)}
+                        </p>
+                      </div>
+                      {checkin.rating && (
+                        <AnimatedBeerRating 
+                          rating={checkin.rating} 
+                          size="sm" 
+                          interactive={false}
+                        />
+                      )}
+                    </div>
+                    
+                    {checkin.note && (
+                      <p className="text-gray-200 mb-3">{checkin.note}</p>
+                    )}
+                    
+                    {checkin.photos && checkin.photos.length > 0 && (
+                      <div className="flex gap-2 mb-3 overflow-x-auto">
+                        {checkin.photos.map((photo, photoIndex) => (
+                          <motion.img 
+                            key={photoIndex}
+                            src={photo} 
+                            alt={`Check-in photo ${photoIndex + 1}`}
+                            className="w-20 h-20 object-cover rounded-lg flex-shrink-0"
+                            whileHover={{ scale: 1.05 }}
+                            initial={{ opacity: 0, scale: 0.8 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ delay: photoIndex * 0.1 }}
+                          />
+                        ))}
+                      </div>
+                    )}
+                    
+                    <div className="flex items-center justify-between text-sm">
+                      <Link to="/map">
+                        <motion.span 
+                          className="text-amber-400 hover:text-amber-300 transition-colors inline-flex items-center gap-1"
+                          whileHover={{ x: 5 }}
+                        >
+                          {t('timeline.viewOnMap')} 
+                          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                          </svg>
+                        </motion.span>
+                      </Link>
+                      <div className="text-gray-400">
+                        {new Date(checkin.timestamp).toLocaleString()}
+                      </div>
+                    </div>
+                  </AnimatedCard>
+                </motion.div>
+              ))}
+            </AnimatePresence>
           )}
         </div>
 
         {/* Load More */}
         {filteredCheckins.length >= 20 && (
-          <div className="text-center mt-8">
-            <button className="px-6 py-3 bg-dark-800 text-white rounded-lg hover:bg-dark-700 transition-colors">
+          <motion.div 
+            className="text-center mt-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ delay: 0.5 }}
+          >
+            <BeerTapButton variant="secondary" size="lg">
               {t('common.loadMore')}
-            </button>
-          </div>
+            </BeerTapButton>
+          </motion.div>
         )}
       </div>
     </div>
