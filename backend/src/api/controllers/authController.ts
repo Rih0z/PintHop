@@ -64,15 +64,23 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
 export const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { email, password } = req.body;
+    const { username, email, password } = req.body;
+    const loginField = username || email;
     
-    if (!email || !password) {
-      throw new AppError(400, ErrorCodes.VALIDATION_ERROR, 'Email and password are required');
+    if (!loginField || !password) {
+      throw new AppError(400, ErrorCodes.VALIDATION_ERROR, 'Username/email and password are required');
     }
     
-    const user = await User.findOne({ email });
+    // Allow login with either username or email
+    const user = await User.findOne({
+      $or: [
+        { email: loginField },
+        { username: loginField }
+      ]
+    });
+    
     if (!user) {
-      throw new AppError(401, ErrorCodes.INVALID_CREDENTIALS, 'Invalid email or password');
+      throw new AppError(401, ErrorCodes.INVALID_CREDENTIALS, 'Invalid credentials');
     }
     
     const valid = await user.comparePassword(password);
@@ -120,4 +128,29 @@ export const logout = async (_req: Request, res: Response) => {
     status: 'success',
     message: 'Logged out successfully' 
   });
+};
+
+export const checkAvailability = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const { username, email } = req.query;
+    
+    const result: { username?: boolean; email?: boolean } = {};
+    
+    if (username) {
+      const existingUser = await User.findOne({ username });
+      result.username = !existingUser; // true if available
+    }
+    
+    if (email) {
+      const existingEmail = await User.findOne({ email });
+      result.email = !existingEmail; // true if available
+    }
+    
+    res.json({
+      status: 'success',
+      data: result
+    });
+  } catch (err) {
+    next(err);
+  }
 };

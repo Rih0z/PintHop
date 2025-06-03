@@ -35,3 +35,12 @@ export const logout = async () => {
   const res = await axios.post(`${API_URL}/api/auth/logout`);
   return res.data;
 };
+
+export const checkAvailability = async (username?: string, email?: string) => {
+  const params = new URLSearchParams();
+  if (username) params.append('username', username);
+  if (email) params.append('email', email);
+  
+  const res = await axios.get(`${API_URL}/api/auth/check-availability?${params}`);
+  return res.data.data;
+};

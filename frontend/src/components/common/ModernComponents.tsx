@@ -17,6 +17,7 @@ interface ModernButtonProps {
   loading?: boolean;
   disabled?: boolean;
   className?: string;
+  type?: 'button' | 'submit' | 'reset';
   onClick?: () => void;
 }
 
@@ -29,6 +30,7 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
   loading = false,
   disabled = false,
   className = '',
+  type = 'button',
   onClick
 }) => {
   const baseStyles = `
@@ -74,6 +76,7 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
 
   return (
     <motion.button
+      type={type}
       className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${className}`}
       whileHover={!disabled && !loading ? { scale: 1.02 } : undefined}
       whileTap={!disabled && !loading ? { scale: 0.98 } : undefined}

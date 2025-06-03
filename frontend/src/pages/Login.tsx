@@ -15,6 +15,7 @@
 import React, { useState } from 'react';
 import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { ModernButton, ModernCard } from '../components/common/ModernComponents';
 
 interface LocationState {
   from?: {
@@ -139,20 +140,16 @@ export const LoginPage: React.FC = () => {
             </div>
           </div>
 
-          <button
+          <ModernButton
             type="submit"
+            variant="primary"
+            size="lg"
+            fullWidth
+            loading={loading}
             disabled={loading}
-            className="w-full bg-gradient-to-r from-primary-500 to-primary-600 hover:from-primary-600 hover:to-primary-700 disabled:from-dark-600 disabled:to-dark-600 text-white font-bold py-4 px-6 rounded-xl transition-all duration-200 hover:scale-[1.02] disabled:scale-100 disabled:cursor-not-allowed shadow-glow disabled:shadow-none"
           >
-            {loading ? (
-              <div className="flex items-center justify-center space-x-2">
-                <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                <span>Signing in...</span>
-              </div>
-            ) : (
-              'Sign In to PintHop'
-            )}
-          </button>
+            {loading ? 'Signing in...' : 'Sign In to PintHop'}
+          </ModernButton>
         </form>
 
         {/* Footer */}

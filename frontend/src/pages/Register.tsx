@@ -18,6 +18,8 @@ import { useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useAuth } from '../hooks/useAuth';
 import { LanguageSwitcher } from '../components/common/LanguageSwitcher';
+import { ModernButton, ModernCard } from '../components/common/ModernComponents';
+import * as authService from '../services/auth';
 import axios from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.workers.dev';
@@ -90,8 +92,8 @@ export const RegisterPage: React.FC = () => {
     const checkUsername = async () => {
       if (formData.username && !validationErrors.username) {
         try {
-          const response = await axios.get(`${API_URL}/api/auth/check-username/${formData.username}`);
-          setAvailability(prev => ({ ...prev, username: response.data.available }));
+          const result = await authService.checkAvailability(formData.username);
+          setAvailability(prev => ({ ...prev, username: result.username }));
         } catch (error) {
           console.error('Username check failed:', error);
         }
@@ -107,8 +109,8 @@ export const RegisterPage: React.FC = () => {
     const checkEmail = async () => {
       if (formData.email && !validationErrors.email) {
         try {
-          const response = await axios.get(`${API_URL}/api/auth/check-email/${formData.email}`);
-          setAvailability(prev => ({ ...prev, email: response.data.available }));
+          const result = await authService.checkAvailability(undefined, formData.email);
+          setAvailability(prev => ({ ...prev, email: result.email }));
         } catch (error) {
           console.error('Email check failed:', error);
         }
@@ -159,34 +161,33 @@ export const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-dark-800 via-dark-900 to-primary-900 flex items-center justify-center px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full">
-        {/* 言語切り替え */}
-        <div className="flex justify-end mb-4">
-          <LanguageSwitcher />
-        </div>
-        
-        {/* ロゴ・タイトル */}
-        <div className="text-center mb-8">
-          <h1 className="text-6xl md:text-6xl font-extrabold mb-4">
-            <span className="bg-gradient-to-r from-primary-400 to-beer-400 bg-clip-text text-transparent">
-              {t('app.title')}
-            </span>
-          </h1>
-          <h2 className="text-2xl font-bold text-white mb-2">
-            {t('auth.registerTitle')}
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 flex items-center justify-center px-4 sm:px-6 lg:px-8 safe-area-top">
+      <div className="max-w-md w-full space-y-8">
+        {/* ヘッダー */}
+        <div className="text-center">
+          <div className="flex justify-center mb-6">
+            <div className="text-6xl">🍺</div>
+          </div>
+          <h2 className="text-4xl font-display font-bold text-gray-900 mb-2">
+            Join <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">PintHop</span>
           </h2>
-          <p className="text-dark-300">
-            {t('auth.registerSubtitle')}
+          <p className="text-gray-600 mb-4">
+            Create your account to start discovering amazing breweries
+          </p>
+          <p className="text-sm text-gray-500">
+            Already have an account?{' '}
+            <Link to="/login" className="font-medium text-amber-600 hover:text-amber-500 transition-colors">
+              Sign in here
+            </Link>
           </p>
         </div>
 
         {/* 登録フォーム */}
-        <div className="bg-dark-800/50 backdrop-blur-sm rounded-2xl p-8 shadow-lg border border-dark-700">
+        <ModernCard padding="lg" glass>
           <form className="space-y-6" onSubmit={handleSubmit}>
             {error && (
-              <div className="bg-accent-danger/10 border border-accent-danger/20 rounded-lg p-4">
-                <p className="text-sm text-accent-danger">{error}</p>
+              <div className="bg-red-50 border border-red-200 rounded-lg p-4 animate-slide-up">
+                <p className="text-sm text-red-600 text-center">{error}</p>
               </div>
             )}
             
@@ -306,47 +307,23 @@ export const RegisterPage: React.FC = () => {
             </div>
 
             {/* 送信ボタン */}
-            <button
+            <ModernButton
               type="submit"
-              disabled={loading || Object.values(validationErrors).some(err => err !== '')}
-              className="w-full py-3 px-4 bg-gradient-to-r from-primary-500 to-primary-600 text-white font-medium rounded-lg shadow-glow hover:from-primary-600 hover:to-primary-700 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:from-dark-600 disabled:to-dark-600 disabled:shadow-none"
+              variant="primary"
+              size="lg"
+              fullWidth
+              loading={loading}
+              disabled={Object.values(validationErrors).some(err => err !== '')}
             >
-              {loading ? (
-                <span className="flex items-center justify-center">
-                  <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-                  </svg>
-                  Creating account...
-                </span>
-              ) : (
-                'Create Account'
-              )}
-            </button>
+              {loading ? 'Creating account...' : 'Create Account'}
+            </ModernButton>
           </form>
-
-          {/* ログインリンク */}
-          <div className="mt-6 text-center">
-            <p className="text-dark-300">
-              Already have an account?{' '}
-              <Link to="/login" className="text-primary-400 hover:text-primary-300 transition-colors">
-                Sign in
-              </Link>
-            </p>
-          </div>
-        </div>
+        </ModernCard>
 
         {/* 利用規約 */}
-        <p className="mt-6 text-center text-xs text-dark-400">
-          By creating an account, you agree to our{' '}
-          <a href="#" className="text-primary-400 hover:text-primary-300">
-            Terms of Service
-          </a>{' '}
-          and{' '}
-          <a href="#" className="text-primary-400 hover:text-primary-300">
-            Privacy Policy
-          </a>
-        </p>
+        <div className="text-center text-xs text-gray-500">
+          By creating an account, you agree to discover amazing breweries and connect with fellow beer enthusiasts.
+        </div>
       </div>
     </div>
   );

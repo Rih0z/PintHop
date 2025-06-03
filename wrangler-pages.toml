@@ -1,0 +1,10 @@
+# Cloudflare Pages configuration for PintHop Frontend
+name = "pinthop-frontend"
+pages_build_output_dir = "frontend/build"
+compatibility_date = "2024-01-01"
+
+[env.production]
+name = "pinthop-frontend"
+
+[env.preview]
+name = "pinthop-frontend-preview"
