@@ -20,7 +20,7 @@ const router = express.Router();
 
 // 認証が必要なルート
 router.post('/', authenticate, checkinController.createCheckin);
-router.post('/:checkinId/checkout', authenticate, checkinController.checkout);
+// router.post('/:checkinId/checkout', authenticate, checkinController.checkout);
 
 // オプショナル認証（ログインしていなくても見られるが、ログインしていれば自分のデータを優先）
 router.get('/', optionalAuthenticate, checkinController.getCheckins);

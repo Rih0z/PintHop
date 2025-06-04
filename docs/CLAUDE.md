@@ -190,3 +190,48 @@ When deploying to Cloudflare or any production environment:
   - `POST /api/auth/register` - User registration
   - `GET /api/auth/check-username/:username` - Username availability
   - `GET /api/auth/check-email/:email` - Email availability
+
+## Development Workflow Guidelines
+
+### 1. 作業完了時のGitHub追加
+- すべての作業が完了したら必ずGitHubに変更を追加（git add, commit, push）すること
+- コミットメッセージは明確で意味のあるものにする
+- 未完成の機能はコミットしない
+
+### 2. ビルドとデプロイ
+- 作業が完了したらClaude環境でビルドしてデプロイすること
+- フロントエンド: `npm run build` → Cloudflare Pagesへデプロイ
+- バックエンド: `npx wrangler deploy` → Cloudflare Workersへデプロイ
+
+### 3. デプロイ先の記載
+- READMEにデプロイ先のURLを記載すること
+- 現在の本番環境URL:
+  - Frontend: https://bb16b80e.pinthop-frontend.pages.dev
+  - Backend API: https://pinthop-api.riho-dare.workers.dev
+
+### 4. セキュリティチェック
+- GitHubへのプッシュ前に必ずセキュリティ上の問題がないか確認すること:
+  - APIキーやシークレットがハードコードされていないか
+  - .envファイルがgitignoreに含まれているか
+  - デバッグ用のconsole.logが残っていないか
+  - 認証が必要なエンドポイントに適切な保護があるか
+
+### 5. ドキュメントの更新
+- 実装を変更したらそれに合わせてドキュメントも更新すること
+- 特に以下のドキュメントに注意:
+  - README.md - デプロイURL、セットアップ手順
+  - API仕様書 - エンドポイントの変更
+  - このCLAUDE.md - 新機能や重要な変更
+
+### 6. 本番環境へのデプロイ
+- 必ずURLが固定の本番環境にデプロイするようにして
+- Cloudflare Pagesのプロジェクト名を固定: `pinthop-frontend`
+- Cloudflare Workersの名前を固定: `pinthop-api`
+
+### 7. API通信の確保
+- フロントエンドとバックエンドの通信が必ず成功するように固定のAPIを指定して
+- Frontend .env:
+  ```
+  REACT_APP_API_URL=https://pinthop-api.riho-dare.workers.dev
+  ```
+- Backend CORS設定に必ずフロントエンドのURLを含める

@@ -21,7 +21,7 @@ const router = express.Router();
 
 // 認証が必要なルート
 router.post('/', authenticate, presenceController.updatePresence);
-router.get('/friends', authenticate, presenceController.getFriendsPresence);
+router.get('/friends', authenticate, presenceController.getFriendsPresences);
 router.get('/me', authenticate, presenceController.getMyPresence);
 
 export default router;
