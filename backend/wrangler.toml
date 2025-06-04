@@ -1,11 +1,11 @@
 name = "pinthop-api"
-main = "src/worker-full.ts"
+main = "src/worker-simple.ts"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
 
 [vars]
 NODE_ENV = "production"
-CORS_ORIGIN = "https://67515bf9.pinthop.pages.dev"
+CORS_ORIGIN = "https://bb16b80e.pinthop-frontend.pages.dev"
 
 # KV Namespace for user storage
 [[kv_namespaces]]

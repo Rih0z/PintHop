@@ -15,18 +15,18 @@
 import axios from 'axios';
 import { Checkin } from '../types/checkin';
 
-const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5001/api/v1';
+const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.workers.dev';
 
 export const createCheckin = async (
   breweryId: string
 ): Promise<Checkin> => {
-  const res = await axios.post(`${API_URL}/checkins`, { breweryId });
+  const res = await axios.post(`${API_URL}/api/v1/checkins`, { breweryId });
   return res.data as Checkin;
 };
 
 export const checkout = async (checkinId: string): Promise<Checkin> => {
   const res = await axios.post(
-    `${API_URL}/checkins/${checkinId}/checkout`
+    `${API_URL}/api/v1/checkins/${checkinId}/checkout`
   );
   return res.data as Checkin;
 };
@@ -34,6 +34,6 @@ export const checkout = async (checkinId: string): Promise<Checkin> => {
 export const fetchCheckins = async (
   params: { userId?: string; breweryId?: string; status?: string } = {}
 ): Promise<Checkin[]> => {
-  const res = await axios.get(`${API_URL}/checkins`, { params });
+  const res = await axios.get(`${API_URL}/api/v1/checkins`, { params });
   return (res.data.checkins || []) as Checkin[];
 };

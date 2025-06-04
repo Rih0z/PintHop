@@ -152,9 +152,25 @@ export const RegisterPage: React.FC = () => {
 
     try {
       await register(formData.username, formData.email, formData.password);
-      navigate('/dashboard');
+      navigate('/map');
     } catch (err: any) {
-      setError(err.response?.data?.error || t('auth.validation.registrationFailed'));
+      console.error('Registration error:', err);
+      console.error('Error details:', JSON.stringify(err, null, 2));
+      
+      // Extract error message from different possible response formats
+      let errorMessage = 'アカウント作成に失敗しました';
+      
+      if (err.response?.data) {
+        // Backend API error format: { status: 'error', message: '...' }
+        errorMessage = err.response.data.message || err.response.data.error || errorMessage;
+      } else if (err.message) {
+        // Network or other errors
+        errorMessage = `ネットワークエラー: ${err.message}`;
+      } else if (err.code) {
+        errorMessage = `エラーコード: ${err.code}`;
+      }
+      
+      setError(errorMessage);
     } finally {
       setLoading(false);
     }

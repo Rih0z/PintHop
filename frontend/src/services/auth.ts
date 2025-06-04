@@ -17,22 +17,22 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.workers.dev';
 
 export const login = async (username: string, password: string) => {
-  const res = await axios.post(`${API_URL}/api/auth/login`, { username, password });
+  const res = await axios.post(`${API_URL}/api/v1/auth/login`, { username, password });
   return res.data;
 };
 
-export const register = async (username: string, email: string, password: string) => {
-  const res = await axios.post(`${API_URL}/api/auth/register`, { username, email, password });
+export const register = async (data: { username: string; email: string; password: string }) => {
+  const res = await axios.post(`${API_URL}/api/v1/auth/register`, data);
   return res.data;
 };
 
 export const refresh = async (refreshToken: string) => {
-  const res = await axios.post(`${API_URL}/api/auth/refresh`, { refreshToken });
+  const res = await axios.post(`${API_URL}/api/v1/auth/refresh`, { refreshToken });
   return res.data;
 };
 
 export const logout = async () => {
-  const res = await axios.post(`${API_URL}/api/auth/logout`);
+  const res = await axios.post(`${API_URL}/api/v1/auth/logout`);
   return res.data;
 };
 
@@ -41,6 +41,6 @@ export const checkAvailability = async (username?: string, email?: string) => {
   if (username) params.append('username', username);
   if (email) params.append('email', email);
   
-  const res = await axios.get(`${API_URL}/api/auth/check-availability?${params}`);
+  const res = await axios.get(`${API_URL}/api/v1/auth/check-availability?${params}`);
   return res.data.data;
 };
