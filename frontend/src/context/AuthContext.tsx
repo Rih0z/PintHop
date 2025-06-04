@@ -50,14 +50,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       const response = await authApi.login(username, password);
       const data = response;
       
-      // Worker response format: { token, user }
-      setUser({ ...data.user, id: data.user.username }); // Add id field for compatibility
-      setToken(data.token);
-      localStorage.setItem('accessToken', data.token);
+      // Backend response format: { status: 'success', data: { user, tokens } }
+      const { user, tokens } = data.data;
+      setUser({ ...user, id: user.username || user._id }); // Add id field for compatibility
+      setToken(tokens.accessToken);
+      setRefreshToken(tokens.refreshToken);
+      localStorage.setItem('accessToken', tokens.accessToken);
+      localStorage.setItem('refreshToken', tokens.refreshToken);
       setError(null);
       
       // Axiosのデフォルトヘッダーを設定
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${tokens.accessToken}`;
     } catch (err: any) {
       console.error('Login failed', err);
       throw err;
@@ -66,17 +69,20 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (username: string, email: string, password: string) => {
     try {
-      const response = await authApi.register(username, email, password);
+      const response = await authApi.register({ username, email, password });
       const data = response;
       
-      // Worker response format: { token, user }
-      setUser({ ...data.user, id: data.user.username }); // Add id field for compatibility
-      setToken(data.token);
-      localStorage.setItem('accessToken', data.token);
+      // Backend response format: { status: 'success', data: { user, tokens } }
+      const { user, tokens } = data.data;
+      setUser({ ...user, id: user.username || user._id }); // Add id field for compatibility
+      setToken(tokens.accessToken);
+      setRefreshToken(tokens.refreshToken);
+      localStorage.setItem('accessToken', tokens.accessToken);
+      localStorage.setItem('refreshToken', tokens.refreshToken);
       setError(null);
       
       // Axiosのデフォルトヘッダーを設定
-      axios.defaults.headers.common['Authorization'] = `Bearer ${data.token}`;
+      axios.defaults.headers.common['Authorization'] = `Bearer ${tokens.accessToken}`;
     } catch (err: any) {
       console.error('Register failed', err);
       throw err;
