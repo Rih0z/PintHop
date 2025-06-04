@@ -85,6 +85,7 @@ export const ModernButton: React.FC<ModernButtonProps> = ({
     >
       {loading ? (
         <motion.div
+          data-testid="loading-spinner"
           className="w-5 h-5 border-2 border-current border-t-transparent rounded-full"
           animate={{ rotate: 360 }}
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
@@ -136,6 +137,7 @@ export const ModernCard: React.FC<ModernCardProps> = ({
 
   return (
     <motion.div
+      data-testid="modern-card"
       className={`${baseStyles} ${className}`}
       whileHover={interactive ? { y: -4 } : undefined}
       transition={{ duration: 0.25 }}
@@ -170,12 +172,14 @@ export const ModernBottomSheet: React.FC<ModernBottomSheetProps> = ({
 
   return (
     <motion.div
+      data-testid="bottom-sheet-container"
       className={`fixed inset-0 z-50 ${isOpen ? 'pointer-events-auto' : 'pointer-events-none'}`}
       initial={false}
       animate={isOpen ? 'open' : 'closed'}
     >
       {/* Backdrop */}
       <motion.div
+        data-testid="bottom-sheet-backdrop"
         className="absolute inset-0 bg-black"
         variants={{
           open: { opacity: 0.5 },
@@ -196,7 +200,13 @@ export const ModernBottomSheet: React.FC<ModernBottomSheetProps> = ({
       >
         {/* Handle */}
         <div className="flex justify-center pt-3 pb-2">
-          <div className="w-12 h-1 bg-gray-300 rounded-full" />
+          <button
+            data-testid="bottom-sheet-close"
+            onClick={onClose}
+            className="w-12 h-4 flex items-center justify-center focus:outline-none"
+          >
+            <div className="w-12 h-1 bg-gray-300 rounded-full" />
+          </button>
         </div>
         
         {/* Header */}
@@ -234,7 +244,10 @@ export const ModernTabs: React.FC<ModernTabsProps> = ({
   variant = 'pills',
 }) => {
   return (
-    <div className={`flex ${variant === 'pills' ? 'p-1 bg-gray-100 rounded-lg' : 'border-b border-gray-200'}`}>
+    <div 
+      role="tablist"
+      className={`flex ${variant === 'pills' ? 'p-1 bg-gray-100 rounded-lg' : 'border-b border-gray-200'}`}
+    >
       {tabs.map((tab) => (
         <motion.button
           key={tab.id}
@@ -285,6 +298,7 @@ export const ModernListItem: React.FC<ModernListItemProps> = ({
 }) => {
   return (
     <motion.div
+      data-testid="modern-list-item"
       className={`flex items-center p-4 ${onClick ? 'cursor-pointer hover:bg-gray-50' : ''} ${className}`}
       onClick={onClick}
       whileTap={onClick ? { scale: 0.98 } : undefined}
@@ -368,6 +382,7 @@ interface ModernSkeletonProps {
   width?: string | number;
   height?: string | number;
   className?: string;
+  animation?: boolean;
 }
 
 export const ModernSkeleton: React.FC<ModernSkeletonProps> = ({
@@ -375,6 +390,7 @@ export const ModernSkeleton: React.FC<ModernSkeletonProps> = ({
   width,
   height,
   className = '',
+  animation = true,
 }) => {
   const variantStyles = {
     text: 'h-4 rounded',
@@ -389,10 +405,11 @@ export const ModernSkeleton: React.FC<ModernSkeletonProps> = ({
 
   return (
     <motion.div
-      className={`bg-gray-200 ${variantStyles[variant]} ${className}`}
+      data-testid="skeleton"
+      className={`bg-gray-200 ${variantStyles[variant]} ${animation ? 'animate-pulse' : ''} ${className}`}
       style={dimensions}
-      animate={{ opacity: [0.5, 1, 0.5] }}
-      transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+      animate={animation ? { opacity: [0.5, 1, 0.5] } : undefined}
+      transition={animation ? { duration: 1.5, repeat: Infinity, ease: "easeInOut" } : undefined}
     />
   );
 };

@@ -6,15 +6,15 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from './PrivateRoute';
-import * as useAuthHook from '../../hooks/useAuth';
+import * as AuthContext from '../../context/AuthContext';
 
-jest.mock('../../hooks/useAuth');
+jest.mock('../../context/AuthContext');
 
 const TestComponent = () => <div>Protected Content</div>;
 const LoginComponent = () => <div>Login Page</div>;
 
 describe('PrivateRoute', () => {
-  const mockedUseAuth = useAuthHook.useAuth as jest.MockedFunction<typeof useAuthHook.useAuth>;
+  const mockedUseAuth = AuthContext.useAuth as jest.MockedFunction<typeof AuthContext.useAuth>;
 
   beforeEach(() => {
     jest.clearAllMocks();

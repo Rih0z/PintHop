@@ -32,23 +32,33 @@ describe('Environment Configuration', () => {
   });
 
   it('should throw error for missing required variables', () => {
-    // Store original env
+    // Store original env variables
     const originalMongoDB = process.env.MONGODB_URI;
+    const originalJWTSecret = process.env.JWT_SECRET;
+    const originalJWTExpires = process.env.JWT_EXPIRES_IN;
+    const originalJWTRefreshExpires = process.env.JWT_REFRESH_EXPIRES_IN;
+    const originalCorsOrigin = process.env.CORS_ORIGIN;
     
-    // Remove required variable
+    // Remove required variables
     delete process.env.MONGODB_URI;
+    delete process.env.JWT_SECRET;
+    delete process.env.JWT_EXPIRES_IN;
+    delete process.env.JWT_REFRESH_EXPIRES_IN;
+    delete process.env.CORS_ORIGIN;
     
-    // Clear require cache first
+    // Clear require cache
     delete require.cache[require.resolve('../../src/config/env')];
     
     expect(() => {
       require('../../src/config/env');
-    }).toThrow('Missing required environment variables: MONGODB_URI');
+    }).toThrow(/Missing required environment variables/);
     
-    // Restore original env
-    if (originalMongoDB) {
-      process.env.MONGODB_URI = originalMongoDB;
-    }
+    // Restore original env variables
+    if (originalMongoDB) process.env.MONGODB_URI = originalMongoDB;
+    if (originalJWTSecret) process.env.JWT_SECRET = originalJWTSecret;
+    if (originalJWTExpires) process.env.JWT_EXPIRES_IN = originalJWTExpires;
+    if (originalJWTRefreshExpires) process.env.JWT_REFRESH_EXPIRES_IN = originalJWTRefreshExpires;
+    if (originalCorsOrigin) process.env.CORS_ORIGIN = originalCorsOrigin;
   });
 
   it('should throw error for invalid NODE_ENV', () => {

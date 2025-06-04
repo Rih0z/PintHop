@@ -76,7 +76,8 @@ describe('useBreweries', () => {
     });
 
     expect(result.current.breweries).toEqual([]);
-    expect(result.current.error).toBe('Failed to fetch breweries');
+    expect(result.current.error).toBeInstanceOf(Error);
+    expect(result.current.error?.message).toBe('Failed to fetch breweries');
   });
 
   it('should only fetch once on multiple renders', async () => {

@@ -7,6 +7,16 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import '@testing-library/jest-dom';
 import { BeerRatingForm } from './BeerRatingForm';
 
+// Mock react-i18next
+jest.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: {
+      changeLanguage: () => new Promise(() => {}),
+    }
+  })
+}));
+
 // Mock the API call
 const mockOnSubmit = jest.fn();
 
