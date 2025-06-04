@@ -2,37 +2,44 @@
  * usePresence hook tests
  * Target: Improve hook coverage
  */
-import { renderHook, act } from '../test-utils';
-import { usePresence } from './usePresence';
+import { renderHook } from '../test-utils';
+import usePresence from './usePresence';
+import React from 'react';
+import PresenceContext from '../context/PresenceContext';
 
-// Mock the presence service
-jest.mock('../services/presence', () => ({
-  fetchMyPresence: jest.fn(),
+// Mock the presence context
+const mockPresenceContext = {
+  presence: null,
   updatePresence: jest.fn(),
-}));
+};
+
+const wrapper = ({ children }: { children: React.ReactNode }) => (
+  <PresenceContext.Provider value={mockPresenceContext}>
+    {children}
+  </PresenceContext.Provider>
+);
 
 describe('usePresence', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should return initial state', () => {
-    const { result } = renderHook(() => usePresence());
+  it('should return context values', () => {
+    const { result } = renderHook(() => usePresence(), { wrapper });
 
     expect(result.current.presence).toBeNull();
-    expect(result.current.error).toBeNull();
-    expect(result.current.loading).toBe(false);
-  });
-
-  it('should handle updatePresence function', () => {
-    const { result } = renderHook(() => usePresence());
-
     expect(typeof result.current.updatePresence).toBe('function');
   });
 
-  it('should handle fetchPresence function', () => {
-    const { result } = renderHook(() => usePresence());
+  it('should throw error when used outside provider', () => {
+    // Suppress console.error for this test
+    const originalError = console.error;
+    console.error = jest.fn();
 
-    expect(typeof result.current.fetchPresence).toBe('function');
+    expect(() => {
+      renderHook(() => usePresence());
+    }).toThrow('usePresence must be used within PresenceProvider');
+
+    console.error = originalError;
   });
 });

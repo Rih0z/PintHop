@@ -25,119 +25,99 @@ describe('useGeolocation', () => {
   it('should return initial state', () => {
     const { result } = renderHook(() => useGeolocation());
 
-    expect(result.current.location).toBeNull();
+    expect(result.current.position).toBeNull();
     expect(result.current.error).toBeNull();
-    expect(result.current.loading).toBe(false);
   });
 
-  it('should get current position successfully', async () => {
-    const mockPosition = {
-      coords: {
-        latitude: 47.6062,
-        longitude: -122.3321,
-        accuracy: 10,
-        altitude: null,
-        altitudeAccuracy: null,
-        heading: null,
-        speed: null,
-      },
-      timestamp: Date.now(),
-    };
+  it('should watch position automatically on mount', () => {
+    const mockWatchId = 123;
+    mockGeolocation.watchPosition.mockReturnValue(mockWatchId);
 
-    mockGeolocation.getCurrentPosition.mockImplementation((success) => {
-      success(mockPosition);
-    });
+    renderHook(() => useGeolocation());
 
-    const { result } = renderHook(() => useGeolocation());
-
-    act(() => {
-      result.current.getCurrentPosition();
-    });
-
-    expect(result.current.location).toEqual(mockPosition);
-    expect(result.current.error).toBeNull();
-    expect(result.current.loading).toBe(false);
+    expect(mockGeolocation.watchPosition).toHaveBeenCalled();
   });
 
-  it('should handle geolocation error', async () => {
+  it('should handle geolocation error', () => {
     const mockError = {
       code: 1,
       message: 'Permission denied',
     };
 
-    mockGeolocation.getCurrentPosition.mockImplementation((success, error) => {
-      error(mockError);
-    });
-
-    const { result } = renderHook(() => useGeolocation());
-
-    act(() => {
-      result.current.getCurrentPosition();
-    });
-
-    expect(result.current.location).toBeNull();
-    expect(result.current.error).toEqual(mockError);
-    expect(result.current.loading).toBe(false);
-  });
-
-  it('should start watching position', () => {
-    const mockWatchId = 123;
-    mockGeolocation.watchPosition.mockReturnValue(mockWatchId);
-
-    const { result } = renderHook(() => useGeolocation());
-
-    act(() => {
-      result.current.watchPosition();
-    });
-
-    expect(mockGeolocation.watchPosition).toHaveBeenCalled();
-  });
-
-  it('should clear watch when component unmounts', () => {
-    const mockWatchId = 123;
-    mockGeolocation.watchPosition.mockReturnValue(mockWatchId);
-
-    const { result, unmount } = renderHook(() => useGeolocation());
-
-    act(() => {
-      result.current.watchPosition();
-    });
-
-    unmount();
-
-    expect(mockGeolocation.clearWatch).toHaveBeenCalledWith(mockWatchId);
-  });
-
-  it('should handle watch position updates', () => {
-    const mockPosition = {
-      coords: {
-        latitude: 47.6062,
-        longitude: -122.3321,
-        accuracy: 10,
-        altitude: null,
-        altitudeAccuracy: null,
-        heading: null,
-        speed: null,
-      },
-      timestamp: Date.now(),
-    };
-
-    let watchSuccess: any;
-    mockGeolocation.watchPosition.mockImplementation((success) => {
-      watchSuccess = success;
+    let errorCallback: any;
+    mockGeolocation.watchPosition.mockImplementation((success, error) => {
+      errorCallback = error;
       return 123;
     });
 
     const { result } = renderHook(() => useGeolocation());
 
     act(() => {
-      result.current.watchPosition();
+      errorCallback(mockError);
     });
+
+    expect(result.current.position).toBeNull();
+    expect(result.current.error).toEqual(mockError.message);
+  });
+
+  it('should update position when location changes', () => {
+    const mockPosition = {
+      coords: {
+        latitude: 47.6062,
+        longitude: -122.3321,
+        accuracy: 10,
+        altitude: null,
+        altitudeAccuracy: null,
+        heading: null,
+        speed: null,
+      },
+      timestamp: Date.now(),
+    };
+
+    let successCallback: any;
+    mockGeolocation.watchPosition.mockImplementation((success) => {
+      successCallback = success;
+      return 123;
+    });
+
+    const { result } = renderHook(() => useGeolocation());
 
     act(() => {
-      watchSuccess(mockPosition);
+      successCallback(mockPosition);
     });
 
-    expect(result.current.location).toEqual(mockPosition);
+    expect(result.current.position).toEqual({
+      latitude: 47.6062,
+      longitude: -122.3321,
+      accuracy: 10,
+    });
+  });
+
+  it('should clear watch when component unmounts', () => {
+    const mockWatchId = 123;
+    mockGeolocation.watchPosition.mockReturnValue(mockWatchId);
+
+    const { unmount } = renderHook(() => useGeolocation());
+
+    unmount();
+
+    expect(mockGeolocation.clearWatch).toHaveBeenCalledWith(mockWatchId);
+  });
+
+  it('should handle missing geolocation support', () => {
+    const originalGeolocation = global.navigator.geolocation;
+    // @ts-ignore
+    delete global.navigator.geolocation;
+
+    const { result } = renderHook(() => useGeolocation());
+
+    expect(result.current.position).toBeNull();
+    expect(result.current.error).toBe('Geolocation not supported');
+
+    // Restore
+    Object.defineProperty(global.navigator, 'geolocation', {
+      value: originalGeolocation,
+      writable: true,
+    });
   });
 });

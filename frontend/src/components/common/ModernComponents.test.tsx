@@ -268,16 +268,16 @@ describe('ModernHealthIndicator', () => {
 
   it('applies status colors correctly', () => {
     const { rerender } = render(
-      <ModernHealthIndicator label="Health" value={50} status="low" />
+      <ModernHealthIndicator label="Health" value={50} unit="%" status="low" />
     );
     let indicator = screen.getByText('50');
     expect(indicator).toHaveStyle('color: #66BB6A');
     
-    rerender(<ModernHealthIndicator label="Health" value={50} status="moderate" />);
+    rerender(<ModernHealthIndicator label="Health" value={50} unit="%" status="moderate" />);
     indicator = screen.getByText('50');
     expect(indicator).toHaveStyle('color: #FFB300');
     
-    rerender(<ModernHealthIndicator label="Health" value={50} status="high" />);
+    rerender(<ModernHealthIndicator label="Health" value={50} unit="%" status="high" />);
     indicator = screen.getByText('50');
     expect(indicator).toHaveStyle('color: #FF7043');
   });
