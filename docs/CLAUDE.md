@@ -235,3 +235,62 @@ When deploying to Cloudflare or any production environment:
   REACT_APP_API_URL=https://pinthop-api.riho-dare.workers.dev
   ```
 - Backend CORS設定に必ずフロントエンドのURLを含める
+
+## Design Guidelines
+
+### Icon Usage
+- **絵文字の使用禁止**: 絵文字は一切使用しない
+- **react-iconsライブラリを使用**: すべてのアイコンはreact-iconsから選択する
+- **アイコンライブラリの選択**:
+  - React Icons (react-icons): https://react-icons.github.io/react-icons/
+  - 利用可能なアイコンセット: Feather, Heroicons, Lucide, Material Design, Font Awesome等
+- **一貫性の維持**: 同じプロジェクト内では同じアイコンセットを使用する
+- **アクセシビリティ**: アイコンには適切なaria-labelやtitleを設定する
+
+### Implementation Example
+```tsx
+import { FaBeer, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
+import { HiLocationMarker, HiClock } from 'react-icons/hi';
+import { IoMdPeople, IoMdTime } from 'react-icons/io';
+
+// 使用例
+<FaBeer className="w-5 h-5 text-amber-500" aria-label="ビール" />
+<FaMapMarkerAlt className="w-4 h-4 text-red-500" aria-label="位置" />
+<FaUsers className="w-6 h-6 text-blue-500" aria-label="ユーザー" />
+```
+
+## SOLID原則の確認
+
+### 実装時のSOLID原則チェックリスト
+
+1. **Single Responsibility Principle (SRP)**
+   - 各クラス/モジュールは単一の責任を持つ
+   - 変更理由は1つだけであるべき
+   - 例: AuthContextは認証のみ、PresenceContextはプレゼンスのみを扱う
+
+2. **Open/Closed Principle (OCP)**
+   - 拡張に対して開いているが、修正に対して閉じている
+   - 新機能追加時に既存コードを変更しない
+   - インターフェースや抽象クラスを使用
+
+3. **Liskov Substitution Principle (LSP)**
+   - 派生クラスは基底クラスと置換可能
+   - インターフェースの契約を守る
+   - 例: IBeerRepository実装はすべて同じ動作を保証
+
+4. **Interface Segregation Principle (ISP)**
+   - クライアントが使わないメソッドに依存させない
+   - 大きなインターフェースより小さな特化したものを
+   - 例: ICheckinService, IPresenceServiceなど機能別に分離
+
+5. **Dependency Inversion Principle (DIP)**
+   - 高レベルモジュールは低レベルモジュールに依存しない
+   - 両方とも抽象に依存すべき
+   - 依存性注入(DI)を活用
+
+### プロジェクトでの実装例
+
+- **Services層**: インターフェース定義により抽象に依存
+- **Repository層**: データアクセスの詳細を隠蔽
+- **Context**: 各コンテキストは単一の関心事に集中
+- **Components**: 再利用可能で単一責任を持つコンポーネント設計
