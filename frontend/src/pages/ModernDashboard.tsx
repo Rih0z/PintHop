@@ -139,7 +139,7 @@ const ModernDashboardPage: React.FC = () => {
         abv: 4.2,
         rating: 4.1,
         reason: 'Lower ABV matches your health goals',
-        image: 'https://via.placeholder.com/80x80/FFB300/000000?text=🍺',
+        image: 'https://via.placeholder.com/80x80/FFB300/000000?text=Beer',
         healthFriendly: true,
       },
       {
@@ -150,7 +150,7 @@ const ModernDashboardPage: React.FC = () => {
         abv: 5.2,
         rating: 4.3,
         reason: 'Similar to your favorite IPAs but lighter',
-        image: 'https://via.placeholder.com/80x80/66BB6A/000000?text=🍺',
+        image: 'https://via.placeholder.com/80x80/66BB6A/000000?text=Beer',
         healthFriendly: true,
       },
     ];
@@ -187,10 +187,10 @@ const ModernDashboardPage: React.FC = () => {
   };
 
   const tabs = [
-    { id: 'overview', label: 'Overview', icon: '📊' },
+    { id: 'overview', label: 'Overview', icon: <span className="w-4 h-4 flex items-center justify-center">📊</span> },
     { id: 'health', label: 'Health', icon: '💚' },
-    { id: 'achievements', label: 'Goals', icon: '🏆' },
-    { id: 'social', label: 'Social', icon: '👥' },
+    { id: 'achievements', label: 'Goals', icon: <span className="w-4 h-4 flex items-center justify-center">🏆</span> },
+    { id: 'social', label: 'Social', icon: <span className="w-4 h-4 flex items-center justify-center">👥</span> },
   ];
 
   if (loading) {
@@ -300,7 +300,7 @@ const ModernDashboardPage: React.FC = () => {
                     <div className="text-2xl font-bold text-gray-900">{userStats.uniqueBeers}</div>
                     <div className="text-sm text-gray-600">Unique Beers</div>
                     <div className="text-xs text-amber-600 mt-1">
-                      🍺 {userStats.favoriteStyle} fan
+                      <span className="inline mr-1 text-amber-500">🍺</span> {userStats.favoriteStyle} fan
                     </div>
                   </div>
                 </ModernCard>
@@ -379,7 +379,7 @@ const ModernDashboardPage: React.FC = () => {
                   value={userStats.avgABV}
                   unit="%"
                   status={getHealthStatus(userStats.healthScore)}
-                  icon={<span>🍺</span>}
+                  icon={<span className="text-amber-500">🍺</span>}
                 />
                 
                 <ModernHealthIndicator
@@ -387,7 +387,7 @@ const ModernDashboardPage: React.FC = () => {
                   value={userStats.weeklyConsumed}
                   unit="drinks"
                   status="moderate"
-                  icon={<span>📊</span>}
+                  icon={<span className="text-blue-500">📊</span>}
                 />
                 
                 <ModernHealthIndicator
@@ -422,7 +422,7 @@ const ModernDashboardPage: React.FC = () => {
                       </div>
                       <div className="text-right">
                         <div className="text-sm font-medium text-green-600">{beer.abv}%</div>
-                        <div className="text-xs text-gray-500">⭐ {beer.rating}</div>
+                        <div className="text-xs text-gray-500 flex items-center gap-1"><span className="text-yellow-500">⭐</span> {beer.rating}</div>
                       </div>
                     </motion.div>
                   ))}
@@ -502,7 +502,7 @@ const ModernDashboardPage: React.FC = () => {
             >
               <ModernCard padding="lg">
                 <div className="text-center py-12">
-                  <div className="text-6xl mb-4">👥</div>
+                  <div className="w-16 h-16 mb-4 text-blue-500 mx-auto flex items-center justify-center text-4xl">👥</div>
                   <h3 className="text-lg font-semibold text-gray-900 mb-2">Connect with Friends</h3>
                   <p className="text-gray-600 mb-4">
                     Share your beer journey and discover new favorites with friends.

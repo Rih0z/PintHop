@@ -92,8 +92,9 @@ export const RegisterPage: React.FC = () => {
     const checkUsername = async () => {
       if (formData.username && !validationErrors.username) {
         try {
-          const result = await authService.checkAvailability(formData.username);
-          setAvailability(prev => ({ ...prev, username: result.username }));
+          // Temporarily disable availability check until backend endpoint is ready
+          // const result = await authService.checkAvailability(formData.username);
+          // setAvailability(prev => ({ ...prev, username: result.username }));
         } catch (error) {
           console.error('Username check failed:', error);
         }
@@ -109,8 +110,9 @@ export const RegisterPage: React.FC = () => {
     const checkEmail = async () => {
       if (formData.email && !validationErrors.email) {
         try {
-          const result = await authService.checkAvailability(undefined, formData.email);
-          setAvailability(prev => ({ ...prev, email: result.email }));
+          // Temporarily disable availability check until backend endpoint is ready
+          // const result = await authService.checkAvailability(undefined, formData.email);
+          // setAvailability(prev => ({ ...prev, email: result.email }));
         } catch (error) {
           console.error('Email check failed:', error);
         }
@@ -182,7 +184,7 @@ export const RegisterPage: React.FC = () => {
         {/* ヘッダー */}
         <div className="text-center">
           <div className="flex justify-center mb-6">
-            <div className="text-6xl">🍺</div>
+            <div className="w-16 h-16 text-amber-500 flex items-center justify-center text-6xl" aria-label="ビール">🍺</div>
           </div>
           <h2 className="text-4xl font-display font-bold text-gray-900 mb-2">
             Join <span className="bg-gradient-to-r from-amber-500 to-orange-500 bg-clip-text text-transparent">PintHop</span>

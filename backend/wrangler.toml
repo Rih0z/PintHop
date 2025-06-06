@@ -1,5 +1,5 @@
 name = "pinthop-api"
-main = "src/worker-simple.ts"
+main = "src/worker-full.ts"
 compatibility_date = "2024-01-01"
 compatibility_flags = ["nodejs_compat"]
 

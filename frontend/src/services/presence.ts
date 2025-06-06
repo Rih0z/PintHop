@@ -21,7 +21,7 @@ import { Presence } from '../types/presence';
 const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.workers.dev';
 
 export const fetchFriendsPresence = async (): Promise<Presence[]> => {
-  const response = await axios.get(`${API_URL}/api/v1/presence/friends`);
+  const response = await axios.get(`${API_URL}/api/presence/friends`);
   return response.data as Presence[];
 };
 
@@ -29,7 +29,7 @@ export const fetchBreweryPresence = async (
   breweryId: string
 ): Promise<Presence[]> => {
   const response = await axios.get(
-    `${API_URL}/api/v1/breweries/${breweryId}/presence`
+    `${API_URL}/api/breweries/${breweryId}/presence`
   );
   return response.data as Presence[];
 };
@@ -47,11 +47,11 @@ export interface UpdatePresenceData {
 export const updatePresence = async (
   data: UpdatePresenceData
 ): Promise<Presence> => {
-  const response = await axios.post(`${API_URL}/api/v1/presence`, data);
+  const response = await axios.post(`${API_URL}/api/presence`, data);
   return response.data as Presence;
 };
 
 export const fetchMyPresence = async (): Promise<Presence> => {
-  const response = await axios.get(`${API_URL}/api/v1/presence/me`);
+  const response = await axios.get(`${API_URL}/api/presence/me`);
   return response.data as Presence;
 };

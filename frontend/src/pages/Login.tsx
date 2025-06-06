@@ -62,7 +62,7 @@ export const LoginPage: React.FC = () => {
         {/* Header */}
         <div className="text-center">
           <div className="flex justify-center mb-6">
-            <div className="text-6xl">🍺</div>
+            <div className="w-16 h-16 text-amber-500 flex items-center justify-center text-6xl" aria-label="ビール">🍺</div>
           </div>
           <h2 className="text-4xl font-display font-bold text-white mb-2">
             Welcome to <span className="bg-gradient-to-r from-primary-400 to-beer-400 bg-clip-text text-transparent">PintHop</span>

@@ -100,10 +100,13 @@ app.use('/*', async (c, next) => {
 app.use('/*', cors({
   origin: (origin) => {
     const allowedOrigins = [
+      'https://pinthop-frontend.pages.dev',
+      'https://pinthop.pages.dev',
       'https://67515bf9.pinthop.pages.dev',
       'https://fc9d96f0.pinthop.pages.dev',
       'https://2b5d782f.pinthop.pages.dev',
-      'http://localhost:3000'
+      'http://localhost:3000',
+      'http://localhost:3001'
     ];
     return allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
   },
