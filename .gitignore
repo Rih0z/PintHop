@@ -91,6 +91,24 @@ playwright-report/
 *.pid
 server.pid
 
+# Build directories
+build/
+*/build/
+dist/
+*/dist/
+
+# Coverage reports
+coverage/
+*/coverage/
+
+# Backup files
+*.bak
+*.backup
+*~ 
+
+# Duplicate directories
+*\ 2/
+
 # TypeScript
 *.tsbuildinfo
 
