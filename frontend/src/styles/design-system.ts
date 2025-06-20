@@ -1,118 +1,282 @@
 /**
  * PintHop Design System
- * ビールカルチャーにインスパイアされたデザイントークン
+ * UI/UX仕様書に基づくデザイントークン
  */
 
 export const colors = {
-  // ビールの泡をイメージした色
-  foam: {
-    50: '#FFFEF7',   // ほぼ白い泡
-    100: '#FFF8E1',  // クリーミーな泡
-    200: '#FFECB3',  // 黄金の泡
-    300: '#FFE082',  // 濃い泡
+  // 2024-2025 UI/UXトレンド対応: Dark Mode First + プライマリカラーパレット
+  primary: {
+    50: '#FDF8F3',   // プライマリカラーの最も薄い色
+    100: '#FAF0E4',  // 薄い琥珀色
+    200: '#F3D5A7',  // ライト琥珀色
+    300: '#ECB96A',  // ミディアム琥珀色
+    400: '#D39E47',  // 琥珀色のミディアム
+    500: '#B97F24',  // プライマリカラー: 琥珀色/ビール色
+    600: '#9E6B1F',  // ダーク琥珀色
+    700: '#835619',  // より濃い琥珀色
+    800: '#684214',  // ディープ琥珀色
+    900: '#4D2E0F',  // 最も濃い琥珀色
   },
   
-  // ビールの色彩
-  beer: {
-    // ライトビール（ピルスナー、ラガー）
-    light: {
-      300: '#FFD54F',  // 薄い黄金
-      400: '#FFCA28',  // 黄金
-      500: '#FFC107',  // 濃い黄金
+  // セカンダリカラー: 深い青
+  secondary: {
+    50: '#F0F4F8',   // 最も薄い青
+    100: '#E1E9F0',  // 薄い青
+    200: '#B3CCE0',  // ライト青
+    300: '#85AFCF',  // ミディアム青
+    400: '#5692BF',  // ミディアム深い青
+    500: '#2B5797',  // セカンダリカラー: 深い青
+    600: '#244B82',  // より濃い青
+    700: '#1D3F6D',  // ディープ青
+    800: '#163358',  // 非常に濃い青
+    900: '#0F2743',  // 最も濃い青
+  },
+  
+  // アクセントカラー: オレンジ
+  accent: {
+    50: '#FFF4F0',   // 最も薄いオレンジ
+    100: '#FEE8DF',  // 薄いオレンジ
+    200: '#FDC5A6',  // ライトオレンジ
+    300: '#FCA26D',  // ミディアムオレンジ
+    400: '#F17F34',  // より明るいオレンジ
+    500: '#E85D10',  // アクセントカラー: オレンジ
+    600: '#C54F0E',  // ダークオレンジ
+    700: '#A2410C',  // より濃いオレンジ
+    800: '#7F330A',  // ディープオレンジ
+    900: '#5C2508',  // 最も濃いオレンジ
+  },
+  
+  // ニュートラルカラー
+  neutral: {
+    50: '#F9F7F2',   // バックグラウンドカラー: オフホワイト
+    100: '#F5F3ED',  // 非常に薄いグレー
+    200: '#E8E5DC',  // 薄いグレー
+    300: '#DAD6CB',  // ライトグレー
+    400: '#ADA59B',  // ミディアムグレー
+    500: '#807A70',  // グレー
+    600: '#666259',  // ダークグレー
+    700: '#4D4A42',  // より濃いグレー
+    800: '#333333',  // テキストカラー: ダークグレー
+    900: '#1A1814',  // 最も濃いグレー
+  },
+  
+  // ステータスカラー
+  status: {
+    success: '#4CAF50',   // 成功
+    warning: '#FFC107',   // 警告
+    error: '#F44336',     // エラー
+    info: '#2196F3',      // 情報
+  },
+  
+  // 2024-2025 Dark Mode First デザイン
+  dark: {
+    // ベースダークカラー
+    bg: {
+      primary: '#0a0a0a',     // メインBackground
+      secondary: '#111111',   // カード、セクション
+      tertiary: '#1a1a1a',    // 階層化された背景
+      elevated: '#1f1f1f',    // モーダル、ポップアップ
     },
-    // アンバー/エール
-    amber: {
-      300: '#FFB74D',  // ライトアンバー
-      400: '#FFA726',  // アンバー
-      500: '#FF9800',  // ディープアンバー
-      600: '#FB8C00',  // ダークアンバー
-      700: '#F57C00',  // ブラウンエール
+    
+    // ダークモードテキスト
+    text: {
+      primary: '#ffffff',     // メインテキスト
+      secondary: '#b3b3b3',   // セカンダリテキスト
+      tertiary: '#808080',    // 三次テキスト
+      disabled: '#4d4d4d',    // 無効状態
     },
-    // ダークビール（スタウト、ポーター）
-    dark: {
-      700: '#5D4037',  // ブラウン
-      800: '#4E342E',  // ダークブラウン
-      900: '#3E2723',  // スタウト
-      950: '#1A0E0A',  // インペリアルスタウト
+    
+    // ダークモードボーダー・線
+    border: {
+      primary: '#333333',     // 主要ボーダー
+      secondary: '#262626',   // セカンダリボーダー
+      subtle: '#1a1a1a',      // 微細なライン
+    },
+    
+    // ダークモード用プライマリ（ビール色を暗背景用に調整）
+    primary: {
+      100: '#B97F24',  // より明るい琥珀色（Dark背景での視認性向上）
+      200: '#D39E47',  // さらに明るい琥珀色
+      300: '#ECB96A',  // Light琥珀色（ダークモード用）
+    },
+    
+    // ダークモード用セカンダリ（青色を暗背景用に調整）
+    secondary: {
+      100: '#5692BF',  // より明るい青
+      200: '#85AFCF',  // さらに明るい青
+      300: '#B3CCE0',  // Light青（ダークモード用）
     }
   },
   
-  // ホップの緑
-  hop: {
-    300: '#AED581',  // 若いホップ
-    400: '#9CCC65',  // フレッシュホップ
-    500: '#8BC34A',  // 成熟ホップ
-    600: '#7CB342',  // ドライホップ
-    700: '#689F38',  // ダークホップ
-  },
-  
-  // 背景色（醸造所の雰囲気）
-  brewery: {
-    50: '#FAFAFA',   // 明るい壁
-    100: '#F5F5F5',  // タップルームの壁
-    800: '#424242',  // 薄暗い醸造所
-    900: '#212121',  // 夜の醸造所
-    950: '#0A0A0A',  // 地下貯蔵庫
-  },
-  
-  // セマンティックカラー
-  semantic: {
-    success: '#7CB342',  // ホップグリーン
-    warning: '#FFA726',  // アンバーアラート
-    error: '#EF5350',    // 発酵失敗の赤
-    info: '#42A5F5',     // 清涼な水色
+  // ライトモード設定（従来の設定を保持）
+  light: {
+    bg: {
+      primary: '#F9F7F2',     // オフホワイト
+      secondary: '#FFFFFF',   // 純白
+      tertiary: '#F5F3ED',    // 非常に薄いグレー
+      elevated: '#FFFFFF',    // 白（モーダル等）
+    },
+    
+    text: {
+      primary: '#333333',     // ダークグレー（メイン）
+      secondary: '#666259',   // ダークグレー（セカンダリ）
+      tertiary: '#807A70',    // グレー（三次）
+      disabled: '#ADA59B',    // ライトグレー（無効）
+    },
+    
+    border: {
+      primary: '#E8E5DC',     // 薄いグレー
+      secondary: '#DAD6CB',   // ライトグレー
+      subtle: '#F5F3ED',      // 非常に薄いグレー
+    }
   }
 };
 
-// アニメーション設定
+// 2024-2025 Micro-interactions & Animations トレンド対応
 export const animations = {
-  // ビールを注ぐような滑らかな動き
+  // ビールテーマアニメーション（既存）
   pour: 'cubic-bezier(0.4, 0.0, 0.2, 1)',
-  // 泡が上がるような弾む動き
   bubble: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
-  // グラスを持ち上げるような動き
   lift: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
-  // 乾杯の動き
   cheers: 'cubic-bezier(0.34, 1.56, 0.64, 1)',
   
-  // タイミング
+  // 2024年トレンド: 高度なマイクロインタラクション
+  easing: {
+    // Apple-style easings
+    appleIn: 'cubic-bezier(0.4, 0, 1, 1)',
+    appleOut: 'cubic-bezier(0, 0, 0.2, 1)',
+    appleInOut: 'cubic-bezier(0.4, 0, 0.2, 1)',
+    
+    // Material Design 3 easings
+    materialStandard: 'cubic-bezier(0.2, 0, 0, 1)',
+    materialDecelerate: 'cubic-bezier(0, 0, 0, 1)',
+    materialAccelerate: 'cubic-bezier(0.3, 0, 1, 1)',
+    
+    // カスタム・プレミアム感
+    bounce: 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
+    smooth: 'cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+    snappy: 'cubic-bezier(0.4, 0, 0.2, 1)',
+  },
+  
+  // タイミング（2024年最適化）
   duration: {
-    instant: '100ms',
-    fast: '200ms',
-    normal: '300ms',
-    slow: '500ms',
-    pour: '800ms',  // ビールを注ぐ時間
+    instant: '50ms',    // より高速な反応
+    fast: '150ms',      // 高速インタラクション
+    normal: '250ms',    // 標準アニメーション
+    slow: '400ms',      // ゆったりとした動き
+    slower: '600ms',    // 重要な状態変化
+    pour: '800ms',      // ビールを注ぐ時間
+    loading: '1200ms',  // ローディングアニメーション
+  },
+  
+  // マイクロインタラクション・パターン
+  microInteractions: {
+    // ホバーエフェクト
+    hover: {
+      scale: 'scale(1.02)',
+      lift: 'translateY(-2px)',
+      glow: 'box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2)',
+    },
+    
+    // プレス・タップ
+    press: {
+      scale: 'scale(0.98)',
+      subtle: 'scale(0.995)',
+    },
+    
+    // フォーカス
+    focus: {
+      ring: '0 0 0 3px rgba(185, 127, 36, 0.5)',
+      glow: '0 0 20px rgba(185, 127, 36, 0.3)',
+    },
+    
+    // 状態変化
+    success: {
+      bounce: 'scale(1.1)',
+      checkmark: 'rotate(360deg) scale(1.1)',
+    }
+  },
+  
+  // Loading・Progress アニメーション
+  loading: {
+    spin: {
+      name: 'spin',
+      duration: '1s',
+      timing: 'linear',
+      iteration: 'infinite',
+    },
+    pulse: {
+      name: 'pulse', 
+      duration: '2s',
+      timing: 'ease-in-out',
+      iteration: 'infinite',
+    },
+    bounce: {
+      name: 'bounce',
+      duration: '1s',
+      timing: 'ease-in-out',
+      iteration: 'infinite',
+    }
   }
 };
 
-// タイポグラフィ
+// 2024-2025 Bold Typography トレンド対応
 export const typography = {
   fontFamily: {
-    display: '"Bebas Neue", system-ui, sans-serif',  // ビールラベル風
-    body: '"Inter", system-ui, sans-serif',
-    mono: '"JetBrains Mono", monospace',
+    // Variable Fonts 採用（2024年トレンド）
+    display: '"Inter Variable", "Montserrat Variable", system-ui, sans-serif',  // ヒーロー・大見出し用
+    heading: '"Inter Variable", "Montserrat", system-ui, sans-serif',           // 見出し用
+    body: '"Inter Variable", "Open Sans", system-ui, sans-serif',               // 本文用（可読性重視）
+    accent: '"Nunito Sans Variable", "Nunito Sans", system-ui, sans-serif',     // アクセント用
+    mono: '"JetBrains Mono", "SF Mono", monospace',                             // コード・技術表示用
   },
   
+  // クランプによるレスポンシブタイポグラフィ（2024年ベストプラクティス）
   fontSize: {
-    xs: '0.75rem',     // 12px
-    sm: '0.875rem',    // 14px
-    base: '1rem',      // 16px
-    lg: '1.125rem',    // 18px
-    xl: '1.25rem',     // 20px
-    '2xl': '1.5rem',   // 24px
-    '3xl': '1.875rem', // 30px
-    '4xl': '2.25rem',  // 36px
-    '5xl': '3rem',     // 48px
-    '6xl': '3.75rem',  // 60px
+    xs: '0.75rem',           // 12px - 極小テキスト
+    sm: '0.875rem',          // 14px - 小テキスト  
+    base: '1rem',            // 16px - 本文
+    lg: '1.125rem',          // 18px - 見出し4
+    xl: '1.25rem',           // 20px - 見出し3
+    '2xl': 'clamp(1.5rem, 4vw, 2rem)',      // 24-32px - 見出し2（レスポンシブ）
+    '3xl': 'clamp(1.875rem, 5vw, 2.5rem)',  // 30-40px - 見出し1（レスポンシブ）
+    '4xl': 'clamp(2.25rem, 6vw, 3.5rem)',   // 36-56px - 大見出し（レスポンシブ）
+    '5xl': 'clamp(3rem, 8vw, 4.5rem)',      // 48-72px - ヒーロータイトル（レスポンシブ）
+    '6xl': 'clamp(3.75rem, 10vw, 6rem)',    // 60-96px - ビッグヒーロー（レスポンシブ）
+    
+    // 新規追加: Bold Typography トレンド
+    hero: 'clamp(4rem, 12vw, 8rem)',        // 64-128px - スーパーヒーロー
+    display: 'clamp(5rem, 15vw, 10rem)',    // 80-160px - ディスプレイサイズ
   },
   
   fontWeight: {
     light: 300,
-    normal: 400,
-    medium: 500,
-    semibold: 600,
-    bold: 700,
-    extrabold: 800,
+    normal: 400,        // 通常テキスト
+    medium: 500,        // 中間
+    semibold: 600,      // セミボールド
+    bold: 700,          // ボールド
+    extrabold: 800,     // エクストラボールド（2024年トレンド）
+    black: 900,         // ブラック（2024年トレンド - "Big, Bold, Capitalized"）
+  },
+  
+  // レタースペーシング（可読性向上）
+  letterSpacing: {
+    tighter: '-0.05em',
+    tight: '-0.025em', 
+    normal: '0em',
+    wide: '0.025em',
+    wider: '0.05em',
+    widest: '0.1em',
+  },
+  
+  // ラインハイト（読みやすさ最適化）
+  lineHeight: {
+    none: 1,
+    tight: 1.25,
+    snug: 1.375,
+    normal: 1.5,
+    relaxed: 1.625,
+    loose: 2,
   }
 };
 
@@ -136,7 +300,70 @@ export const effects = {
     inner: 'inset 0 2px 4px 0 rgba(0, 0, 0, 0.06)',
   },
   
-  // ガラスモーフィズム
+  // 2024-2025 Glassmorphism トレンド（Apple macOS Big Sur, Microsoft Fluent Design準拠）
+  glassmorphism: {
+    // ライトモード用
+    light: {
+      subtle: {
+        backdropFilter: 'blur(10px)',
+        background: 'rgba(255, 255, 255, 0.1)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+      },
+      medium: {
+        backdropFilter: 'blur(16px)',
+        background: 'rgba(255, 255, 255, 0.15)',
+        border: '1px solid rgba(255, 255, 255, 0.3)',
+        boxShadow: '0 12px 40px 0 rgba(31, 38, 135, 0.45)',
+      },
+      strong: {
+        backdropFilter: 'blur(20px)',
+        background: 'rgba(255, 255, 255, 0.2)',
+        border: '1px solid rgba(255, 255, 255, 0.4)',
+        boxShadow: '0 16px 50px 0 rgba(31, 38, 135, 0.55)',
+      }
+    },
+    
+    // ダークモード用
+    dark: {
+      subtle: {
+        backdropFilter: 'blur(10px)',
+        background: 'rgba(0, 0, 0, 0.2)',
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 8px 32px 0 rgba(0, 0, 0, 0.3)',
+      },
+      medium: {
+        backdropFilter: 'blur(16px)',
+        background: 'rgba(0, 0, 0, 0.3)',
+        border: '1px solid rgba(255, 255, 255, 0.15)',
+        boxShadow: '0 12px 40px 0 rgba(0, 0, 0, 0.4)',
+      },
+      strong: {
+        backdropFilter: 'blur(20px)',
+        background: 'rgba(0, 0, 0, 0.4)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        boxShadow: '0 16px 50px 0 rgba(0, 0, 0, 0.5)',
+      }
+    },
+    
+    // ビール・琥珀色グラス効果
+    amber: {
+      subtle: {
+        backdropFilter: 'blur(12px)',
+        background: 'rgba(185, 127, 36, 0.1)',
+        border: '1px solid rgba(185, 127, 36, 0.2)',
+        boxShadow: '0 8px 32px 0 rgba(185, 127, 36, 0.2)',
+      },
+      medium: {
+        backdropFilter: 'blur(16px)',
+        background: 'rgba(185, 127, 36, 0.15)',
+        border: '1px solid rgba(185, 127, 36, 0.3)',
+        boxShadow: '0 12px 40px 0 rgba(185, 127, 36, 0.3)',
+      }
+    }
+  },
+  
+  // 従来のガラス効果（下位互換）
   glass: {
     light: 'backdrop-filter: blur(10px); background-color: rgba(255, 255, 255, 0.1);',
     dark: 'backdrop-filter: blur(10px); background-color: rgba(0, 0, 0, 0.3);',
@@ -214,29 +441,101 @@ export const gradients = {
   glassShine: `linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%)`,
 };
 
-// カスタムプロパティを生成
+// 2024-2025 Dark Mode First CSS変数生成
 export const generateCSSVariables = () => {
-  const cssVars: string[] = [];
+  const lightVars: string[] = [];
+  const darkVars: string[] = [];
   
-  // カラー変数
+  // ライトモード変数
+  lightVars.push('/* Light Mode Variables */');
+  lightVars.push('color-scheme: light;');
+  
+  // ダークモード変数  
+  darkVars.push('/* Dark Mode Variables */');
+  darkVars.push('color-scheme: dark;');
+  
+  // 基本カラー変数（ライト・ダーク両方）
   Object.entries(colors).forEach(([category, shades]) => {
-    if (typeof shades === 'object') {
+    if (typeof shades === 'object' && category !== 'dark' && category !== 'light') {
       Object.entries(shades).forEach(([shade, value]) => {
         if (typeof value === 'string') {
-          cssVars.push(`--color-${category}-${shade}: ${value};`);
-        } else {
-          Object.entries(value).forEach(([subShade, subValue]) => {
-            cssVars.push(`--color-${category}-${shade}-${subShade}: ${subValue};`);
-          });
+          lightVars.push(`--color-${category}-${shade}: ${value};`);
+          darkVars.push(`--color-${category}-${shade}: ${value};`);
         }
       });
     }
   });
   
-  // アニメーション変数
+  // ライトモード専用変数
+  if (colors.light) {
+    Object.entries(colors.light).forEach(([category, shades]) => {
+      Object.entries(shades).forEach(([shade, value]) => {
+        lightVars.push(`--color-${category}-${shade}: ${value};`);
+      });
+    });
+  }
+  
+  // ダークモード専用変数
+  if (colors.dark) {
+    Object.entries(colors.dark).forEach(([category, shades]) => {
+      Object.entries(shades).forEach(([shade, value]) => {
+        darkVars.push(`--color-${category}-${shade}: ${value};`);
+      });
+    });
+  }
+  
+  // アニメーション変数（共通）
   Object.entries(animations.duration).forEach(([name, value]) => {
-    cssVars.push(`--duration-${name}: ${value};`);
+    lightVars.push(`--duration-${name}: ${value};`);
+    darkVars.push(`--duration-${name}: ${value};`);
   });
   
-  return cssVars.join('\n  ');
+  // Typography変数（共通）
+  Object.entries(typography.fontSize).forEach(([size, value]) => {
+    lightVars.push(`--font-size-${size}: ${value};`);
+    darkVars.push(`--font-size-${size}: ${value};`);
+  });
+  
+  return `
+:root {
+  ${lightVars.join('\n  ')}
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    ${darkVars.join('\n    ')}
+  }
+}
+
+[data-theme="light"] {
+  ${lightVars.join('\n  ')}
+}
+
+[data-theme="dark"] {
+  ${darkVars.join('\n  ')}
+}
+`;
+};
+
+// 2024-2025 トレンド対応ユーティリティ関数
+export const getGlassmorphismStyles = (variant: 'light' | 'dark' | 'amber', intensity: 'subtle' | 'medium' | 'strong' = 'medium') => {
+  const glass = effects.glassmorphism[variant];
+  if (variant === 'amber') {
+    return glass[intensity === 'strong' ? 'medium' : intensity];
+  }
+  return glass[intensity];
+};
+
+export const getBoldTypography = (size: 'hero' | 'display' | '6xl' | '5xl' | '4xl', weight: 'bold' | 'extrabold' | 'black' = 'extrabold') => {
+  return {
+    fontSize: typography.fontSize[size],
+    fontWeight: typography.fontWeight[weight],
+    fontFamily: typography.fontFamily.display,
+    lineHeight: typography.lineHeight.tight,
+    letterSpacing: typography.letterSpacing.tight,
+  };
+};
+
+export const getMicroInteraction = (type: 'hover' | 'press' | 'focus' | 'success', property: string) => {
+  return animations.microInteractions[type][property];
 };

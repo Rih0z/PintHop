@@ -5,7 +5,7 @@ compatibility_flags = ["nodejs_compat"]
 
 [vars]
 NODE_ENV = "production"
-CORS_ORIGIN = "https://bb16b80e.pinthop-frontend.pages.dev"
+CORS_ORIGIN = "https://6fadaaa2.pinthop-frontend.pages.dev,https://bb16b80e.pinthop-frontend.pages.dev,https://pinthop-frontend.pages.dev,http://localhost:3000"
 
 # KV Namespace for user storage
 [[kv_namespaces]]

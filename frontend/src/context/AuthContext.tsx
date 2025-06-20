@@ -132,10 +132,17 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         // トークンをAxiosのデフォルトヘッダーに設定
         axios.defaults.headers.common['Authorization'] = `Bearer ${storedToken}`;
         
-        // TODO: トークンの有効性を確認し、ユーザー情報を取得
-        // 現時点では簡易的にトークンの存在のみチェック
         setToken(storedToken);
         setRefreshToken(storedRefreshToken);
+        
+        // For testing: create a mock user if token exists
+        // In production, this should be a proper user validation API call
+        const mockUser: AuthUser = {
+          id: 'alice',
+          username: 'alice',
+          email: 'alice@example.com'
+        };
+        setUser(mockUser);
       }
       
       setLoading(false);

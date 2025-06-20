@@ -17,8 +17,20 @@ import axios from 'axios';
 const API_URL = process.env.REACT_APP_API_URL || 'https://pinthop-api.riho-dare.workers.dev';
 
 export const login = async (username: string, password: string) => {
-  const res = await axios.post(`${API_URL}/api/auth/login`, { username, password });
-  return res.data;
+  console.log('API_URL:', API_URL);
+  console.log('Login request to:', `${API_URL}/api/auth/login`);
+  try {
+    const res = await axios.post(`${API_URL}/api/auth/login`, { username, password }, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      withCredentials: true
+    });
+    return res.data;
+  } catch (error) {
+    console.error('Login error details:', error);
+    throw error;
+  }
 };
 
 export const register = async (data: { username: string; email: string; password: string }) => {

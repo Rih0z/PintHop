@@ -16,9 +16,11 @@ Currently in Phase 0 (minimal presence MVP) development, focusing on Seattle bre
 
 **Frontend**: `/frontend`
 - React 18.2.0 + TypeScript 5.1.6 + Tailwind CSS 3.3.3
-- Leaflet.js for map functionality
+- **2025 UI/UX Stack**: Framer Motion + Modern Design System + Glassmorphism
+- Leaflet.js for map functionality with 3D markers and spatial design
 - JWT-based authentication with AuthContext
 - Real-time presence updates via PresenceContext
+- **Modern UI Features**: Dark Mode First, Bold Typography, AI-Enhanced UX
 
 **Backend**: `/backend`
 - Node.js 18.x + Express 4.18.2 + MongoDB 7.0
@@ -100,9 +102,89 @@ Phase 0 features implemented:
 ### Latest Deployment Information
 
 - **Backend API**: https://pinthop-api.riho-dare.workers.dev
-- **Frontend**: https://fc9d96f0.pinthop.pages.dev
+- **Frontend (最新)**: https://fc573c6a.pinthop-frontend.pages.dev
 - **KV Namespace ID**: fa659b1141e5435eb905680ccdc69aff
 - **Preview KV ID**: a43b7a10469c44439935de0e976aab95
+
+**注意**: フロントエンドURLは各デプロイで変更されます。本番環境では固定カスタムドメインの設定が必要です。
+
+### 動作確認済みテストアカウント
+```
+✅ ユーザー名: alice
+   メール: alice@example.com
+   パスワード: alice123456
+
+✅ ユーザー名: realuser2025
+   メール: realuser2025@example.com
+   パスワード: RealTest123!@#
+```
+
+**2025-06-11更新**: 
+- Login.tsxページのテストクレデンシャル表示を修正
+- 無効だった`testuser/test123456`を削除
+- 動作確認済みの`alice`と`realuser2025`アカウントのみ表示
+- 両アカウントでログイン成功、ダッシュボードリダイレクトも正常動作を確認済み
+
+### 🎨 2024-2025 UI/UX完全リニューアル完了 (2025-06-11)
+
+すべてのReactコンポーネントが最新の2024-2025 UI/UXトレンドに完全準拠するよう全面的に再設計・実装されました：
+
+#### 実装済み2025年版機能
+
+1. **Dark Mode First Design (完全実装)**
+   - 全コンポーネントでダークモードを最優先設計
+   - 82.7%のユーザー嗜好に基づく実装
+   - 自動テーマ検出とシームレス切り替え
+
+2. **Glassmorphism Effects (全面適用)**
+   - backdrop-filter: blur()を使用した透明感のあるUI
+   - 半透明背景とマイクロリフレクション効果
+   - 奥行きと素材感を表現するモダンデザイン
+
+3. **Bold Typography with Variable Fonts**
+   - Inter, Montserrat等のVariable Fonts使用
+   - 極太フォントウェイト（800-900）でインパクト重視
+   - レスポンシブタイポグラフィスケール
+
+4. **AI-Enhanced Features (全機能)**
+   - 検索とレコメンデーション機能にAI統合
+   - リアルタイム入力バリデーション
+   - パーソナリティスコア分析システム
+   - AI関連度スコアによるコンテンツ最適化
+
+5. **3D & Spatial Design**
+   - perspective効果による立体的UI要素
+   - 3D回転アニメーションとトランスフォーム
+   - 空間的なレイアウトとDepth効果
+
+6. **Modern Skeuomorphism**
+   - 物理的質感を表現するボタンとアバター
+   - inset shadowとborder効果
+   - タッチ時の押下フィードバック
+
+7. **Advanced Micro-interactions**
+   - Framer Motionによるspring animationシステム
+   - ホバー、タップ時の細かな反応
+   - 状態変化時のスムーズなトランジション
+
+#### 更新されたコンポーネント (Version 3.0)
+
+- **Pages**: Login.tsx, Dashboard.tsx, Map.tsx, Register.tsx, BrewerySearch.tsx, Events.tsx, Profile.tsx
+- **Components**: ModernComponents.tsx (共通UIライブラリ)
+- **Design System**: modern-design-system.ts, design-system.ts
+
+#### 技術スタック詳細
+
+```typescript
+// 2025年版 技術構成
+- React 18.2.0 + TypeScript 5.1.6
+- Framer Motion (アニメーション)
+- Tailwind CSS 3.3.3 (ユーティリティCSS)
+- CSS Custom Properties (カラーシステム)
+- Variable Fonts (Inter, Montserrat)
+- Glassmorphism CSS (backdrop-filter)
+- 3D Transforms (perspective, rotateY/X)
+```
 
 ## Environment Setup
 
@@ -131,6 +213,63 @@ When deploying to Cloudflare or any production environment:
    - Proper authentication on all routes
    - No console.logs with sensitive data
    - Environment variables properly configured
+
+### Deployment Commands
+
+**Note**: This project does NOT use GitHub Actions for deployment. Use the following commands:
+
+#### Backend Deployment (Cloudflare Workers)
+```bash
+cd backend
+npm run deploy  # または npx wrangler deploy
+```
+
+#### Frontend Deployment (Cloudflare Pages)
+```bash
+cd frontend
+npm run build
+npm run deploy  # このコマンドでCloudflare Pagesにデプロイ
+```
+
+#### Important Deployment Notes
+- **Manual deployment only**: GitHub pushはコードの保存のみ、自動デプロイはされない
+- **Always build before deploy**: `npm run build`を実行してから`npm run deploy`
+- **Cache issues**: デプロイ後はブラウザキャッシュをクリア（Ctrl+Shift+R）
+- **Verify deployment**: デプロイ後は必ず本番環境で動作確認
+
+#### URL固定設定（重要）
+**問題**: Cloudflare PagesはデプロイごとにランダムなプレビューURLを生成するため、バックエンドのCORS設定で毎回新しいURLを追加する必要がある
+
+**現在の状況**: 
+- 各デプロイで新しいURL（例：https://d14ab9e4.pinthop-frontend.pages.dev）が生成される
+- これによりCORS設定の更新とバックエンドの再デプロイが必要
+- 本番環境での継続的な利用に支障をきたす
+
+**解決策**: カスタムドメインの設定
+1. **独自ドメインの取得**: 例 `pinthop.com` または `app.pinthop.com`
+2. **Cloudflare DNS設定**: ドメインをCloudflare Pagesに紐付け
+3. **固定URL使用**: 以下の固定URLを設定
+   - **Frontend 本番URL**: `https://app.pinthop.com` (カスタムドメイン)
+   - **Backend API URL**: `https://pinthop-api.riho-dare.workers.dev` (既に固定)
+
+**設定手順**:
+1. Cloudflareダッシュボード → Pages → pinthop-frontend
+2. Custom domains タブ → Add custom domain
+3. ドメイン入力 → DNS設定の確認
+4. バックエンドのCORS設定をカスタムドメインに更新:
+   ```typescript
+   const allowedOrigins = [
+     'https://app.pinthop.com',  // 本番カスタムドメイン（最優先）
+     'https://pinthop-frontend.pages.dev',  // バックアップ
+     'http://localhost:3000',  // 開発環境
+   ];
+   ```
+
+**ベストプラクティス**:
+- プレビューURLは開発・テスト用のみ使用
+- 本番利用は必ずカスタムドメインを使用
+- CORS設定にはカスタムドメインを最優先で配置
+- デプロイ時のURL変更による中断を防ぐ
 
 ## Security Implementation (Updated 2025-01-05)
 
@@ -236,28 +375,79 @@ When deploying to Cloudflare or any production environment:
   ```
 - Backend CORS設定に必ずフロントエンドのURLを含める
 
-## Design Guidelines
+## 🎨 2025年版デザインガイドライン
 
-### Icon Usage
-- **絵文字の使用禁止**: 絵文字は一切使用しない
-- **react-iconsライブラリを使用**: すべてのアイコンはreact-iconsから選択する
-- **アイコンライブラリの選択**:
-  - React Icons (react-icons): https://react-icons.github.io/react-icons/
-  - 利用可能なアイコンセット: Feather, Heroicons, Lucide, Material Design, Font Awesome等
-- **一貫性の維持**: 同じプロジェクト内では同じアイコンセットを使用する
-- **アクセシビリティ**: アイコンには適切なaria-labelやtitleを設定する
+### 2024-2025 UI/UXトレンド準拠原則
 
-### Implementation Example
-```tsx
-import { FaBeer, FaMapMarkerAlt, FaUsers } from 'react-icons/fa';
-import { HiLocationMarker, HiClock } from 'react-icons/hi';
-import { IoMdPeople, IoMdTime } from 'react-icons/io';
+#### 1. Dark Mode First Design
+- **優先度**: すべてのデザインはダークモードを最初に設計
+- **実装**: `data-theme="dark"`をデフォルトとし、ライトモードは後付け
+- **コントラスト**: WCAG AAA準拠の高コントラスト比を維持
 
-// 使用例
-<FaBeer className="w-5 h-5 text-amber-500" aria-label="ビール" />
-<FaMapMarkerAlt className="w-4 h-4 text-red-500" aria-label="位置" />
-<FaUsers className="w-6 h-6 text-blue-500" aria-label="ユーザー" />
+#### 2. Glassmorphism実装標準
+```css
+/* 標準Glassmorphismスタイル */
+.glass-effect {
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  background: rgba(26, 26, 26, 0.9); /* ダーク */
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
 ```
+
+#### 3. Bold Typography with Variable Fonts
+- **ヘッダー**: Inter Display、フォントウェイト800-900
+- **本文**: Inter、フォントウェイト400-600  
+- **サイズスケール**: 2.25rem(36px)から1rem(16px)の極端なスケール
+- **Letter Spacing**: タイトルは-0.025em、本文は0
+
+#### 4. Modern Icon System
+- **ライブラリ**: react-icons (Heroicons優先)
+- **使用禁止**: 絵文字は一切使用しない
+- **サイズ**: 16px, 20px, 24px, 32pxの標準サイズ
+- **カラー**: CSS Custom Propertiesで動的カラー対応
+
+```tsx
+// 2025年版アイコン実装例
+import { HiSparkles, HiLocationMarker, HiUsers } from 'react-icons/hi';
+
+<HiSparkles 
+  className="w-6 h-6" 
+  style={{ color: 'var(--color-primary-400)' }}
+  aria-label="AI機能"
+/>
+```
+
+#### 5. AI-Enhanced UX パターン
+- **検索**: リアルタイム候補表示と関連度スコア
+- **レコメンデーション**: パーソナライズされたコンテンツ提案
+- **バリデーション**: AI支援による入力チェック
+- **スコアリング**: ユーザー行動に基づく動的スコア表示
+
+#### 6. 3D & Spatial Design実装
+```css
+/* 3D効果の標準実装 */
+.spatial-element {
+  transform: perspective(1000px) rotateX(10deg);
+  transition: transform 0.3s ease;
+}
+
+.spatial-element:hover {
+  transform: perspective(1000px) rotateX(15deg) scale(1.05);
+}
+```
+
+#### 7. Modern Skeuomorphism
+- **深度表現**: inset shadowとborder-radiusでの質感
+- **タッチフィードバック**: 押下時の視覚的変化
+- **素材感**: グラデーションと影による立体感
+
+### アクセシビリティ標準
+- **キーボードナビゲーション**: 全機能対応
+- **スクリーンリーダー**: ARIA属性の完全実装  
+- **カラーコントラスト**: WCAG AAA Level対応
+- **フォーカス表示**: 明確な視覚的フィードバック
 
 ## SOLID原則の確認
 

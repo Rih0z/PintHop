@@ -20,7 +20,8 @@ import { authenticate } from '../middlewares/auth';
 const router = express.Router();
 
 // 認証が必要なルート
-router.post('/', authenticate, presenceController.updatePresence);
+router.post('/', authenticate, presenceController.createPresence);
+router.put('/:id', authenticate, presenceController.updatePresence);
 router.get('/friends', authenticate, presenceController.getFriendsPresences);
 router.get('/me', authenticate, presenceController.getMyPresence);
 

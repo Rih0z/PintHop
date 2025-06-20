@@ -100,10 +100,19 @@ app.use('/*', async (c, next) => {
 app.use('/*', cors({
   origin: (origin) => {
     const allowedOrigins = [
+      'https://fc573c6a.pinthop-frontend.pages.dev',
+      'https://d14ab9e4.pinthop-frontend.pages.dev',
+      'https://734261b4.pinthop-frontend.pages.dev',
+      'https://af160e0a.pinthop-frontend.pages.dev',
+      'https://b46d7b9e.pinthop-frontend.pages.dev',
+      'https://6fadaaa2.pinthop-frontend.pages.dev',
       'https://pinthop-frontend.pages.dev',
+      'https://65290b3c.pinthop-frontend.pages.dev',
+      'https://5b4de7ca.pinthop-frontend.pages.dev',
+      'https://6a400d0e.pinthop-frontend.pages.dev',
       'https://pinthop.pages.dev',
       'https://67515bf9.pinthop.pages.dev',
-      'https://fc9d96f0.pinthop.pages.dev',
+      'https://fc9d96f0.pinthop-frontend.pages.dev',
       'https://2b5d782f.pinthop.pages.dev',
       'http://localhost:3000',
       'http://localhost:3001'
@@ -133,9 +142,23 @@ async function getUserFromToken(c: any): Promise<any> {
   }
 }
 
+// Handle preflight OPTIONS requests explicitly
+app.options('/*', (c) => {
+  return new Response(null, { status: 204 });
+});
+
 // Health check
 app.get('/health', (c) => {
   return c.json({ status: 'ok', timestamp: new Date().toISOString() });
+});
+
+// Root endpoint
+app.get('/', (c) => {
+  return c.json({ 
+    status: 'success', 
+    message: 'PintHop API is running',
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // ========== AUTH ENDPOINTS ==========
@@ -286,6 +309,40 @@ app.post('/api/auth/login', async (c) => {
   } catch (error) {
     console.error('Login error:', error);
     return c.json({ error: 'Login failed' }, 500);
+  }
+});
+
+// Check availability endpoint
+app.get('/api/auth/check-availability', async (c) => {
+  try {
+    const env = c.env;
+    const username = c.req.query('username');
+    const email = c.req.query('email');
+    
+    if (!username && !email) {
+      return c.json({ error: 'Username or email parameter required' }, 400);
+    }
+    
+    let available = true;
+    
+    if (username) {
+      const existing = await env.USERS_KV.get(`user:${username}`);
+      if (existing) {
+        available = false;
+      }
+    }
+    
+    if (email && available) {
+      const existing = await env.USERS_KV.get(`email:${email.toLowerCase()}`);
+      if (existing) {
+        available = false;
+      }
+    }
+    
+    return c.json({ available });
+  } catch (error) {
+    console.error('Check availability error:', error);
+    return c.json({ error: 'Failed to check availability' }, 500);
   }
 });
 

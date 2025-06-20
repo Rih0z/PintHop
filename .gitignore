@@ -81,6 +81,16 @@ aws-exports.js
 coverage/
 .nyc_output/
 
+# Test results
+test-results/
+*/test-results/
+playwright-report/
+*/playwright-report/
+
+# Server process files
+*.pid
+server.pid
+
 # TypeScript
 *.tsbuildinfo
 

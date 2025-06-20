@@ -4,22 +4,25 @@
  *
  * 作成者: AI Assistant
  * 作成日: 2025-06-02
+ * 最終更新日: 2025-06-11
+ * バージョン: 2.0
+ *
+ * 更新履歴:
+ * - 2025-06-11 Claude Code 2024-2025 UI/UXトレンド完全準拠版に更新
  *
  * 説明:
- * ダッシュボード - ビールデータの可視化とユーザー統計
+ * 2024-2025 UI/UXトレンドに完全準拠したダッシュボード画面
+ * Dark Mode First、Glassmorphism、Bold Typography、3D Charts実装
  */
 
 import React, { useState, useEffect } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18n';
 import axios from 'axios';
 import { useAuth } from '../hooks/useAuth';
 import { LanguageSwitcher } from '../components/common/LanguageSwitcher';
-import { AnimatedCard, BeerTapButton } from '../components/common/AnimatedCard';
-import { BeerGlassLoader, BreweryCardSkeleton, BeerPourProgress } from '../components/common/LoadingStates';
-import { BeerFlavorChart, IBUMeter, ABVGauge } from '../components/beer/BeerFlavorChart';
-import { OptimizedBreweryCard } from '../components/brewery/OptimizedBreweryCard';
+import { ModernCard, ModernButton, ModernTabs, ModernSkeleton, ModernBeerIndicator } from '../components/common/ModernComponents';
 import { motion, AnimatePresence } from 'framer-motion';
-import { colors } from '../styles/design-system';
+import { colors, typography, animations } from '../styles/design-system';
 import { Line, Bar, Doughnut } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
@@ -34,6 +37,18 @@ import {
   Legend,
   Filler
 } from 'chart.js';
+import { 
+  HiChartBar, 
+  HiTrendingUp, 
+  HiCollection,
+  HiLocationMarker,
+  HiStar,
+  HiBadgeCheck,
+  HiLightBulb,
+  HiClock,
+  HiUsers,
+  HiSparkles
+} from 'react-icons/hi';
 
 // Register ChartJS components
 ChartJS.register(
@@ -479,6 +494,14 @@ const DashboardPage: React.FC = () => {
           )}
         </AnimatePresence>
       </div>
+      
+      {/* Custom CSS for shine animation */}
+      <style jsx>{`
+        @keyframes shine {
+          0%, 100% { transform: translateX(-100%) rotate(45deg); }
+          50% { transform: translateX(100%) rotate(45deg); }
+        }
+      `}</style>
     </div>
   );
 };
