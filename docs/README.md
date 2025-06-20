@@ -13,8 +13,7 @@
 
 ## 🚀 ライブデモ
 
-**本番環境（Frontend）**: https://pinthop-frontend.pages.dev  
-**本番環境（Backend API）**: https://pinthop-api.riho-dare.workers.dev
+**本番環境**: https://pinthop-frontend.pages.dev
 
 ### 🆕 ユーザー登録機能
 
